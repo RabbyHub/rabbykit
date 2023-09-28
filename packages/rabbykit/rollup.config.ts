@@ -1,24 +1,24 @@
 import { defineConfig } from "rollup";
 import { swc, defineRollupSwcOption } from "rollup-plugin-swc3";
 import { preserveDirective } from "rollup-swc-preserve-directives";
-import dynamicImportVars from "@rollup/plugin-dynamic-import-vars";
 import json from "@rollup/plugin-json";
 import { dts } from "rollup-plugin-dts";
 import svelte from "rollup-plugin-svelte";
 import sveltePreprocess from "svelte-preprocess";
-import resolve from "@rollup/plugin-node-resolve";
 import replace from "@rollup/plugin-replace";
-import common from "@rollup/plugin-commonjs";
 
-//@ts-ignore
+import { dependencies, peerDependencies } from "./package.json";
+
 const production = !process.env.ROLLUP_WATCH;
 
-const external = ["svelte", "@wagmi/core", "viem", "wagmi"];
-
-const input = [
-  "./src/index.ts",
-  // "./src/store/index.ts",
+const external = [
+  ...Object.keys(dependencies),
+  ...Object.keys(peerDependencies),
 ];
+
+console.log("dependencies", dependencies);
+
+const input = ["./src/index.ts"];
 export default defineConfig([
   {
     input,
@@ -34,7 +34,7 @@ export default defineConfig([
         "process.env.NODE_ENV": JSON.stringify(production),
         preventAssignment: true,
       }),
-      common(),
+      // common(),
       svelte({
         preprocess: sveltePreprocess({ sourceMap: !production }),
         compilerOptions: {
@@ -42,10 +42,10 @@ export default defineConfig([
         },
         emitCss: false,
       }),
-      resolve({
-        browser: true,
-        dedupe: ["svelte"],
-      }),
+      // resolve({
+      //   browser: true,
+      //   dedupe: ["svelte"],
+      // }),
       swc(
         defineRollupSwcOption({
           sourceMaps: true,

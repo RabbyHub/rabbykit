@@ -1,4 +1,3 @@
-import { createModal } from "rabbykit";
 import { configureChains, createConfig } from "wagmi";
 import { goerli, mainnet } from "wagmi/chains";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";

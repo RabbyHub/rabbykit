@@ -25,11 +25,9 @@ interface Store<
   wallets?: WalletResult[];
 }
 
-// export const RkStore = map<Store<any, any>>({ language: "en" });
-
-export const useRKStore = createStore<
-  Store<any, any> & { language: SUPPORT_LANGUAGES }
->()(subscribeWithSelector((set, get) => ({ language: "en" })));
+export const useRKStore = createStore<Store<any, any>>()(
+  subscribeWithSelector((set, get) => ({ language: "en" }))
+);
 
 export function syncAccount() {
   const { address, isConnected } = getAccount();

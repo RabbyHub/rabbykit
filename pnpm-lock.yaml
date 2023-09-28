@@ -112,6 +112,9 @@ importers:
       '@rollup/plugin-replace':
         specifier: ^5.0.2
         version: 5.0.2(rollup@3.29.2)
+      '@rollup/plugin-typescript':
+        specifier: ^11.1.4
+        version: 11.1.4(rollup@3.29.2)(typescript@5.2.2)
       '@swc/core':
         specifier: ^1.3.86
         version: 1.3.86
@@ -989,6 +992,25 @@ packages:
       '@rollup/pluginutils': 5.0.4(rollup@3.29.2)
       magic-string: 0.27.0
       rollup: 3.29.2
+    dev: true
+
+  /@rollup/plugin-typescript@11.1.4(rollup@3.29.2)(typescript@5.2.2):
+    resolution: {integrity: sha512-WZRh5LBVLQXdKFICUId5J3eIpmjGURaBqntfg3GSZACgeOAFS+lOSMGTwfzDkELTaZVp/lWdMVNU3UkwCUBg/Q==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^2.14.0||^3.0.0
+      tslib: '*'
+      typescript: '>=3.7.0'
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+      tslib:
+        optional: true
+    dependencies:
+      '@rollup/pluginutils': 5.0.4(rollup@3.29.2)
+      resolve: 1.22.6
+      rollup: 3.29.2
+      typescript: 5.2.2
     dev: true
 
   /@rollup/pluginutils@4.2.1:
