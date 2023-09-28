@@ -7,5 +7,10 @@ export const mount = () => {
     mountNode.setAttribute("data-rk-mounted", "");
     document.body.insertAdjacentElement("afterend", mountNode);
   }
-  new App({ target: mountNode });
+  // handle refresh
+  const child = mountNode.querySelector("[data-rabbykit]");
+  if (!child) {
+    // mountNode.removeChild(child);
+    new App({ target: mountNode });
+  }
 };

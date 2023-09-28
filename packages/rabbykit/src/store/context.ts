@@ -11,13 +11,17 @@ import {
 import { WalletResult } from "../wallets/type";
 import { SUPPORT_LANGUAGES } from "../helpers";
 import zustandToSvelte from "../helpers/zustandToSvelte";
-// import { map } from "nanostore";
 
 interface Store<
   TPublicClient extends PublicClient = PublicClient,
   TWebSocketPublicClient extends WebSocketPublicClient = WebSocketPublicClient
 > {
+  open: boolean;
+  openModal: () => void;
+  closeModal: () => void;
+
   language: SUPPORT_LANGUAGES;
+
   wagmi?: Config<TPublicClient, TWebSocketPublicClient>;
   isConnected?: boolean;
   address?: string;
@@ -26,7 +30,16 @@ interface Store<
 }
 
 export const useRKStore = createStore<Store<any, any>>()(
-  subscribeWithSelector((set, get) => ({ language: "en" }))
+  subscribeWithSelector((set, get) => ({
+    language: "en",
+    open: false,
+    openModal: () => {
+      set({ open: true });
+    },
+    closeModal: () => {
+      set({ open: false });
+    },
+  }))
 );
 
 export function syncAccount() {
