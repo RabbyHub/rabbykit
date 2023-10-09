@@ -1,3 +1,22 @@
 {
-  "hello": "hello RabbyKit"
+  "hello": "hello RabbyKit",
+  "Browser Wallet": "Browser Wallet",
+  "Mobile Wallet": "Mobile Wallet",
+  "not founded wallet": "Browser Wallet",
+
+  "Requesting Connection": "Requesting Connection",
+  "Connect with": "Connect with {name}",
+  "connecting description": "Open the {name} browser extension to connect your wallet.",
+
+  "Connection Successful": "Connection Successful",
+
+  "Request Cancelled": "Request Cancelled",
+  "You cancelled the request.": "You cancelled the request.",
+
+  "Scan with your Mobile wallet": "Scan with your Mobile wallet",
+  "Copy URL": "Copy URL",
+
+  "How to use": "How to use {name}?",
+
+  "Install the Extension": "Install the Extension"
 }

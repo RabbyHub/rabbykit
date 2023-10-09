@@ -13,27 +13,22 @@ export const coinbaseWallet = ({
   appName,
   chains,
   ...options
-}: CoinbaseWalletOptions): WalletResult => {
+}: CoinbaseWalletOptions): WalletResult<CoinbaseWalletConnector> => {
   const isCoinbaseWalletInjected =
     typeof window !== "undefined" && window.ethereum?.isCoinbaseWallet === true;
 
   return {
     id: "coinbase",
     name: "Coinbase Wallet",
-    shortName: "Coinbase",
-    logos: {
-      default: "",
-    },
-
+    logo: "",
     installed: isCoinbaseWalletInjected || undefined,
     downloadUrls: {
       android: "https://play.google.com/store/apps/details?id=org.toshi",
       ios: "https://apps.apple.com/us/app/coinbase-wallet-store-crypto/id1278383455",
-      mobile: "https://coinbase.com/wallet/downloads",
-      qrCode: "https://coinbase-wallet.onelink.me/q5Sx/fdb9b250",
+      // qrCode: "https://coinbase-wallet.onelink.me/q5Sx/fdb9b250",
       chrome:
         "https://chrome.google.com/webstore/detail/coinbase-wallet-extension/hnfanknocfeofbddgcijnmhnfnkdnaad",
-      browserExtension: "https://coinbase.com/wallet",
+      // browserExtension: "https://coinbase.com/wallet",
     },
     createConnector: () => {
       const ios = isIOS();
@@ -47,11 +42,13 @@ export const coinbaseWallet = ({
         },
       });
 
-      const getUri = async () => (await connector.getProvider()).qrUrl;
+      const getUri = async () =>
+        (await connector.getProvider()).qrUrl as string;
 
       return {
-        connector,
-        getUri,
+        browser: connector,
+        mobile: { getUri },
+        qrode: { getUri },
       };
     },
   };

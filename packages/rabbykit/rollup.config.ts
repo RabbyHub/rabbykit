@@ -4,7 +4,7 @@ import { preserveDirective } from "rollup-swc-preserve-directives";
 import json from "@rollup/plugin-json";
 import { dts } from "rollup-plugin-dts";
 import svelte from "rollup-plugin-svelte";
-import sveltePreprocess from "svelte-preprocess";
+import sveltePreprocess, { scss } from "svelte-preprocess";
 import replace from "@rollup/plugin-replace";
 
 import { dependencies, peerDependencies } from "./package.json";
@@ -36,7 +36,7 @@ export default defineConfig([
       }),
       // common(),
       svelte({
-        preprocess: sveltePreprocess({ sourceMap: !production }),
+        preprocess: [sveltePreprocess({ sourceMap: !production }), scss()],
         compilerOptions: {
           dev: !production,
         },

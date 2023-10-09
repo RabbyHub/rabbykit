@@ -1,6 +1,10 @@
 <script lang="ts">
   import { onDestroy, onMount } from "svelte";
   import { useRKStore } from "../../store";
+  import useStore from "../../store/context";
+
+  import Icon from "../Icon/Icon.svelte";
+  import clsx from "clsx";
 
   function close() {
     useRKStore.getState().closeModal();
@@ -25,6 +29,8 @@
       html.style.removeProperty("overflow");
     }
   });
+
+  let isBack;
 </script>
 
 <div class="modal">
@@ -32,6 +38,13 @@
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div class="modal-overlay" on:click={close} />
   <div class="modal-content">
+    <div class="icon" class:back={$useStore.page !== "wallet"}>
+      {#if $useStore.page === "wallet"}
+        <Icon name="close" on:click={close} />
+      {:else}
+        <Icon name="back" />
+      {/if}
+    </div>
     <slot />
   </div>
 </div>
@@ -50,6 +63,7 @@
   .modal-content {
     width: 460px;
     height: 540px;
+    padding: 20px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -57,6 +71,17 @@
     border-radius: 16px;
     background: var(--r-neutral-bg-2, #f2f4f7);
     box-shadow: 0px 24px 80px 0px rgba(0, 0, 0, 0.2);
+  }
+
+  .icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+  .back {
+    right: initial;
+    top: 14px;
+    left: 14px;
   }
 
   .modal-overlay {

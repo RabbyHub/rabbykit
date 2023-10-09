@@ -36,21 +36,19 @@ export const metaMaskWallet = ({
   return {
     id: "metaMask",
     name: "MetaMask",
-    logos: {
-      default: "",
-    },
+    logo: "",
     installed: !shouldUseWalletConnect ? isMetaMaskInjected : undefined,
     downloadUrls: {
       android: "https://play.google.com/store/apps/details?id=io.metamask",
       ios: "https://apps.apple.com/us/app/metamask/id1438144202",
-      mobile: "https://metamask.io/download",
-      qrCode: "https://metamask.io/download",
+      // mobile: "https://metamask.io/download",
+      // qrCode: "https://metamask.io/download",
       chrome:
         "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn",
       edge: "https://microsoftedge.microsoft.com/addons/detail/metamask/ejbalbakoplchlghecdalmeeeajnimhm",
       firefox: "https://addons.mozilla.org/firefox/addon/ether-metamask",
-      opera: "https://addons.opera.com/extensions/details/metamask-10",
-      browserExtension: "https://metamask.io/download",
+      // opera: "https://addons.opera.com/extensions/details/metamask-10",
+      // browserExtension: "https://metamask.io/download",
     },
     createConnector: () => {
       const connector = shouldUseWalletConnect
@@ -76,8 +74,8 @@ export const metaMaskWallet = ({
       };
 
       return {
-        connector,
-        createUri: getUri,
+        browser: connector,
+        qrCode: { getUri },
       };
     },
   };

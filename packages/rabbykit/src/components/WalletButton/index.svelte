@@ -4,11 +4,18 @@
 
   export let wallet: WalletResult;
 
-  let { connector } = wallet.createConnector();
-  let isReady = connector.ready;
+  let { browser } = wallet.createConnector();
+  let isReady = !!browser?.ready;
 
-  $: src = wallet.logos.default || "https://placehold.co/28x28/png";
-  $: name = wallet.name;
+  const handleConnect = () => {
+    if (browser && isReady) {
+      connect({ connector: browser });
+    }
+    console.warn("connector not exit or not ready");
+  };
+
+  $: src = wallet.logo || "https://placehold.co/28x28/png";
+  $: name = wallet.name || "";
   $: type = isReady ? "primary" : "ghost";
 </script>
 
@@ -16,7 +23,7 @@
   class="button"
   class:ghost={type === "ghost"}
   class:border={type === "border"}
-  on:click={() => connect({ connector })}
+  on:click={handleConnect}
 >
   <img {src} alt="wallet logo" loading="lazy" />
   <span>{name}</span>

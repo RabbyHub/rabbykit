@@ -11,7 +11,7 @@
     "npm": ">=999.0.0"
   },
   "scripts": {
-    "dev:examples": "pnpm --filter=\"./examples/nextjs\" dev",
+    "dev:examples": "pnpm --filter=\"./examples/next-wagmi\" dev",
     "dev:kit": "pnpm --filter=rabbykit dev",
     "build:kit": "pnpm --filter=rabbykit build",
     "test": "echo \"Error: no test specified\" && exit 1"

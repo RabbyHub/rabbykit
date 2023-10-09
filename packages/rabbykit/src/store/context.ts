@@ -21,6 +21,7 @@ interface Store<
   closeModal: () => void;
 
   language: SUPPORT_LANGUAGES;
+  page: "wallet" | "connect" | "download";
 
   wagmi?: Config<TPublicClient, TWebSocketPublicClient>;
   isConnected?: boolean;
@@ -32,6 +33,7 @@ interface Store<
 export const useRKStore = createStore<Store<any, any>>()(
   subscribeWithSelector((set, get) => ({
     language: "en",
+    page: "wallet",
     open: false,
     openModal: () => {
       set({ open: true });
