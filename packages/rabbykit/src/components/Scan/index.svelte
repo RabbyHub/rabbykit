@@ -4,20 +4,57 @@
   import { onMount } from "svelte";
   import { useRKStore } from "../../store";
   import Icon from "../Icon/Icon.svelte";
+  import { WalletResult } from "../../wallets/type";
+  import svelteStore from "../../store/context";
 
-  export let logo: string;
-  export let uri: string;
-  export let name: string;
+  export let wallet: WalletResult;
   export let size: number = 280;
+
+  let uri = "loading";
+
+  async function getUri() {
+    try {
+      const code = await wallet.connector.qrCode?.getUri?.();
+      if (code) {
+        uri = code;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const logo = wallet.logo;
+  const name: string = wallet.name;
 
   let success = false;
 
   onMount(() => {
-    useRKStore.setState({ page: "connect" });
+    getUri();
   });
 
   function copy() {
     navigator.clipboard.writeText(uri);
+  }
+
+  $: {
+    if (["connecting", "reconnecting"].includes($svelteStore.status)) {
+      success = false;
+    }
+    if ($svelteStore.status === "connected") {
+      success = true;
+    }
+
+    if ($svelteStore.status === "disconnected") {
+      success = false;
+    }
+
+    console.log("$svelteStore.status", $svelteStore.status);
+
+    if (success) {
+      setTimeout(() => {
+        $svelteStore.closeModal();
+      }, 500);
+    }
   }
 </script>
 
@@ -28,14 +65,14 @@
 
   <section>
     <div class="qr-code">
-      <QrCode {logo} {uri} {size} {success} />
+      <QrCode {logo} uri={uri || ""} {size} {success} />
     </div>
 
     {#if success}
       <div class="tip success">{$t("Connection Successful")}</div>
     {:else}
       <div class="tip">{$t("Scan with your Mobile wallet")}</div>
-      <button class="desc" on:click={copy}>
+      <button class="desc" on:click={() => copy()}>
         <Icon name={"copy"} hover={false} />
         <span>
           {$t("Copy URL")}

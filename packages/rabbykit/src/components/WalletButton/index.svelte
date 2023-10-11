@@ -1,31 +1,67 @@
 <script lang="ts">
+  import Image from "../Image/index.svelte";
   import { connect } from "@wagmi/core";
   import { WalletResult } from "../../wallets/type";
+  import { useRKStore } from "../../store/context";
 
   export let wallet: WalletResult;
+  export let type: "browser" | "mobile" | "unused";
 
-  let { browser } = wallet.createConnector();
+  let { browser } = wallet.connector;
   let isReady = !!browser?.ready;
 
   const handleConnect = () => {
-    if (browser && isReady) {
+    if (browser && isReady && type !== "unused") {
+      useRKStore.setState({
+        page: "connect",
+        currentWallet: wallet,
+        type,
+        status: "connecting",
+      });
       connect({ connector: browser });
+      return;
     }
-    console.warn("connector not exit or not ready");
+
+    if (type === "mobile") {
+      if (wallet.connector?.qrCode?.connector || wallet.connector?.browser) {
+        connect({
+          connector:
+            wallet.connector?.qrCode?.connector! || wallet.connector?.browser!,
+        });
+      }
+
+      useRKStore.setState({
+        page: "connect",
+        currentWallet: wallet,
+        type,
+        status: "connecting",
+      });
+      return;
+    }
+
+    if (type === "unused") {
+      useRKStore.setState({
+        page: "download",
+        currentWallet: wallet,
+      });
+    }
   };
 
-  $: src = wallet.logo || "https://placehold.co/28x28/png";
-  $: name = wallet.name || "";
-  $: type = isReady ? "primary" : "ghost";
+  let logo = wallet.logo;
+  let name =
+    type === "mobile" ? wallet.mobileName || wallet.name : wallet.name || "";
 </script>
 
 <button
   class="button"
-  class:ghost={type === "ghost"}
-  class:border={type === "border"}
+  class:ghost={type === "mobile"}
+  class:border={type === "unused"}
   on:click={handleConnect}
 >
-  <img {src} alt="wallet logo" loading="lazy" />
+  <div class="logo">
+    <Image src={logo} alt={name} />
+  </div>
+
   <span>{name}</span>
 </button>
 
@@ -36,6 +72,7 @@
     color: white;
 
     padding: 10px 20px;
+    padding-right: 0;
     display: inline-flex;
     align-items: center;
     gap: 12px;
@@ -49,12 +86,7 @@
     font-weight: 590;
     border: 0.5px solid transparent;
   }
-  .button img {
-    overflow: hidden;
-    width: 28px;
-    height: 28px;
-    border-radius: 100%;
-  }
+
   .button:hover {
     border-radius: 8px;
     border: 0.5px solid var(--r-blue-default);
@@ -66,24 +98,30 @@
     border-radius: 8px;
     box-shadow: none;
     color: var(--r-neutral-body);
-    border: 1px solid var(--r-neutral-line);
+    border: 0.5px solid var(--r-neutral-line);
   }
 
   .button.ghost:hover {
-    border: 1px solid var(--r-blue-default);
+    border: 0.5px solid var(--r-blue-default);
     box-shadow: none;
   }
 
   .button.border {
     box-shadow: none;
     border-radius: 8px;
-    border: 0.5px solid var(--r-neutral-line);
-    background: var(--r-neutral-card-1);
+    border: 1px solid var(--r-neutral-line, #d3d8e0);
+    background: transparent;
   }
 
   .button.border:hover {
     border-radius: 8px;
-    border: 0.5px solid var(--r-blue-default);
-    background: var(--r-blue-light-1);
+    border: 1px solid var(--r-blue-default, #7084ff);
+    background: transparent;
+  }
+
+  .logo {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
   }
 </style>

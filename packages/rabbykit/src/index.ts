@@ -11,11 +11,10 @@ import {
   rabbyWallet,
   metaMaskWallet,
   coinbaseWallet,
+  bitgetWallet,
 } from "./wallets/connectors";
 import { mount } from "./components/demo";
 import "./helpers/i18n";
-
-// export { RabbyKitProvider } from "./components/RabbyKit";
 
 export const createModal = <
   TPublicClient extends PublicClient = PublicClient,
@@ -43,7 +42,8 @@ export const createModal = <
     rabbyWallet({ chains }),
     metaMaskWallet({ chains, projectId }),
     coinbaseWallet({ chains, appName }),
-  ];
+    bitgetWallet({ chains, projectId }),
+  ].sort((a, b) => a.name.localeCompare(b.name));
 
   (window as any).$wagmi = wagmi;
 
@@ -52,8 +52,11 @@ export const createModal = <
   mount();
 
   return {
-    openModal: () => {},
-    closeModal: () => {},
-    getCurrentAccount: () => getConfig(),
+    openModal: () => {
+      useRKStore.setState({ open: true });
+    },
+    closeModal: () => {
+      useRKStore.setState({ open: false });
+    },
   };
 };

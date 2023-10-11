@@ -1,17 +1,24 @@
 <script lang="ts">
+  import Image from "../Image/index.svelte";
   import { _ as t } from "svelte-i18n";
-  import { onMount } from "svelte";
-  import { useRKStore } from "../../store";
+  import { WalletResult } from "../../wallets/type";
   import Icon from "../Icon/Icon.svelte";
+  import { BrowserType, getBrowser } from "../../helpers/browser";
 
-  export let logo: string = "https://via.placeholder.com/20x20";
-  export let uri: string;
-  export let name: string;
-  //   export let size: number = 280;
+  export let wallet: WalletResult;
+  let logo: string = wallet.logo;
+  let uri: string =
+    wallet.downloadUrls?.edge || wallet.downloadUrls?.chrome || "";
+  let name: string = wallet.name;
 
-  onMount(() => {
-    useRKStore.setState({ page: "connect" });
-  });
+  let browser = getBrowser();
+
+  $: {
+    if (browser === BrowserType.Safari && !wallet.downloadUrls?.[browser]) {
+      browser = BrowserType.Chrome;
+      uri = wallet.downloadUrls?.edge || wallet.downloadUrls?.chrome || "";
+    }
+  }
 </script>
 
 <div class="container">
@@ -20,23 +27,36 @@
   </div>
 
   <section>
-    <div class="text1">1.如果你还没有安装 Rabby Wallet？</div>
-    <div class="text2">可以点击下方按钮下载 Rabby Browser Wallet</div>
+    <div class="text1">
+      {$t(`If you haven't installed`, { values: { name } })}
+    </div>
+    <div class="text2">
+      {$t("downloaded by clicking the button below", { values: { name } })}
+    </div>
 
     <a class="card" href={uri} target="_blank">
       <div class="card-content">
-        <img src="https://via.placeholder.com/20x20" alt="download" />
+        <!-- <Icon name={}/> -->
+        <Icon name={browser} />
         <div class="tip">{$t("Install the Extension")}</div>
       </div>
     </a>
   </section>
 
   <section>
-    <div class="text1">请确保你的钱包已启用并禁用其他插件钱包</div>
-    <div class="text2">2.如果你已经安装了 Rabby Wallet？</div>
+    <div class="text1">
+      {$t("If you already have Rabby Wallet installed", {
+        values: { name },
+      })}
+    </div>
+    <div class="text2">
+      {$t("Make sure your wallet is enabled and disable other plugin wallets")}
+    </div>
     <div class="card2">
       <div class="row1">
-        <img src={logo} alt={name} />
+        <div style="width:20px;height:20px">
+          <Image src={logo} alt={name} />
+        </div>
         <div class="tip">{name}</div>
       </div>
       <div class="row2">

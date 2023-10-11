@@ -3,8 +3,8 @@
   import { WalletResult } from "../../wallets/type";
   export let wallet: WalletResult;
 
-  let connectorInfo = wallet.createConnector();
-  let isReady = connectorInfo.connector.ready;
+  let connectorInfo = wallet.connector;
+  let isReady = connectorInfo.browser && !!connectorInfo?.browser?.ready;
   let { name, installed } = wallet;
   console.log("isReady", isReady);
 </script>
@@ -14,8 +14,12 @@
   <div>installed: {!!installed}</div>
 
   {#if isReady}
-    <button on:click={() => connect({ connector: connectorInfo.connector })}
-      >connect</button
+    <button
+      on:click={async () => {
+        if (connectorInfo.browser) {
+          connect({ connector: connectorInfo.browser });
+        }
+      }}>connect</button
     >
   {:else}
     <div>ready: {!!isReady + ""}</div>

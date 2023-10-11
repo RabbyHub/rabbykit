@@ -3,6 +3,7 @@ import {
   InjectedConnector,
   InjectedConnectorOptions,
 } from "@wagmi/core";
+import logo from "./logo";
 import { WalletResult } from "../../type";
 import { isRabby } from "../../../helpers/wallet";
 
@@ -18,22 +19,14 @@ export const rabbyWallet = ({
   return {
     id: "rabby",
     name: "Rabby Wallet",
-    logos: {
-      default: "",
-      //   transparent: <Logos.Rabby />,
-      //   appIcon: <Logos.Rabby />,
-      //   connectorButton: <Logos.Rabby />,
-    },
-    logoBackground: "#8697FF",
-    scannable: false,
+    logo,
     downloadUrls: {
-      website: "https://rabby.io",
       chrome:
         "https://chrome.google.com/webstore/detail/rabby-wallet/acmacodkjbdgmoleebolmdjonilkdbch",
     },
     installed: isInstalled,
-    createConnector: () => ({
-      connector: new InjectedConnector({ chains, options }),
-    }),
+    connector: {
+      browser: new InjectedConnector({ chains, options }),
+    },
   };
 };

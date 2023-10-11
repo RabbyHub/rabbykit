@@ -12,16 +12,24 @@ import { WalletResult } from "../wallets/type";
 import { SUPPORT_LANGUAGES } from "../helpers";
 import zustandToSvelte from "../helpers/zustandToSvelte";
 
+type Tab = "browser" | "mobile";
+type Page = "wallet" | "connect" | "download";
 interface Store<
   TPublicClient extends PublicClient = PublicClient,
   TWebSocketPublicClient extends WebSocketPublicClient = WebSocketPublicClient
 > {
+  status: "connecting" | "reconnecting" | "connected" | "disconnected";
   open: boolean;
   openModal: () => void;
   closeModal: () => void;
 
   language: SUPPORT_LANGUAGES;
-  page: "wallet" | "connect" | "download";
+  page: Page;
+  activeTab: Tab;
+  setTab: (activeTab: Tab) => void;
+
+  currentWallet?: WalletResult;
+  type?: Tab;
 
   wagmi?: Config<TPublicClient, TWebSocketPublicClient>;
   isConnected?: boolean;
@@ -32,8 +40,10 @@ interface Store<
 
 export const useRKStore = createStore<Store<any, any>>()(
   subscribeWithSelector((set, get) => ({
+    status: "disconnected",
     language: "en",
     page: "wallet",
+    activeTab: "browser",
     open: false,
     openModal: () => {
       set({ open: true });
@@ -41,17 +51,24 @@ export const useRKStore = createStore<Store<any, any>>()(
     closeModal: () => {
       set({ open: false });
     },
+    setTab: (activeTab: Tab) => {
+      set({ activeTab });
+    },
   }))
 );
 
 export function syncAccount() {
-  const { address, isConnected } = getAccount();
+  const accountInfo = getAccount();
+  const { address, isConnected, isConnecting, status } = accountInfo;
+  console.log("accountInfo", accountInfo);
   const { chain } = getNetwork();
   if (isConnected && address && chain) {
     useRKStore.setState({ isConnected, address, chainId: chain.id });
   } else if (!isConnected) {
     useRKStore.setState({ isConnected, address: undefined });
   }
+
+  useRKStore.setState({ status: accountInfo.status });
 }
 
 export default zustandToSvelte(useRKStore);

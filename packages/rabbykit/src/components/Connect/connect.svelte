@@ -1,31 +1,43 @@
 <script lang="ts">
   import { _ as t } from "svelte-i18n";
-  import { onDestroy, onMount } from "svelte";
-  import { useRKStore } from "../../store";
 
-  export let name: string;
-  export let logo: string;
-  export let retry: () => void = () => {};
+  import svelteStore from "../../store/context";
+  import { WalletResult } from "../../wallets/type";
+  import { connect } from "@wagmi/core";
+  import Image from "../Image/index.svelte";
+
+  export let wallet: WalletResult;
+
+  let name = wallet.name;
+  let logo = wallet.logo;
+
+  let retry = () => {
+    if (wallet.connector.browser && wallet.connector.browser?.ready)
+      connect({ connector: wallet.connector.browser });
+  };
 
   let status: "loading" | "success" | "failed" = "loading";
 
-  onMount(() => {
-    useRKStore.setState({ page: "connect" });
-  });
-
-  let a = setInterval(() => {
-    if (status === "loading") {
-      status = "success";
-    } else if (status === "success") {
-      status = "failed";
-    } else {
+  $: {
+    if (["connecting", "reconnecting"].includes($svelteStore.status)) {
       status = "loading";
     }
-  }, 3000);
+    if ($svelteStore.status === "connected") {
+      status = "success";
+    }
 
-  onDestroy(() => {
-    a && clearInterval(a);
-  });
+    if ($svelteStore.status === "disconnected") {
+      status = "failed";
+    }
+
+    console.log("$svelteStore.status", $svelteStore.status);
+
+    if (status === "success") {
+      setTimeout(() => {
+        $svelteStore.closeModal();
+      }, 500);
+    }
+  }
 </script>
 
 <div class="container">
@@ -167,8 +179,9 @@
         </svg>
       {/if}
     </div>
-
-    <img class="logo" src={logo} alt="" />
+    <div class="logo">
+      <Image src={logo} alt={name} />
+    </div>
   </div>
 
   {#if status === "loading"}
@@ -241,6 +254,7 @@
     }
 
     .logo {
+      overflow: hidden;
       width: 80px;
       height: 80px;
       border-radius: 99999999px;

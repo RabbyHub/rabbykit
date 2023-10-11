@@ -13,12 +13,14 @@ export interface ConfigOptions<
 }
 
 interface RabbyKitConnector<C extends Connector = Connector> {
-  browser?: C; // inject, metamask, coninbase
+  browser?: C;
   mobile?: {
     getUri?: () => Promise<string>;
+    connector?: C;
   };
   qrCode?: {
     getUri?: () => Promise<string>;
+    connector?: C;
   };
 }
 
@@ -34,7 +36,8 @@ export type WalletResult<C extends Connector = Connector> = {
     edge?: string;
     android?: string;
     ios?: string;
+    safari?: string;
   };
-  createConnector: () => RabbyKitConnector<C>;
+  connector: RabbyKitConnector<C>;
   mobileUA?: (ua: string) => boolean;
 };

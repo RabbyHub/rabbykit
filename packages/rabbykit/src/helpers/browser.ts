@@ -14,3 +14,25 @@ export const isAndroid = () => {
 export const isIOS = () => {
   return /iPhone|iPad|iPod/i.test(navigator.userAgent);
 };
+
+export function isSafari(): boolean {
+  return (
+    typeof navigator !== "undefined" &&
+    /Version\/([0-9._]+).*Safari/.test(navigator.userAgent) // Source: https://github.com/DamonOehlman/detect-browser/blob/master/src/index.ts
+  );
+}
+
+export enum BrowserType {
+  Chrome = "chrome",
+  Edge = "edge",
+  Firefox = "firefox",
+  Safari = "safari",
+}
+
+export function getBrowser(): BrowserType {
+  const ua = navigator.userAgent.toLowerCase();
+  if (ua.indexOf("edg/") > -1) return BrowserType.Edge;
+  else if (ua.indexOf("chrome") > -1) return BrowserType.Chrome;
+  else if (ua.indexOf("firefox") > -1) return BrowserType.Firefox;
+  return BrowserType.Chrome;
+}

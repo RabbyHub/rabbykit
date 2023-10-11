@@ -1,5 +1,6 @@
 <script lang="ts">
   import QRCodeUtil from "qrcode";
+  import Image from "../Image/index.svelte";
 
   export let logo: string;
   export let uri: string;
@@ -26,26 +27,28 @@
     );
   };
 
-  let logoMargin = 10;
   let logoSize = 50;
   const padding = "20";
   const svgSize = size - parseInt(padding, 10) * 2;
 
-  const dots: string[] = [];
-  const matrix = generateMatrix(uri, ecl);
-  const cellSize = svgSize / matrix.length;
+  let dots: string[] = [];
+
   const qrList = [
     { x: 0, y: 0 },
     { x: 1, y: 0 },
     { x: 0, y: 1 },
   ];
 
-  qrList.forEach(({ x, y }) => {
-    const x1 = (matrix.length - 7) * cellSize * x;
-    const y1 = (matrix.length - 7) * cellSize * y;
-    for (let i = 0; i < 3; i++) {
-      const key = `${i}-${x}-${y}`;
-      dots.push(`
+  $: {
+    dots = [];
+    const matrix = generateMatrix(uri, ecl);
+    const cellSize = svgSize / matrix.length;
+    qrList.forEach(({ x, y }) => {
+      const x1 = (matrix.length - 7) * cellSize * x;
+      const y1 = (matrix.length - 7) * cellSize * y;
+      for (let i = 0; i < 3; i++) {
+        const key = `${i}-${x}-${y}`;
+        dots.push(`
             <rect
             fill=${i % 2 !== 0 ? "white" : "black"}
             height=${cellSize * (7 - i * 2)}
@@ -56,33 +59,35 @@
             x=${x1 + cellSize * i}
             y=${y1 + cellSize * i}
           />`);
-    }
-  });
 
-  const clearArenaSize = Math.floor((logoSize + 25) / cellSize);
-  const matrixMiddleStart = matrix.length / 2 - clearArenaSize / 2;
-  const matrixMiddleEnd = matrix.length / 2 + clearArenaSize / 2 - 1;
+        dots = dots;
+      }
+    });
 
-  matrix.forEach((row: QRCodeUtil.QRCode[], i: number) => {
-    row.forEach((_: any, j: number) => {
-      if (matrix[i][j]) {
-        if (
-          !(
-            (i < 7 && j < 7) ||
-            (i > matrix.length - 8 && j < 7) ||
-            (i < 7 && j > matrix.length - 8)
-          )
-        ) {
+    const clearArenaSize = Math.floor((logoSize + 25) / cellSize);
+    const matrixMiddleStart = matrix.length / 2 - clearArenaSize / 2;
+    const matrixMiddleEnd = matrix.length / 2 + clearArenaSize / 2 - 1;
+
+    matrix.forEach((row: QRCodeUtil.QRCode[], i: number) => {
+      row.forEach((_: any, j: number) => {
+        if (matrix[i][j]) {
           if (
             !(
-              i > matrixMiddleStart &&
-              i < matrixMiddleEnd &&
-              j > matrixMiddleStart &&
-              j < matrixMiddleEnd
+              (i < 7 && j < 7) ||
+              (i > matrix.length - 8 && j < 7) ||
+              (i < 7 && j > matrix.length - 8)
             )
           ) {
-            const key = `circle-${i}-${j}`;
-            dots.push(`
+            if (
+              !(
+                i > matrixMiddleStart &&
+                i < matrixMiddleEnd &&
+                j > matrixMiddleStart &&
+                j < matrixMiddleEnd
+              )
+            ) {
+              const key = `circle-${i}-${j}`;
+              dots.push(`
                 <circle
                   cx=${i * cellSize + cellSize / 2}
                   cy=${j * cellSize + cellSize / 2}
@@ -90,11 +95,13 @@
                   key=${key}
                   r=${cellSize / 3} // calculate size of single dots
                 />`);
+              dots = dots;
+            }
           }
         }
-      }
+      });
     });
-  });
+  }
 </script>
 
 <div class="qr-code" style="--qr-code-size:{size}px">
@@ -169,7 +176,9 @@
       </svg>
     </div>
   {:else}
-    <img class="logo" src={logo} alt="" />
+    <div class="logo">
+      <Image src={logo} alt="" />
+    </div>
   {/if}
 
   <div style="opacity: {success || failed ? '0.3' : '1'};">

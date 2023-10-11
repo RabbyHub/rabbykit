@@ -1,3 +1,25 @@
 {
-  "hello": "你好 RabbyKit"
+  "hello": "你好 RabbyKit",
+  "Browser Wallet": "Browser Wallet",
+  "Mobile Wallet": "Mobile Wallet",
+  "not founded wallet": "Browser Wallet",
+
+  "Requesting Connection": "Requesting Connection",
+  "Connect with": "Connect with {name}",
+  "connecting description": "Open the {name} browser extension to connect your wallet.",
+
+  "Connection Successful": "Connection Successful",
+
+  "Request Cancelled": "Request Cancelled",
+  "You cancelled the request.": "You cancelled the request.",
+
+  "Scan with your Mobile wallet": "Scan with your Mobile wallet",
+  "Copy URL": "Copy URL",
+
+  "How to use": "How to use {name}?",
+  "Install the Extension": "Install the Extension",
+  "If you haven't installed": "1. 如果你还没有安装 {name}？",
+  "downloaded by clicking the button below": "可以点击下方按钮下载 {name}.",
+  "If you already have Rabby Wallet installed": "2.如果你已经安装了 {name}？",
+  "Make sure your wallet is enabled and disable other plugin wallets": "请确保你的钱包已启用并禁用其他插件钱包"
 }

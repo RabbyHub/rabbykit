@@ -17,6 +17,9 @@
   "Copy URL": "Copy URL",
 
   "How to use": "How to use {name}?",
-
-  "Install the Extension": "Install the Extension"
+  "Install the Extension": "Install the Extension",
+  "If you haven't installed": "1. If you haven't installed {name} ?",
+  "downloaded by clicking the button below": "{name} can be downloaded by clicking the button below.",
+  "If you already have Rabby Wallet installed": "2. If you already have {name} installed?",
+  "Make sure your wallet is enabled and disable other plugin wallets": "Make sure your wallet is enabled and disable other plugin wallets"
 }

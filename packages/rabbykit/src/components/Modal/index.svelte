@@ -10,6 +10,13 @@
     useRKStore.getState().closeModal();
   }
 
+  function back() {
+    useRKStore.setState({
+      page: "wallet",
+      currentWallet: undefined,
+    });
+  }
+
   const html = document.documentElement;
 
   let htmlStyleCache: Record<string, string> = {};
@@ -28,9 +35,11 @@
     } else {
       html.style.removeProperty("overflow");
     }
+    useRKStore.setState({
+      page: "wallet",
+      currentWallet: undefined,
+    });
   });
-
-  let isBack;
 </script>
 
 <div class="modal">
@@ -42,7 +51,7 @@
       {#if $useStore.page === "wallet"}
         <Icon name="close" on:click={close} />
       {:else}
-        <Icon name="back" />
+        <Icon name="back" on:click={back} />
       {/if}
     </div>
     <slot />

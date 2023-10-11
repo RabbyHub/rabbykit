@@ -4,8 +4,8 @@ import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletResult } from "../../type";
 import { getWalletConnectUri } from "../../../helpers/getWalletConnectUri";
-import { isAndroid } from "../../../helpers/browser";
-
+import { isAndroid, isMobile } from "../../../helpers/browser";
+import logo from "./logo";
 export interface BitKeepWalletOptions {
   projectId: string;
   chains: Chain[];
@@ -29,10 +29,29 @@ export const bitgetWallet = ({
 
   const shouldUseWalletConnect = !isBitKeepInjected;
 
+  const walletConnector = new WalletConnectConnector({
+    chains,
+    options: {
+      projectId,
+      showQrModal: false,
+      ...walletConnectOptions,
+    },
+  });
+
+  const getUri = async () => {
+    const uri = await getWalletConnectUri(walletConnector);
+
+    return isMobile()
+      ? isAndroid()
+        ? uri
+        : `bitkeep://wc?uri=${encodeURIComponent(uri)}`
+      : uri;
+  };
+
   return {
     id: "bitget",
     name: "Bitget Wallet",
-    logo: "",
+    logo,
     installed: !shouldUseWalletConnect ? isBitKeepInjected : undefined,
     downloadUrls: {
       android: "https://web3.bitget.com/en/wallet-download?type=0",
@@ -41,44 +60,21 @@ export const bitgetWallet = ({
         "https://chrome.google.com/webstore/detail/bitkeep-crypto-nft-wallet/jiidiaalihmmhddjgbnbgdfflelocpak",
     },
 
-    createConnector: () => {
-      const connector = shouldUseWalletConnect
-        ? new WalletConnectConnector({
-            chains,
-            options: {
-              projectId,
-              ...walletConnectOptions,
-            },
-          })
-        : new InjectedConnector({
-            chains,
-            options: {
-              // @ts-expect-error
-              getProvider: () => window.bitkeep.ethereum,
-              ...options,
-            },
-          });
-
-      const getUri = async () => {
-        const uri = await getWalletConnectUri(connector);
-
-        return isAndroid()
-          ? uri
-          : `bitkeep://wc?uri=${encodeURIComponent(uri)}`;
-      };
-
-      return {
-        connector,
-
-        mobile: {
-          getUri: shouldUseWalletConnect ? getUri : undefined,
+    connector: {
+      browser: new InjectedConnector({
+        chains,
+        options: {
+          // @ts-expect-error
+          getProvider: () => window?.bitkeep?.ethereum,
+          ...options,
         },
-        qrCode: shouldUseWalletConnect
-          ? {
-              getUri: async () => getWalletConnectUri(connector),
-            }
-          : undefined,
-      };
+      }),
+
+      mobile: {
+        getUri,
+        connector: walletConnector,
+      },
+      qrCode: { getUri, connector: walletConnector },
     },
   };
 };

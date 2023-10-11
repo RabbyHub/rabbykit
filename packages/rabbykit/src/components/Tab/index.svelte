@@ -1,8 +1,28 @@
 <script lang="ts">
+  import WalletButton from "../WalletButton/index.svelte";
   import { _ as t } from "svelte-i18n";
+  import useStore from "../../store/context";
   export let active: "browser" | "mobile";
+  export let onChange: (tab: "browser" | "mobile") => void;
 
   let detected = true;
+
+  const list = $useStore.wallets || [];
+
+  const browserList = list.filter((w) => !!w.connector?.browser);
+  const mobileList = list.filter((w) => !!w.connector?.qrCode?.getUri);
+
+  const readyBrowserList = browserList.filter(
+    (w) => w.installed && !!w.connector.browser?.ready
+  );
+
+  const unusedBrowserList = browserList.filter(
+    (w) => !w.installed || !w.connector.browser?.ready
+  );
+
+  if (!readyBrowserList.length) {
+    detected = false;
+  }
 </script>
 
 <div>
@@ -13,7 +33,7 @@
       class="item"
       class:active={active === "browser"}
       on:click={() => {
-        active = "browser";
+        onChange("browser");
       }}
     >
       {$t("Browser Wallet")}
@@ -24,7 +44,7 @@
       class="item"
       class:active={active === "mobile"}
       on:click={() => {
-        active = "mobile";
+        onChange("mobile");
       }}
     >
       {$t("Mobile Wallet")}
@@ -32,14 +52,35 @@
   </div>
 
   {#if active === "browser"}
-    <div />
-
     {#if detected}
-      <div />
-      <div>以下钱包未安装或与其他钱包冲突</div>
+      <div class="wallet-container" style="margin-bottom:32px">
+        {#each readyBrowserList as wallet}
+          <WalletButton {wallet} type="browser" />
+        {/each}
+      </div>
+      <div class="sub-title">以下钱包未安装或与其他钱包冲突</div>
+      <div class="wallet-container">
+        {#each unusedBrowserList as wallet}
+          <WalletButton {wallet} type="unused" />
+        {/each}
+      </div>
     {:else}
-      <div>尚未发现任何钱包, 以下钱包未安装或与其他钱包冲突</div>
+      <div class="sub-title">
+        尚未发现任何钱包, 以下钱包未安装或与其他钱包冲突
+      </div>
+      <div class="wallet-container">
+        {#each browserList as wallet}
+          <WalletButton {wallet} type="unused" />
+        {/each}
+      </div>
     {/if}
+  {:else}
+    <div class="sub-title">通过手机钱包扫码连接</div>
+    <div class="wallet-container">
+      {#each mobileList as wallet}
+        <WalletButton {wallet} type="mobile" />
+      {/each}
+    </div>
   {/if}
 </div>
 
@@ -47,6 +88,7 @@
   .container {
     display: flex;
     gap: 20px;
+    margin-bottom: 20px;
   }
   .item {
     color: var(--r-neutral-body);
@@ -71,5 +113,22 @@
         bottom: 0;
       }
     }
+  }
+
+  .wallet-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .sub-title {
+    color: var(--r-neutral-foot, #6a7587);
+    font-family: SF Pro;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+    margin-bottom: 12px;
   }
 </style>
