@@ -59,8 +59,7 @@ export const useRKStore = createStore<Store<any, any>>()(
 
 export function syncAccount() {
   const accountInfo = getAccount();
-  const { address, isConnected, isConnecting, status } = accountInfo;
-  console.log("accountInfo", accountInfo);
+  const { address, isConnected, status } = accountInfo;
   const { chain } = getNetwork();
   if (isConnected && address && chain) {
     useRKStore.setState({ isConnected, address, chainId: chain.id });
@@ -68,7 +67,7 @@ export function syncAccount() {
     useRKStore.setState({ isConnected, address: undefined });
   }
 
-  useRKStore.setState({ status: accountInfo.status });
+  useRKStore.setState({ status: status });
 }
 
 export default zustandToSvelte(useRKStore);

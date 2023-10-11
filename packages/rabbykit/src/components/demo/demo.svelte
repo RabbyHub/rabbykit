@@ -11,7 +11,6 @@
 
   $: open = $useStore.open;
   $: currentWallet = $useStore.currentWallet;
-  $: console.log("page", $useStore.page);
 </script>
 
 <Provider>

@@ -30,8 +30,6 @@
       status = "failed";
     }
 
-    console.log("$svelteStore.status", $svelteStore.status);
-
     if (status === "success") {
       setTimeout(() => {
         $svelteStore.closeModal();

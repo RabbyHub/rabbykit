@@ -48,8 +48,6 @@
       success = false;
     }
 
-    console.log("$svelteStore.status", $svelteStore.status);
-
     if (success) {
       setTimeout(() => {
         $svelteStore.closeModal();

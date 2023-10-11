@@ -16,8 +16,6 @@ const external = [
   ...Object.keys(peerDependencies),
 ];
 
-console.log("dependencies", dependencies);
-
 const input = ["./src/index.ts"];
 export default defineConfig([
   {
