@@ -24,8 +24,6 @@ export function Connect() {
     }
   }, [config]);
 
-  console.log("rabbkKitRef.current", rabbkKitRef.current);
-
   return (
     <div>
       <div>
