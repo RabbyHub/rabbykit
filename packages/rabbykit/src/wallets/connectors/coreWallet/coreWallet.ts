@@ -91,9 +91,10 @@ export const coreWallet = ({
           ...options,
         },
       }),
-      mobile: { getUri },
+      mobile: { getUri, connector: walletConnector },
       qrCode: {
         getUri,
+        connector: walletConnector,
       },
     },
   };
