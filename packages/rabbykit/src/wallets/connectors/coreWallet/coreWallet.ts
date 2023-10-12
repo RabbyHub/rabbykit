@@ -3,8 +3,10 @@ import type { InjectedConnectorOptions } from "@wagmi/core/connectors/injected";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { WalletResult } from "../../type";
-import { getWalletConnectUri } from "../../../helpers/getWalletConnectUri";
-import { isAndroid, isMobile } from "../../../helpers/browser";
+import {
+  getMobileUri,
+  getWalletConnectUri,
+} from "../../../helpers/getWalletConnectUri";
 import logo from "./logo";
 
 declare global {
@@ -64,14 +66,7 @@ export const coreWallet = ({
       ...options?.walletConnectOptions,
     },
   });
-  const getUri = async () => {
-    const uri = await getWalletConnectUri(walletConnector);
-    return isMobile()
-      ? isAndroid()
-        ? uri
-        : `https://metamask.app.link/wc?uri=${encodeURIComponent(uri)}`
-      : uri;
-  };
+
   return {
     id: "core",
     name: "Core",
@@ -91,9 +86,15 @@ export const coreWallet = ({
           ...options,
         },
       }),
-      mobile: { getUri, connector: walletConnector },
       qrCode: {
-        getUri,
+        getUri: () => getWalletConnectUri(walletConnector),
+        connector: walletConnector,
+      },
+      mobile: {
+        getUri: () =>
+          getMobileUri({
+            connector: walletConnector,
+          }),
         connector: walletConnector,
       },
     },

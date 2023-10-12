@@ -16,6 +16,7 @@ import {
   otherInjectedWallet,
   enkryptWallet,
   frameWallet,
+  okxWallet,
 } from "./wallets/connectors";
 import { mount } from "./components/demo";
 import "./helpers/i18n";
@@ -51,6 +52,7 @@ export const createModal = <
     braveWallet({ chains }),
     enkryptWallet({ chains }),
     frameWallet({ chains }),
+    okxWallet({ chains, projectId }),
   ]
     .filter((e) => {
       if (e.id === "brave" && !e.installed) {

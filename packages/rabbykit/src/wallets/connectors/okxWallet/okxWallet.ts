@@ -1,67 +1,62 @@
-import { Chain } from "@wagmi/core";
+import { Chain, InjectedConnector } from "@wagmi/core";
 import type { InjectedConnectorOptions } from "@wagmi/core/connectors/injected";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
-import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletResult } from "../../type";
+import logo from "./logo";
 import {
   getMobileUri,
   getWalletConnectUri,
 } from "../../../helpers/getWalletConnectUri";
-import logo from "./logo";
-export interface BitKeepWalletOptions {
+
+export interface OKXWalletOptions {
   projectId: string;
   chains: Chain[];
   walletConnectOptions?: Omit<WalletConnectConnector["options"], "projectId">;
 }
 
-export const bitgetWallet = ({
+export const okxWallet = ({
   chains,
   projectId,
-  walletConnectOptions,
   ...options
-}: BitKeepWalletOptions & InjectedConnectorOptions): WalletResult => {
-  const isBitKeepInjected =
+}: OKXWalletOptions & InjectedConnectorOptions): WalletResult => {
+  // `isOkxWallet` or `isOKExWallet` needs to be added to the wagmi `Ethereum` object
+  const isOKXInjected =
     typeof window !== "undefined" &&
     // @ts-expect-error
-    window.bitkeep !== undefined &&
-    // @ts-expect-error
-    window.bitkeep.ethereum !== undefined &&
-    // @ts-expect-error
-    window.bitkeep.ethereum.isBitKeep === true;
-
-  const shouldUseWalletConnect = !isBitKeepInjected;
+    typeof window.okxwallet !== "undefined";
 
   const walletConnector = new WalletConnectConnector({
     chains,
     options: {
       projectId,
       showQrModal: false,
-      ...walletConnectOptions,
+      ...options?.walletConnectOptions,
     },
   });
 
   return {
-    id: "bitget",
-    name: "Bitget Wallet",
+    id: "okx",
+    name: "OKX Wallet",
     logo,
-    installed: !shouldUseWalletConnect ? isBitKeepInjected : undefined,
+    installed: isOKXInjected,
     downloadUrls: {
-      android: "https://web3.bitget.com/en/wallet-download?type=0",
-      ios: "https://apps.apple.com/app/bitkeep/id1395301115",
+      android:
+        "https://play.google.com/store/apps/details?id=com.okinc.okex.gp",
+      ios: "https://itunes.apple.com/app/id1327268470?mt=8",
       chrome:
-        "https://chrome.google.com/webstore/detail/bitkeep-crypto-nft-wallet/jiidiaalihmmhddjgbnbgdfflelocpak",
+        "https://chrome.google.com/webstore/detail/okx-wallet/mcohilncbfahbmgdjkbpemcciiolgcge",
+      edge: "https://microsoftedge.microsoft.com/addons/detail/okx-wallet/pbpjkcldjiffchgbbndmhojiacbgflha",
+      firefox: "https://addons.mozilla.org/firefox/addon/okexwallet/",
     },
-
     connector: {
       browser: new InjectedConnector({
         chains,
         options: {
           // @ts-expect-error
-          getProvider: () => window?.bitkeep?.ethereum,
+          getProvider: () => window.okxwallet,
           ...options,
         },
       }),
-
       qrCode: {
         getUri: () => getWalletConnectUri(walletConnector),
         connector: walletConnector,
@@ -70,7 +65,7 @@ export const bitgetWallet = ({
         getUri: () =>
           getMobileUri({
             connector: walletConnector,
-            iosUri: (uri) => `bitkeep://wc?uri=${encodeURIComponent(uri)}`,
+            iosUri: (uri) => `okex://main/wc?uri=${encodeURIComponent(uri)}`,
           }),
         connector: walletConnector,
       },

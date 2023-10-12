@@ -7,6 +7,7 @@ import { coreWallet } from "./coreWallet/coreWallet";
 import { otherInjectedWallet } from "./injectedWallet/injectedWallet";
 import { enkryptWallet } from "./enkryptWallet/enkryptWallet";
 import { frameWallet } from "./frameWallet/frameWallet";
+import { okxWallet } from "./okxWallet/okxWallet";
 
 export {
   coinbaseWallet,
@@ -18,4 +19,5 @@ export {
   otherInjectedWallet,
   enkryptWallet,
   frameWallet,
+  okxWallet,
 };

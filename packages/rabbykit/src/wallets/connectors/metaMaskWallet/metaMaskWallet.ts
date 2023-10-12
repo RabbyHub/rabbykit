@@ -5,9 +5,11 @@ import {
 } from "@wagmi/core/connectors/metaMask";
 import { WalletResult } from "../../type";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
-import { getWalletConnectUri } from "../../../helpers/getWalletConnectUri";
+import {
+  getMobileUri,
+  getWalletConnectUri,
+} from "../../../helpers/getWalletConnectUri";
 import { isMetaMask } from "../../../helpers/wallet";
-import { isAndroid, isMobile } from "../../../helpers/browser";
 import logo from "./logo";
 
 export interface MetaMaskWalletOptions {
@@ -35,15 +37,6 @@ export const metaMaskWallet = ({
     },
   });
 
-  const getUri = async () => {
-    const uri = await getWalletConnectUri(walletConnector);
-    return isMobile()
-      ? isAndroid()
-        ? uri
-        : `https://metamask.app.link/wc?uri=${encodeURIComponent(uri)}`
-      : uri;
-  };
-
   return {
     id: "metaMask",
     name: "MetaMask",
@@ -67,8 +60,19 @@ export const metaMaskWallet = ({
           ...options,
         },
       }),
-      qrCode: { getUri, connector: walletConnector },
-      mobile: { getUri, connector: walletConnector },
+      qrCode: {
+        getUri: () => getWalletConnectUri(walletConnector),
+        connector: walletConnector,
+      },
+      mobile: {
+        getUri: () =>
+          getMobileUri({
+            connector: walletConnector,
+            iosUri: (uri) =>
+              `https://metamask.app.link/wc?uri=${encodeURIComponent(uri)}`,
+          }),
+        connector: walletConnector,
+      },
     },
   };
 };
