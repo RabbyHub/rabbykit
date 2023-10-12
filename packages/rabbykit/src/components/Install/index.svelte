@@ -2,7 +2,7 @@
   import Image from "../Image/index.svelte";
   import { _ as t } from "svelte-i18n";
   import { WalletResult } from "../../wallets/type";
-  import Icon from "../Icon/Icon.svelte";
+  import Icon from "../CommonIcon/Icon.svelte";
   import { BrowserType, getBrowser } from "../../helpers/browser";
 
   export let wallet: WalletResult;

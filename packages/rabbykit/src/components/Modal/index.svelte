@@ -3,7 +3,7 @@
   import { useRKStore } from "../../store";
   import useStore from "../../store/context";
 
-  import Icon from "../Icon/Icon.svelte";
+  import Icon from "../CommonIcon/Icon.svelte";
   import clsx from "clsx";
 
   function close() {

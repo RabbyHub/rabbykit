@@ -3,7 +3,7 @@
   import QrCode from "./QRCode.svelte";
   import { onMount } from "svelte";
   import { useRKStore } from "../../store";
-  import Icon from "../Icon/Icon.svelte";
+  import Icon from "../CommonIcon/Icon.svelte";
   import { WalletResult } from "../../wallets/type";
   import svelteStore from "../../store/context";
 
