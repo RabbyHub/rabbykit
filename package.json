@@ -12,6 +12,7 @@
   },
   "scripts": {
     "dev:examples": "pnpm --filter=\"./examples/next-wagmi\" dev",
+    "build:examples": "pnpm run build:kit && pnpm --filter=\"./examples/next-wagmi\" build",
     "dev:kit": "pnpm --filter=rabbykit dev",
     "build:kit": "pnpm --filter=rabbykit build",
     "test": "echo \"Error: no test specified\" && exit 1"
