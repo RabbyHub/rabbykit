@@ -1,8 +1,11 @@
 {
-  "hello": "你好 RabbyKit",
   "Browser Wallet": "Browser Wallet",
   "Mobile Wallet": "Mobile Wallet",
   "not founded wallet": "Browser Wallet",
+
+  "The following wallets are not installed or in conflict with others": "以下钱包未安装或与其他钱包冲突",
+  "No wallet found. The following wallets are not installed or in conflict with others": "尚未发现任何钱包。以下钱包未安装或与其他钱包冲突",
+  "Scan with mobile wallets to connect": "通过手机钱包扫码连接",
 
   "Requesting Connection": "Requesting Connection",
   "Connect with": "Connect with {name}",
@@ -10,9 +13,8 @@
 
   "Connection Successful": "Connection Successful",
 
-  "Request Cancelled": "Request Cancelled",
-  "You cancelled the request.": "You cancelled the request.",
-
+  "Request Cancelled": "Request Canceled",
+  "You canceled the request": "You canceled the request.",
   "Scan with your Mobile wallet": "Scan with your Mobile wallet",
   "Copy URL": "Copy URL",
 

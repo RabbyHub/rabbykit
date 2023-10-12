@@ -202,7 +202,7 @@
       {$t("Request Cancelled")}
     </div>
     <div class="desc">
-      {$t("You cancelled the request.")}
+      {$t("You canceled the request")}
     </div>
     <div class="retry" on:click={retry}>Retry</div>
   {/if}

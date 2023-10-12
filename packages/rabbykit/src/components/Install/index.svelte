@@ -60,8 +60,10 @@
         <div class="tip">{name}</div>
       </div>
       <div class="row2">
-        <div class="btn">Details</div>
-        <div class="btn">Remove</div>
+        <div class="btn">
+          <span> Details </span>
+        </div>
+        <div class="btn"><span> Remove </span></div>
 
         <svg
           class="switch"
@@ -156,7 +158,6 @@
         font-size: 13px;
         font-family: SF Pro;
         font-weight: 400;
-        text-transform: capitalize;
         word-wrap: break-word;
         margin-bottom: 12px;
       }
@@ -237,14 +238,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 45px;
-            height: 18px;
+            padding: 4px 9px;
             border-radius: 2px;
             border: 0.3px solid var(--r-neutral-line, #d3d8e0);
             color: var(--r-blue-default, #7084ff);
             text-align: center;
             font-family: SF Pro;
-            font-size: 8px;
+            font-size: 12px;
             font-style: normal;
             font-weight: 510;
             line-height: normal;

@@ -95,6 +95,7 @@
   }
 
   .button.ghost {
+    font-weight: 510;
     border-radius: 8px;
     box-shadow: none;
     color: var(--r-neutral-body);
@@ -107,6 +108,7 @@
   }
 
   .button.border {
+    font-weight: 510;
     box-shadow: none;
     border-radius: 8px;
     border: 1px solid var(--r-neutral-line, #d3d8e0);
@@ -123,5 +125,7 @@
     width: 28px;
     height: 28px;
     object-fit: contain;
+    border-radius: 100%;
+    overflow: hidden;
   }
 </style>

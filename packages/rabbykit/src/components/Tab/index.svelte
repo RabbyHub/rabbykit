@@ -58,7 +58,11 @@
           <WalletButton {wallet} type="browser" />
         {/each}
       </div>
-      <div class="sub-title">以下钱包未安装或与其他钱包冲突</div>
+      <div class="sub-title">
+        {$t(
+          "The following wallets are not installed or in conflict with others"
+        )}
+      </div>
       <div class="wallet-container">
         {#each unusedBrowserList as wallet}
           <WalletButton {wallet} type="unused" />
@@ -66,7 +70,9 @@
       </div>
     {:else}
       <div class="sub-title">
-        尚未发现任何钱包, 以下钱包未安装或与其他钱包冲突
+        {$t(
+          "No wallet found. The following wallets are not installed or in conflict with others"
+        )}
       </div>
       <div class="wallet-container">
         {#each browserList as wallet}
@@ -118,7 +124,8 @@
   .wallet-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 8px 0;
+    justify-content: space-between;
   }
 
   .sub-title {
@@ -128,7 +135,6 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-    text-transform: capitalize;
     margin-bottom: 12px;
   }
 </style>

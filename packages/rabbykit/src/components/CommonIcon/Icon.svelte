@@ -44,7 +44,7 @@
   let displayIcon = icons[name];
 </script>
 
-<button class={clsx("icon", $$props.class)} class:hover on:click>
+<button class={clsx("icon", $$props.class)} class:hoverable={hover} on:click>
   <svg
     {focusable}
     {width}
@@ -63,7 +63,7 @@
     cursor: pointer;
     &.hoverable:hover {
       border-radius: 4px;
-      background: var(--r-neutral-card-2, #f2f4f7);
+      background: var(--r-neutral-card-3, #f7fafc);
     }
   }
 </style>

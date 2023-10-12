@@ -222,5 +222,6 @@
     height: 80px;
     border-radius: 9999px;
     z-index: 2;
+    overflow: hidden;
   }
 </style>

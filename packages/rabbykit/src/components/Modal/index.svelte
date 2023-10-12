@@ -47,7 +47,11 @@
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div class="modal-overlay" on:click={close} />
   <div class="modal-content">
-    <div class="icon" class:back={$useStore.page !== "wallet"}>
+    <div
+      class="icon"
+      class:close={$useStore.page === "wallet"}
+      class:back={$useStore.page !== "wallet"}
+    >
       {#if $useStore.page === "wallet"}
         <Icon name="close" on:click={close} />
       {:else}
@@ -86,6 +90,9 @@
     position: absolute;
     top: 20px;
     right: 20px;
+  }
+  .close {
+    top: 16px;
   }
   .back {
     right: initial;
