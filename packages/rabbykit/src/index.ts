@@ -1,7 +1,6 @@
 "use client";
 import {
   watchAccount,
-  getConfig,
   Config,
   PublicClient,
   WebSocketPublicClient,
@@ -12,6 +11,11 @@ import {
   metaMaskWallet,
   coinbaseWallet,
   bitgetWallet,
+  coreWallet,
+  braveWallet,
+  otherInjectedWallet,
+  enkryptWallet,
+  frameWallet,
 } from "./wallets/connectors";
 import { mount } from "./components/demo";
 import "./helpers/i18n";
@@ -43,7 +47,28 @@ export const createModal = <
     metaMaskWallet({ chains, projectId }),
     coinbaseWallet({ chains, appName }),
     bitgetWallet({ chains, projectId }),
-  ].sort((a, b) => a.name.localeCompare(b.name));
+    coreWallet({ chains, projectId }),
+    braveWallet({ chains }),
+    enkryptWallet({ chains }),
+    frameWallet({ chains }),
+  ]
+    .filter((e) => {
+      if (e.id === "brave" && !e.installed) {
+        return false;
+      }
+      return true;
+    })
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const other = otherInjectedWallet({ chains });
+  if (
+    other.installed &&
+    other.connector.browser?.ready &&
+    other.connector.browser?.name &&
+    !list.some((e) => other.connector.browser?.name.includes(e.name))
+  ) {
+    list.unshift(other);
+  }
 
   (window as any).$wagmi = wagmi;
 

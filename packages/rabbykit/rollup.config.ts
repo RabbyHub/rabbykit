@@ -49,7 +49,16 @@ export default defineConfig([
           sourceMaps: true,
           jsc: {
             externalHelpers: true,
+            minify: {
+              compress: {
+                passes: 2,
+                const_to_let: false,
+              },
+              mangle: {},
+              module: true,
+            },
           },
+          minify: true,
         })
       ),
       preserveDirective(),
