@@ -11,7 +11,7 @@
   let isReady = !!browser?.ready;
 
   const handleConnect = () => {
-    if (browser && isReady && type !== "unused") {
+    if (browser && isReady && type === "browser") {
       useRKStore.setState({
         page: "connect",
         currentWallet: wallet,
