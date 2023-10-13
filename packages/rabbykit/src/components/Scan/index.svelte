@@ -2,10 +2,10 @@
   import { _ as t } from "svelte-i18n";
   import QrCode from "./QRCode.svelte";
   import { onMount } from "svelte";
-  import { useRKStore } from "../../store";
   import Icon from "../CommonIcon/Icon.svelte";
   import { WalletResult } from "../../wallets/type";
   import svelteStore from "../../store/context";
+  import { connect } from "@wagmi/core";
 
   export let wallet: WalletResult;
   export let size: number = 280;
@@ -26,7 +26,9 @@
   const logo = wallet.logo;
   const name: string = wallet.name;
 
+  let refreshLoading = false;
   let success = false;
+  let failed = false;
 
   onMount(() => {
     getUri();
@@ -36,15 +38,29 @@
     navigator.clipboard.writeText(uri);
   }
 
+  async function refresh() {
+    if (wallet?.connector.qrCode?.connector) {
+      refreshLoading = true;
+      connect({ connector: wallet?.connector.qrCode?.connector });
+      await getUri();
+      refreshLoading = false;
+      success = false;
+      failed = false;
+    }
+  }
+
   $: {
     if (["connecting", "reconnecting"].includes($svelteStore.status)) {
       success = false;
+      failed = false;
     }
     if ($svelteStore.status === "connected") {
       success = true;
+      failed = false;
     }
 
     if ($svelteStore.status === "disconnected") {
+      failed = true;
       success = false;
     }
 
@@ -63,10 +79,19 @@
 
   <section>
     <div class="qr-code">
-      <QrCode {logo} uri={uri || ""} {size} {success} />
+      <QrCode {logo} uri={uri || ""} {size} {success} {failed} />
     </div>
-
-    {#if success}
+    {#if failed}
+      <div class="tip failed">{$t("Request canceled")}</div>
+      <button class="desc" on:click={() => refresh()}>
+        <div class:loading={refreshLoading}>
+          <Icon name={"refresh"} hover={false} />
+        </div>
+        <span>
+          {$t("Refresh QRCode")}
+        </span>
+      </button>
+    {:else if success}
       <div class="tip success">{$t("Connection Successful")}</div>
     {:else}
       <div class="tip">{$t("Scan with your Mobile wallet")}</div>
@@ -117,6 +142,9 @@
       &.success {
         color: var(--r-green-default, #2abb7f);
       }
+      &.failed {
+        color: var(--r-red-default, #e34935);
+      }
     }
 
     .desc {
@@ -132,6 +160,19 @@
       font-style: normal;
       font-weight: 510;
       line-height: normal;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loading {
+      animation: spin 1s linear infinite;
     }
   }
 </style>

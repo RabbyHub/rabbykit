@@ -1,13 +1,12 @@
-import { Chain, WindowProvider } from "@wagmi/core";
+import { Chain, InjectedConnector, WindowProvider } from "@wagmi/core";
 import type { InjectedConnectorOptions } from "@wagmi/core/connectors/injected";
-import { InjectedConnector } from "wagmi/connectors/injected";
-import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { WalletResult } from "../../type";
 import {
   getMobileUri,
   getWalletConnectUri,
 } from "../../../helpers/getWalletConnectUri";
 import logo from "./logo";
+import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 
 declare global {
   interface Window {

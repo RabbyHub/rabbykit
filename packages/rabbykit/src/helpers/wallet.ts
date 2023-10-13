@@ -1,4 +1,10 @@
-import { InjectedConnector, mainnet } from "@wagmi/core";
+import {
+  Chain,
+  InjectedConnector,
+  InjectedConnectorOptions,
+  WindowProvider,
+  mainnet,
+} from "@wagmi/core";
 import { optimism, polygon } from "@wagmi/core/chains";
 
 export function isMetaMask(ethereum?: (typeof window)["ethereum"]): boolean {
@@ -53,6 +59,93 @@ export const injected = () =>
         })`,
     },
   });
+//https://github.com/wagmi-dev/wagmi/blob/38306606d2fd72a4c6918323bf86a1afda348638/packages/connectors/src/types.ts#L11
+type InjectedProviderFlags = {
+  isApexWallet?: true;
+  isAvalanche?: true;
+  isBackpack?: true;
+  isBifrost?: true;
+  isBitKeep?: true;
+  isBitski?: true;
+  isBlockWallet?: true;
+  isBraveWallet?: true;
+  isCoin98?: true;
+  isCoinbaseWallet?: true;
+  isDawn?: true;
+  isDefiant?: true;
+  isDesig?: true;
+  isEnkrypt?: true;
+  isExodus?: true;
+  isFordefi?: true;
+  isFrame?: true;
+  isFrontier?: true;
+  isGamestop?: true;
+  isHaloWallet?: true;
+  isHaqqWallet?: true;
+  isHyperPay?: true;
+  isImToken?: true;
+  isKuCoinWallet?: true;
+  isMathWallet?: true;
+  isMetaMask?: true;
+  isNovaWallet?: true;
+  isOkxWallet?: true;
+  isOKExWallet?: true;
+  isOneInchAndroidWallet?: true;
+  isOneInchIOSWallet?: true;
+  isOpera?: true;
+  isPhantom?: true;
+  isPortal?: true;
+  isRabby?: true;
+  isRainbow?: true;
+  isStatus?: true;
+  isSubWallet?: true;
+  isTalisman?: true;
+  isTally?: true;
+  isTokenPocket?: true;
+  isTokenary?: true;
+  isTrust?: true;
+  isTrustWallet?: true;
+  isTTWallet?: true;
+  isXDEFI?: true;
+  isZeal?: true;
+  isZerion?: true;
+};
+
+export const getWalletProviderByFlag = (
+  flag: "isRainbow"
+): WindowProvider | undefined => {
+  if (typeof window === "undefined" || typeof window.ethereum === "undefined")
+    return;
+  const providers = window.ethereum.providers;
+  return providers
+    ? providers.find(
+        (provider: Record<string, WindowProvider>) => provider[flag]
+      )
+    : window.ethereum[flag]
+    ? window.ethereum
+    : undefined;
+};
+
+// export const getInjectedConnector = ({
+//   flag,
+//   chains,
+//   ...options
+// }: {
+//   flag: keyof InjectedProviderFlags;
+//   chains: Chain[];
+// } & InjectedConnectorOptions) => {
+//   const provider = getWalletProviderByFlag(flag);
+//   if (!!provider) {
+//     return new InjectedConnector({
+//       chains,
+//       options: {
+//         getProvider: () => provider,
+//         ...options,
+//       },
+//     });
+//   }
+//   return;
+// };
 
 declare global {
   interface Window {

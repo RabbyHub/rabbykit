@@ -17,6 +17,11 @@ import {
   enkryptWallet,
   frameWallet,
   okxWallet,
+  coin98Wallet,
+  oneKeyWallet,
+  phantomWallet,
+  rainbowWallet,
+  tokenPocketWallet,
 } from "./wallets/connectors";
 import { mount } from "./components/demo";
 import "./helpers/i18n";
@@ -53,6 +58,11 @@ export const createModal = <
     enkryptWallet({ chains }),
     frameWallet({ chains }),
     okxWallet({ chains, projectId }),
+    coin98Wallet({ chains, projectId }),
+    oneKeyWallet({ chains }),
+    phantomWallet({ chains }),
+    rainbowWallet({ chains, projectId }),
+    tokenPocketWallet({ chains, projectId }),
   ]
     .filter((e) => {
       if (e.id === "brave" && !e.installed) {
@@ -71,8 +81,6 @@ export const createModal = <
   ) {
     list.unshift(other);
   }
-
-  (window as any).$wagmi = wagmi;
 
   useRKStore.setState({ wallets: list });
 

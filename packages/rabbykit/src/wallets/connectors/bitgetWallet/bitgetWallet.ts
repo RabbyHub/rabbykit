@@ -1,7 +1,6 @@
-import { Chain } from "@wagmi/core";
+import { Chain, InjectedConnector } from "@wagmi/core";
 import type { InjectedConnectorOptions } from "@wagmi/core/connectors/injected";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
-import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletResult } from "../../type";
 import {
   getMobileUri,

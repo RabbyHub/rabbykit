@@ -1,6 +1,9 @@
-import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletResult } from "../../type";
-import { Chain, InjectedConnectorOptions } from "@wagmi/core";
+import {
+  Chain,
+  InjectedConnector,
+  InjectedConnectorOptions,
+} from "@wagmi/core";
 import logo from "./logo";
 
 export interface BraveWalletOptions {

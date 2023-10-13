@@ -1,5 +1,8 @@
-import type { Chain, InjectedConnectorOptions } from "@wagmi/core";
-import { InjectedConnector } from "wagmi/connectors/injected";
+import {
+  InjectedConnector,
+  type Chain,
+  type InjectedConnectorOptions,
+} from "@wagmi/core";
 import { WalletResult } from "../../type";
 import logo from "./logo";
 

@@ -3,6 +3,7 @@
   import { connect } from "@wagmi/core";
   import { WalletResult } from "../../wallets/type";
   import { useRKStore } from "../../store/context";
+  import clsx from "clsx";
 
   export let wallet: WalletResult;
   export let type: "browser" | "mobile" | "unused";
@@ -53,10 +54,11 @@
 </script>
 
 <button
-  class="button"
+  class={clsx("button", $$props.class)}
   class:ghost={type === "mobile"}
   class:border={type === "unused"}
   on:click={handleConnect}
+  {...$$restProps}
 >
   <div class="logo">
     <Image src={logo} alt={name} />
