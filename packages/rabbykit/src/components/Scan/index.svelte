@@ -3,6 +3,7 @@
   import QrCode from "./QRCode.svelte";
   import { onMount } from "svelte";
   import Icon from "../CommonIcon/Icon.svelte";
+  import Copy from "../Copy/index.svelte";
   import { WalletResult } from "../../wallets/type";
   import svelteStore from "../../store/context";
   import { connect } from "@wagmi/core";
@@ -11,12 +12,15 @@
   export let size: number = 280;
 
   let uri = "loading";
+  let loading = true;
 
   async function getUri() {
     try {
+      loading = true;
       const code = await wallet.connector.qrCode?.getUri?.();
       if (code) {
         uri = code;
+        loading = false;
       }
     } catch (error) {
       console.error(error);
@@ -33,10 +37,6 @@
   onMount(() => {
     getUri();
   });
-
-  function copy() {
-    navigator.clipboard.writeText(uri);
-  }
 
   async function refresh() {
     if (wallet?.connector.qrCode?.connector) {
@@ -79,7 +79,7 @@
 
   <section>
     <div class="qr-code">
-      <QrCode {logo} uri={uri || ""} {size} {success} {failed} />
+      <QrCode {logo} uri={uri || ""} {size} {success} {failed} {loading} />
     </div>
     {#if failed}
       <div class="tip failed">{$t("Request canceled")}</div>
@@ -95,12 +95,7 @@
       <div class="tip success">{$t("Connection Successful")}</div>
     {:else}
       <div class="tip">{$t("Scan with your Mobile wallet")}</div>
-      <button class="desc" on:click={() => copy()}>
-        <Icon name={"copy"} hover={false} />
-        <span>
-          {$t("Copy URL")}
-        </span>
-      </button>
+      <Copy copyText={uri} />
     {/if}
   </section>
 </div>

@@ -1,7 +1,10 @@
 <script lang="ts">
   import QRCodeUtil from "qrcode";
   import Image from "../Image/index.svelte";
+  import { fly } from "svelte/transition";
+  import { quadOut } from "svelte/easing";
 
+  export let loading: boolean;
   export let logo: string;
   export let uri: string;
   export let size: number = 280;
@@ -104,9 +107,9 @@
   }
 </script>
 
-<div class="qr-code" style="--qr-code-size:{size}px">
-  {#if success}
-    <div class="logo">
+<div class="qr-code" class:loading style="--qr-code-size:{size}px">
+  <div class="logo">
+    {#if success}
       <svg
         width="80"
         height="80"
@@ -139,9 +142,7 @@
           stroke-width="4"
         />
       </svg>
-    </div>
-  {:else if failed}
-    <div class="logo">
+    {:else if failed}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="80"
@@ -174,12 +175,10 @@
           stroke-width="4"
         />
       </svg>
-    </div>
-  {:else}
-    <div class="logo">
+    {:else}
       <Image src={logo} alt="" />
-    </div>
-  {/if}
+    {/if}
+  </div>
 
   <div style="opacity: {success || failed ? '0.3' : '1'};">
     <svg height={svgSize} style="all: revert;" width={svgSize}>
@@ -197,6 +196,17 @@
       {/each}
     </svg>
   </div>
+  {#if loading}
+    <div
+      class:loading
+      out:fly={{
+        duration: 1000,
+        y: "100%",
+        easing: quadOut,
+        opacity: 1,
+      }}
+    />
+  {/if}
 </div>
 
 <style lang="scss">
@@ -211,6 +221,27 @@
     border-radius: 8px;
     border: 0.583px solid var(--r-neutral-line, #d3d8e0);
     background: #fff;
+    overflow: hidden;
+    .loading {
+      content: "";
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      position: absolute;
+      background: #fff;
+      opacity: 0.5;
+      z-index: 4;
+      &::after {
+        content: "";
+        top: -2px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        border-top: 2px solid var(--r-blue-default);
+      }
+    }
   }
 
   .logo {

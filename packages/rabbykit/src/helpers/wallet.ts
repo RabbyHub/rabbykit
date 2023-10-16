@@ -6,6 +6,7 @@ import {
   mainnet,
 } from "@wagmi/core";
 import { optimism, polygon } from "@wagmi/core/chains";
+import { WalletResult } from "../wallets/type";
 
 export function isMetaMask(ethereum?: (typeof window)["ethereum"]): boolean {
   // https://github.com/wagmi-dev/wagmi/blob/main/packages/connectors/src/metaMask.ts#L44
@@ -147,6 +148,14 @@ export const getWalletProviderByFlag = (
 //   return;
 // };
 
+export const isSupportBrowser = (wallet: WalletResult) => {
+  return !!(
+    wallet.downloadUrls?.chrome ||
+    wallet.downloadUrls?.edge ||
+    wallet.downloadUrls?.firefox ||
+    wallet.downloadUrls?.safari
+  );
+};
 declare global {
   interface Window {
     ethereum?: any;

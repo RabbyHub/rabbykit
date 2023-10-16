@@ -2,6 +2,7 @@
   import WalletButton from "../WalletButton/index.svelte";
   import { _ as t } from "svelte-i18n";
   import useStore from "../../store/context";
+  import { isSupportBrowser } from "../../helpers/wallet";
   export let active: "browser" | "mobile";
   export let onChange: (tab: "browser" | "mobile") => void;
 
@@ -9,7 +10,7 @@
 
   const list = $useStore.wallets || [];
 
-  const browserList = list.filter((w) => !!w.connector?.browser);
+  const browserList = list.filter((w) => isSupportBrowser(w));
   const mobileList = list.filter((w) => !!w.connector?.qrCode?.getUri);
 
   const readyBrowserList = browserList.filter(
@@ -25,7 +26,7 @@
   }
 </script>
 
-<div>
+<div class="scroll">
   <div class="container">
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -55,7 +56,7 @@
     {#if detected}
       <div class="wallet-container" style="margin-bottom:32px">
         {#each readyBrowserList as wallet}
-          <WalletButton {wallet} type="browser" />
+          <WalletButton className="wallet" {wallet} type="browser" />
         {/each}
       </div>
       <div class="sub-title">
@@ -65,7 +66,7 @@
       </div>
       <div class="wallet-container">
         {#each unusedBrowserList as wallet}
-          <WalletButton {wallet} type="unused" />
+          <WalletButton className="wallet" {wallet} type="unused" />
         {/each}
       </div>
     {:else}
@@ -76,7 +77,7 @@
       </div>
       <div class="wallet-container">
         {#each browserList as wallet}
-          <WalletButton {wallet} type="unused" />
+          <WalletButton className="wallet" {wallet} type="unused" />
         {/each}
       </div>
     {/if}
@@ -84,15 +85,30 @@
     <div class="sub-title">通过手机钱包扫码连接</div>
     <div class="wallet-container">
       {#each mobileList as wallet}
-        <WalletButton {wallet} type="mobile" />
+        <WalletButton className="wallet" {wallet} type="mobile" />
       {/each}
     </div>
   {/if}
+
+  <div class="rk-tip">Powered by RabbyKit</div>
 </div>
 
 <style lang="scss">
+  .scroll {
+    height: 100%;
+    max-height: 100%;
+    margin: 0 -20px;
+    padding-left: 20px;
+    overflow: auto;
+  }
   .container {
+    background: var(--r-neutral-bg-2);
+    position: sticky;
+    top: 0;
+    left: 0;
     display: flex;
+    margin: 0 0 0 -20px;
+    padding-left: 20px;
     gap: 20px;
     margin-bottom: 20px;
   }
@@ -105,6 +121,9 @@
     line-height: normal;
     padding-bottom: 4px;
     cursor: pointer;
+    &:not(.active):hover {
+      color: var(--r-neutral-title-1);
+    }
 
     &.active {
       color: var(--r-blue-default);
@@ -124,8 +143,13 @@
   .wallet-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 0;
-    justify-content: space-between;
+
+    & > :global(button:nth-of-type(2n)) {
+      margin-left: 8px;
+    }
+    & > :global(button:nth-of-type(n + 3)) {
+      margin-top: 8px;
+    }
   }
 
   .sub-title {
@@ -136,5 +160,12 @@
     font-weight: 400;
     line-height: normal;
     margin-bottom: 12px;
+  }
+  .rk-tip {
+    margin-top: 26px;
+    margin-bottom: 20px;
+    color: var(--r-neutral-foot, #6a7587);
+    text-align: center;
+    font-size: 12px;
   }
 </style>
