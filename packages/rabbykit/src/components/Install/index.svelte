@@ -34,7 +34,7 @@
       {$t("downloaded by clicking the button below", { values: { name } })}
     </div>
 
-    <a class="card" href={uri} target="_blank">
+    <a class="card install" href={uri} target="_blank">
       <div class="card-content">
         <!-- <Icon name={}/> -->
         <Icon name={browser} />
@@ -45,12 +45,14 @@
 
   <section>
     <div class="text1">
-      {$t("If you already have Rabby Wallet installed", {
+      {$t("If you already have installed", {
         values: { name },
       })}
     </div>
     <div class="text2">
-      {$t("Make sure your wallet is enabled and disable other plugin wallets")}
+      {$t("Make sure your wallet is enabled and disable other plugin wallets", {
+        values: { name },
+      })}
     </div>
     <div class="card2">
       <div class="row1">
@@ -159,7 +161,7 @@
         font-family: SF Pro;
         font-weight: 400;
         word-wrap: break-word;
-        margin-bottom: 12px;
+        margin-bottom: 24px;
       }
 
       a {
@@ -170,13 +172,18 @@
         width: 222px;
         height: 52px;
 
-        background: #f7fafc;
+        background: var(--r-neutral-card-3);
         border-radius: 4px;
         overflow: hidden;
-        border: 0.5px #d3d8e0 solid;
+        border: 0.5px solid var(--r-neutral-line);
         justify-content: center;
         align-items: center;
         display: inline-flex;
+        &.install:hover {
+          border-radius: 4px;
+          border: 0.5px solid var(--r-blue-default);
+          background: var(--r-blue-light-1);
+        }
 
         .card-content {
           align-self: stretch;
@@ -184,6 +191,7 @@
           align-items: center;
           gap: 8px;
           display: inline-flex;
+
           img {
             width: 20px;
             height: 20px;
