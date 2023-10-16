@@ -23,6 +23,8 @@
   "Install the Extension": "Install the Extension",
   "If you haven't installed": "1. If you haven't installed {name}?",
   "downloaded by clicking the button below": "Download {name} here",
-  "If you already have Rabby Wallet installed": "2. If you have installed {name}:",
-  "Make sure your wallet is enabled and disable other plugin wallets": "Enable {name} extension and disable other browser extension wallets"
+  "If you already have installed": "2. If you have installed {name}:",
+  "Make sure your wallet is enabled and disable other plugin wallets": "Enable {name} extension and disable other browser extension wallets",
+
+  "Powered by RabbyKit": "Powered by RabbyKit"
 }

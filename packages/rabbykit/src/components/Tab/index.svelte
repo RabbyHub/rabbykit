@@ -82,7 +82,7 @@
       </div>
     {/if}
   {:else}
-    <div class="sub-title">通过手机钱包扫码连接</div>
+    <div class="sub-title">{$t("Scan with mobile wallets to connect")}</div>
     <div class="wallet-container">
       {#each mobileList as wallet}
         <WalletButton className="wallet" {wallet} type="mobile" />
@@ -90,7 +90,7 @@
     </div>
   {/if}
 
-  <div class="rk-tip">Powered by RabbyKit</div>
+  <div class="rk-tip">{$t("Powered by RabbyKit")}</div>
 </div>
 
 <style lang="scss">
