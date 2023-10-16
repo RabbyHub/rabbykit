@@ -13,6 +13,11 @@ import { oneKeyWallet } from "./oneKeyWallet/oneKeyWallet";
 import { phantomWallet } from "./phantomWallet/phantomWallet";
 import { rainbowWallet } from "./rainbowWallet/rainbowWallet";
 import { tokenPocketWallet } from "./tokenPocketWallet/tokenPocketWallet";
+import { trustWallet } from "./trustWallet/trustWallet";
+import { xdefiWallet } from "./xdefiWallet/xdefiWallet";
+import { zerionWallet } from "./zerionWallet/zerionWallet";
+import { tahoWallet } from "./tahoWallet/tahoWallet";
+import { safeWallet } from "./safeWallet/safeWallet";
 
 export {
   coinbaseWallet,
@@ -30,4 +35,9 @@ export {
   phantomWallet,
   rainbowWallet,
   tokenPocketWallet,
+  trustWallet,
+  xdefiWallet,
+  zerionWallet,
+  tahoWallet,
+  safeWallet,
 };

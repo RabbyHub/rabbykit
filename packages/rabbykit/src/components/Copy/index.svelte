@@ -45,7 +45,6 @@
     cursor: pointer;
     color: var(--r-neutral-body);
     text-align: center;
-    font-family: SF Pro;
     font-size: 15px;
     font-style: normal;
     font-weight: 510;

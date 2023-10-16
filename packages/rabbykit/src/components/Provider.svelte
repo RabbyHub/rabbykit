@@ -4,7 +4,8 @@
 
 <style lang="scss">
   [data-rabbykit] {
-    --rk-font: SF Pro;
+    --rk-font: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Roboto,
+      "PingFang SC", "Microsoft Yahei", sans-serif;
     --rabby-light-blue-default: rgba(112, 132, 255, 1);
     --rabby-light-blue-light-1: rgba(238, 241, 255, 1);
     --rabby-light-blue-light-2: rgba(222, 227, 252, 1);
@@ -78,25 +79,6 @@
     ::before,
     ::after {
       box-sizing: border-box;
-    }
-
-    html {
-      /* Improve consistency of default fonts in all browsers. (https://github.com/sindresorhus/modern-normalize/issues/3) */
-      font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
-        "Apple Color Emoji", "Segoe UI Emoji";
-      line-height: 1.15; /* 1. Correct the line height in all browsers. */
-      -webkit-text-size-adjust: 100%; /* 2. Prevent adjustments of font size after orientation changes in iOS. */
-      -moz-tab-size: 4; /* 3. Use a more readable tab size (opinionated). */
-      tab-size: 4; /* 3 */
-    }
-
-    /*
-Sections
-========
-*/
-
-    body {
-      margin: 0; /* Remove the margin in all browsers. */
     }
 
     /*

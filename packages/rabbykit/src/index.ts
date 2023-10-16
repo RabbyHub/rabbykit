@@ -22,8 +22,13 @@ import {
   phantomWallet,
   rainbowWallet,
   tokenPocketWallet,
+  trustWallet,
+  xdefiWallet,
+  zerionWallet,
+  tahoWallet,
+  safeWallet,
 } from "./wallets/connectors";
-import { mount } from "./components/demo";
+import { mount } from "./components/Kit";
 import "./helpers/i18n";
 
 export const createModal = <
@@ -63,6 +68,11 @@ export const createModal = <
     phantomWallet({ chains }),
     rainbowWallet({ chains, projectId }),
     tokenPocketWallet({ chains, projectId }),
+    trustWallet({ chains, projectId }),
+    xdefiWallet({ chains }),
+    zerionWallet({ chains, projectId }),
+    tahoWallet({ chains }),
+    safeWallet({ chains }),
   ]
     .filter((e) => {
       if (e.id === "brave" && !e.installed) {

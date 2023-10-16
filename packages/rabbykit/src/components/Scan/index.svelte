@@ -128,7 +128,6 @@
     .tip {
       color: var(--r-neutral-title-1, #192945);
       text-align: center;
-      font-family: SF Pro;
       font-size: 20px;
       font-style: normal;
       font-weight: 590;
@@ -150,7 +149,6 @@
 
       color: var(--r-neutral-body, #3e495e);
       text-align: center;
-      font-family: SF Pro;
       font-size: 15px;
       font-style: normal;
       font-weight: 510;

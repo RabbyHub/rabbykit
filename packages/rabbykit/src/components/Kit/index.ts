@@ -1,4 +1,4 @@
-import App from "./demo.svelte";
+import App from "./index.svelte";
 
 export const mount = () => {
   class RabbyKit extends HTMLElement {
@@ -12,10 +12,8 @@ export const mount = () => {
 
   let mountNode = document.querySelector("[data-rk-mounted]");
   if (!mountNode) {
-    // mountNode = document.createElement("div");
     mountNode = document.createElement("rabby-kit");
     mountNode.setAttribute("data-rk-mounted", "");
-    // const target =
     mountNode.attachShadow({ mode: "open" });
     document.body.insertAdjacentElement("afterend", mountNode!);
   }
@@ -26,7 +24,6 @@ export const mount = () => {
   }
 
   if (!child) {
-    // mountNode.removeChild(child);
     new App({ target: mountNode!.shadowRoot! });
   }
 };

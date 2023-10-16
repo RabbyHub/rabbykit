@@ -35,9 +35,9 @@
     </div>
 
     <a class="card install" href={uri} target="_blank">
-      <div class="card-content">
+      <div class="card-content" style="margin-left: -6px;">
         <!-- <Icon name={}/> -->
-        <Icon name={browser} />
+        <Icon name={browser} hover={false} />
         <div class="tip">{$t("Install the Extension")}</div>
       </div>
     </a>
@@ -150,7 +150,6 @@
       .text1 {
         color: #192945;
         font-size: 15px;
-        font-family: SF Pro;
         font-weight: 510;
         word-wrap: break-word;
         margin-bottom: 12px;
@@ -158,7 +157,6 @@
       .text2 {
         color: #3e495e;
         font-size: 13px;
-        font-family: SF Pro;
         font-weight: 400;
         word-wrap: break-word;
         margin-bottom: 24px;
@@ -200,7 +198,6 @@
             text-align: center;
             color: #192945;
             font-size: 15px;
-            font-family: SF Pro;
             font-weight: 510;
             word-wrap: break-word;
           }
@@ -230,7 +227,6 @@
           .tip {
             margin-left: 6px;
             color: var(--r-neutral-title-1, #192945);
-            font-family: SF Pro;
             font-size: 12px;
             font-style: normal;
             font-weight: 510;
@@ -251,7 +247,6 @@
             border: 0.3px solid var(--r-neutral-line, #d3d8e0);
             color: var(--r-blue-default, #7084ff);
             text-align: center;
-            font-family: SF Pro;
             font-size: 12px;
             font-style: normal;
             font-weight: 510;

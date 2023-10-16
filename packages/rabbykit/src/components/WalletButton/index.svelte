@@ -55,8 +55,8 @@
 
 <button
   class={clsx("button", $$props.class)}
-  class:ghost={type === "mobile"}
-  class:border={type === "unused"}
+  class:mobile={type === "mobile"}
+  class:unused={type === "unused"}
   on:click={handleConnect}
   {...$$restProps}
 >
@@ -71,8 +71,6 @@
   .button {
     width: 206px;
     height: 56px;
-    color: white;
-
     padding: 10px 20px;
     padding-right: 0;
     display: inline-flex;
@@ -96,28 +94,28 @@
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
   }
 
-  .button.ghost {
+  .button.mobile {
     font-weight: 510;
     border-radius: 8px;
     box-shadow: none;
-    color: var(--r-neutral-body);
     border: 0.5px solid var(--r-neutral-line);
   }
 
-  .button.ghost:hover {
+  .button.mobile:hover {
     border: 0.5px solid var(--r-blue-default);
     box-shadow: none;
   }
 
-  .button.border {
+  .button.unused {
     font-weight: 510;
     box-shadow: none;
     border-radius: 8px;
+    color: var(--r-neutral-body);
     border: 1px solid var(--r-neutral-line, #d3d8e0);
     background: transparent;
   }
 
-  .button.border:hover {
+  .button.unused:hover {
     border-radius: 8px;
     border: 1px solid var(--r-blue-default, #7084ff);
     background: transparent;

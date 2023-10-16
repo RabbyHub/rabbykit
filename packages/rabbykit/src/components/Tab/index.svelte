@@ -100,6 +100,11 @@
     margin: 0 -20px;
     padding-left: 20px;
     overflow: auto;
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+    &::-webkit-scrollbar {
+      display: none; /* Safari and Chrome */
+    }
   }
   .container {
     background: var(--r-neutral-bg-2);
@@ -114,7 +119,6 @@
   }
   .item {
     color: var(--r-neutral-body);
-    font-family: SF Pro;
     font-size: 15px;
     font-style: normal;
     font-weight: 510;
@@ -154,7 +158,6 @@
 
   .sub-title {
     color: var(--r-neutral-foot, #6a7587);
-    font-family: SF Pro;
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
@@ -164,6 +167,7 @@
   .rk-tip {
     margin-top: 26px;
     margin-bottom: 20px;
+    padding-right: 20px;
     color: var(--r-neutral-foot, #6a7587);
     text-align: center;
     font-size: 12px;

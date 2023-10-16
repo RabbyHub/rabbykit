@@ -197,15 +197,18 @@
     </svg>
   </div>
   {#if loading}
-    <div
+    <div class:loading />
+    <div class="loading-line" />
+
+    <!-- <div
       class:loading
       out:fly={{
-        duration: 1000,
+        duration: 800,
         y: "100%",
         easing: quadOut,
         opacity: 1,
       }}
-    />
+    /> -->
   {/if}
 </div>
 
@@ -229,8 +232,7 @@
       bottom: 0;
       left: 0;
       position: absolute;
-      background: #fff;
-      opacity: 0.5;
+      background: rgba($color: #fff, $alpha: 0.5);
       z-index: 4;
       &::after {
         content: "";
@@ -241,6 +243,27 @@
         position: absolute;
         border-top: 2px solid var(--r-blue-default);
       }
+    }
+    .loading-line {
+      content: "";
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      position: absolute;
+      background: transparent;
+      z-index: 4;
+      border-top: 2px solid var(--r-blue-default);
+      animation: slide 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite forwards;
+    }
+  }
+
+  @keyframes slide {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(100%);
     }
   }
 

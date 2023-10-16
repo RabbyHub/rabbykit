@@ -281,7 +281,6 @@
       max-width: 340px;
       color: var(--r-neutral-body, #3e495e);
       text-align: center;
-      font-family: SF Pro;
       font-size: 15px;
       font-style: normal;
       font-weight: 510;
