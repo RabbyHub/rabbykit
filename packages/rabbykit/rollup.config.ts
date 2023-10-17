@@ -15,8 +15,9 @@ const external = [
   ...Object.keys(dependencies),
   ...Object.keys(peerDependencies),
 ];
+// .filter((e) => e !== "svelte");
 
-const input = ["./src/index.ts"];
+const input = ["./src/index.ts", "./src/index.react.tsx"];
 export default defineConfig([
   {
     input,
@@ -49,16 +50,18 @@ export default defineConfig([
           sourceMaps: true,
           jsc: {
             externalHelpers: true,
-            minify: {
-              compress: {
-                passes: 2,
-                const_to_let: false,
-              },
-              mangle: {},
-              module: true,
-            },
+            minify: production
+              ? {
+                  compress: {
+                    passes: 2,
+                    const_to_let: false,
+                  },
+                  mangle: {},
+                  module: true,
+                }
+              : undefined,
           },
-          minify: true,
+          minify: production,
         })
       ),
       preserveDirective(),
@@ -74,6 +77,9 @@ export default defineConfig([
     output: {
       format: "esm",
       dir: "dist",
+      entryFileNames: (e) => {
+        return `${e.name.replace("src/", "")}.d.ts`;
+      },
     },
     plugins: [dts()],
   },

@@ -1,6 +1,6 @@
 <script lang="ts">
   import Image from "../Image/index.svelte";
-  import { connect } from "@wagmi/core";
+  import { connect, disconnect, getAccount } from "@wagmi/core";
   import { WalletResult } from "../../wallets/type";
   import { useRKStore } from "../../store/context";
   import clsx from "clsx";
@@ -11,7 +11,10 @@
   let { browser } = wallet.connector;
   let isReady = !!browser?.ready;
 
-  const handleConnect = () => {
+  const handleConnect = async () => {
+    if (type !== "unused" && getAccount()?.isConnected) {
+      await disconnect();
+    }
     if (browser && isReady && type === "browser") {
       useRKStore.setState({
         page: "connect",
@@ -81,7 +84,7 @@
     cursor: pointer;
     border-radius: 8px;
     background: var(--r-neutral-card-1);
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--button-shadow);
     color: var(--r-neutral-title-1);
     font-weight: 590;
     border: 0.5px solid transparent;
@@ -111,13 +114,13 @@
     box-shadow: none;
     border-radius: 8px;
     color: var(--r-neutral-body);
-    border: 1px solid var(--r-neutral-line, #d3d8e0);
+    border: 1px solid var(--r-neutral-line);
     background: transparent;
   }
 
   .button.unused:hover {
     border-radius: 8px;
-    border: 1px solid var(--r-blue-default, #7084ff);
+    border: 1px solid var(--r-blue-default);
     background: transparent;
   }
 

@@ -130,7 +130,7 @@
     align-items: center;
 
     .title {
-      color: var(--r-neutral-title-1, #192945);
+      color: var(--r-neutral-title-1);
       text-align: center;
       font-size: 18px;
       font-weight: 510;
@@ -141,21 +141,21 @@
       width: 100%;
       padding: 32px 40px;
       border-radius: 4px;
-      border: 0.5px solid var(--r-neutral-line, #d3d8e0);
-      background: #fff;
+      border: 0.5px solid var(--r-neutral-line);
+      background: var(--r-neutral-card-1);
       &:not(:last-child) {
         margin-bottom: 12px;
       }
 
       .text1 {
-        color: #192945;
+        color: var(--r-neutral-title-1);
         font-size: 15px;
         font-weight: 510;
         word-wrap: break-word;
         margin-bottom: 12px;
       }
       .text2 {
-        color: #3e495e;
+        color: var(--r-neutral-body);
         font-size: 13px;
         font-weight: 400;
         word-wrap: break-word;
@@ -196,7 +196,7 @@
           }
           .tip {
             text-align: center;
-            color: #192945;
+            color: var(--r-neutral-title-1);
             font-size: 15px;
             font-weight: 510;
             word-wrap: break-word;
@@ -213,8 +213,8 @@
         height: 100px;
         padding: 10px;
         border-radius: 4px;
-        border: 0.5px solid var(--r-neutral-line, #d3d8e0);
-        background: var(--r-neutral-card-3, #f7fafc);
+        border: 0.5px solid var(--r-neutral-line);
+        background: var(--r-neutral-card-3);
 
         img {
           width: 20px;
@@ -226,7 +226,7 @@
           align-items: center;
           .tip {
             margin-left: 6px;
-            color: var(--r-neutral-title-1, #192945);
+            color: var(--r-neutral-title-1);
             font-size: 12px;
             font-style: normal;
             font-weight: 510;
@@ -244,8 +244,8 @@
             justify-content: center;
             padding: 4px 9px;
             border-radius: 2px;
-            border: 0.3px solid var(--r-neutral-line, #d3d8e0);
-            color: var(--r-blue-default, #7084ff);
+            border: 0.3px solid var(--r-neutral-line);
+            color: var(--r-blue-default);
             text-align: center;
             font-size: 12px;
             font-style: normal;

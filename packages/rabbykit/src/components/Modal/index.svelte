@@ -77,7 +77,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 16px;
-    background: var(--r-neutral-bg-2, #f2f4f7);
+    background: var(--r-neutral-bg-2);
     box-shadow: 0px 24px 80px 0px rgba(0, 0, 0, 0.2);
     overflow: hidden;
   }

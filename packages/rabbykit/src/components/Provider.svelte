@@ -1,9 +1,18 @@
-<div data-rabbykit="0.0.01">
+<script lang="ts">
+  import store from "./../store/context";
+</script>
+
+<div
+  data-rabbykit="0.0.01"
+  class:dark={$store.theme === "dark"}
+  class:system={$store.theme === "system"}
+>
   <slot />
 </div>
 
 <style lang="scss">
-  [data-rabbykit] {
+  .light {
+    --rk-modal-index: 2147483647;
     --rk-font: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Roboto,
       "PingFang SC", "Microsoft Yahei", sans-serif;
     --rabby-light-blue-default: rgba(112, 132, 255, 1);
@@ -56,22 +65,139 @@
     --r-neutral-title-2: var(--rabby-light-neutral-title-2);
     --r-neutral-black: var(--rabby-light-neutral-black);
 
-    /* button */
-    /* --rk-button-color:--r-neutral-title-1;
-    --rk-button-ghost-color:var(--r-blue-default);
+    --button-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
+    --modal-shadow: 0px 24px 80px 0px rgba(0, 0, 0, 0.2);
+    --icon-stroke: #3e495e;
+  }
+  .dark {
+    --r-blue-light-1: rgba(112, 132, 255, 0.1);
+    /* --r-blue-light-2: ; */
+    --r-blue-default: #7084ff;
+    --r-green-default: #2abb7f;
+    /* --r-green-light: ; */
+    /* --r-orange-default: ; */
+    /* --r-orange-light: ; */
+    --r-red-default: #ef5c48;
+    /* --r-red-light: ; */
+    /* --r-red-dark: ; */
+    /* --r-red-light-2: ; */
+    --r-neutral-title-1: #f7fafc;
+    --r-neutral-body: #d3d8e0;
+    --r-neutral-foot: #babec5;
+    --r-neutral-line: rgba(255, 255, 255, 0.1);
+    /* --r-neutral-bg-1: ; */
+    --r-neutral-bg-2: #3d4251;
+    --r-neutral-card-3: rgba(255, 255, 255, 0.06);
+    --r-neutral-card-1: rgba(255, 255, 255, 0.06);
+    /* --r-neutral-card-2: ; */
+    /* --r-neutral-card-3: ; */
+    /* --r-neutral-title-2: ; */
+    /* --r-neutral-black: ; */
+    --modal-shadow: 0px 24px 80px 0px rgba(0, 0, 0, 0.2);
+    --button-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
 
-    --rk-button-bg: var(--r-neutral-card-1);
-    --rk-button-ghost-bg: transform;
+    --icon-stroke: #d3d8e0;
+  }
 
-    --rk-button-bg-shadow-box: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
-    --rk-button-ghost-bg-shadow-box: none;
-
-    --rk-button-border: 1px solid var(--r-neutral-line, #d3d8e0);
-    --rk-button-ghost-border: 1px solid var(--r-neutral-line, #d3d8e0); */
-
-    /* / button */
-
+  [data-rabbykit] {
+    @extend .light;
     font-family: var(--rk-font);
+
+    &.dark {
+      @extend .dark;
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    [data-rabbykit].system {
+      --r-blue-light-1: rgba(112, 132, 255, 0.1);
+      /* --r-blue-light-2: ; */
+      --r-blue-default: #7084ff;
+      --r-green-default: #2abb7f;
+      /* --r-green-light: ; */
+      /* --r-orange-default: ; */
+      /* --r-orange-light: ; */
+      --r-red-default: #ef5c48;
+      /* --r-red-light: ; */
+      /* --r-red-dark: ; */
+      /* --r-red-light-2: ; */
+      --r-neutral-title-1: #f7fafc;
+      --r-neutral-body: #d3d8e0;
+      --r-neutral-foot: #babec5;
+      --r-neutral-line: rgba(255, 255, 255, 0.1);
+      /* --r-neutral-bg-1: ; */
+      --r-neutral-bg-2: #3d4251;
+      --r-neutral-card-3: rgba(255, 255, 255, 0.06);
+      --r-neutral-card-1: rgba(255, 255, 255, 0.06);
+      /* --r-neutral-card-2: ; */
+      /* --r-neutral-card-3: ; */
+      /* --r-neutral-title-2: ; */
+      /* --r-neutral-black: ; */
+      --modal-shadow: 0px 24px 80px 0px rgba(0, 0, 0, 0.2);
+      --button-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
+
+      --icon-stroke: #d3d8e0;
+    }
+  }
+  @media (prefers-color-scheme: light) {
+    [data-rabbykit].system {
+      --rk-modal-index: 2147483647;
+      --rk-font: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Roboto,
+        "PingFang SC", "Microsoft Yahei", sans-serif;
+      --rabby-light-blue-default: rgba(112, 132, 255, 1);
+      --rabby-light-blue-light-1: rgba(238, 241, 255, 1);
+      --rabby-light-blue-light-2: rgba(222, 227, 252, 1);
+      --rabby-light-blue-disable: rgba(112, 132, 255, 0.5);
+      --rabby-light-green-default: rgba(42, 187, 127, 1);
+      --rabby-light-green-light: rgba(42, 187, 127, 0.15);
+      --rabby-light-orange-default: rgba(255, 176, 32, 1);
+      --rabby-light-orange-light: rgba(255, 176, 32, 0.15);
+      --rabby-light-red-default: rgba(227, 73, 53, 1);
+      --rabby-light-red-light: rgba(227, 73, 53, 0.15);
+      --rabby-light-red-dark: rgba(174, 42, 25, 1);
+      --rabby-light-red-light-2: rgba(174, 42, 25, 0.2);
+      --rabby-light-neutral-title-1: rgba(25, 41, 69, 1);
+      --rabby-light-neutral-body: rgba(62, 73, 94, 1);
+      --rabby-light-neutral-foot: rgba(106, 117, 135, 1);
+      --rabby-light-neutral-line: rgba(211, 216, 224, 1);
+      --rabby-light-neutral-bg-1: rgba(255, 255, 255, 1);
+      --rabby-light-neutral-bg-2: rgba(242, 244, 247, 1);
+      --rabby-light-neutral-bg-3: rgba(247, 250, 252, 1);
+      --rabby-light-neutral-card-1: rgba(255, 255, 255, 1);
+      --rabby-light-neutral-card-2: rgba(242, 244, 247, 1);
+      --rabby-light-neutral-card-3: rgba(247, 250, 252, 1);
+      --rabby-light-neutral-title-2: rgb(255, 255, 255, 1);
+      --rabby-light-neutral-black: rgba(0, 0, 0, 1);
+
+      --r-blue-default: var(--rabby-light-blue-default);
+      --r-blue-light-1: var(--rabby-light-blue-light-1);
+      --r-blue-light-2: var(--rabby-light-blue-light-2);
+      --r-blue-disable: var(--rabby-light-blue-disable);
+      --r-green-default: var(--rabby-light-green-default);
+      --r-green-light: var(--rabby-light-green-light);
+      --r-orange-default: var(--rabby-light-orange-default);
+      --r-orange-light: var(--rabby-light-orange-light);
+      --r-red-default: var(--rabby-light-red-default);
+      --r-red-light: var(--rabby-light-red-light);
+      --r-red-dark: var(--rabby-light-red-dark);
+      --r-red-light-2: var(--rabby-light-red-light-2);
+      --r-neutral-title-1: var(--rabby-light-neutral-title-1);
+      --r-neutral-body: var(--rabby-light-neutral-body);
+      --r-neutral-foot: var(--rabby-light-neutral-foot);
+      --r-neutral-line: var(--rabby-light-neutral-line);
+      --r-neutral-bg-1: var(--rabby-light-neutral-bg-1);
+      --r-neutral-bg-2: var(--rabby-light-neutral-bg-2);
+      --r-neutral-bg-3: var(--rabby-light-neutral-bg-3);
+      --r-neutral-card-1: var(--rabby-light-neutral-card-1);
+      --r-neutral-card-2: var(--rabby-light-neutral-card-2);
+      --r-neutral-card-3: var(--rabby-light-neutral-card-3);
+      --r-neutral-title-2: var(--rabby-light-neutral-title-2);
+      --r-neutral-black: var(--rabby-light-neutral-black);
+
+      --button-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
+      --modal-shadow: 0px 24px 80px 0px rgba(0, 0, 0, 0.2);
+      --icon-stroke: #3e495e;
+    }
   }
 
   :global {
@@ -308,6 +434,7 @@ Add the correct display in Chrome and Safari.
       display: list-item;
     }
     button {
+      font-family: var(--rk-font);
       background: transparent;
       box-shadow: none;
       border: 0;

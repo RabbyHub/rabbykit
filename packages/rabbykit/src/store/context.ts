@@ -14,13 +14,16 @@ import zustandToSvelte from "../helpers/zustandToSvelte";
 
 type Tab = "browser" | "mobile";
 type Page = "wallet" | "connect" | "download";
+export type Theme = "light" | "dark" | "system";
 interface Store<
   TPublicClient extends PublicClient = PublicClient,
   TWebSocketPublicClient extends WebSocketPublicClient = WebSocketPublicClient
 > {
+  theme?: Theme;
+  setTheme: (theme: Theme) => void;
   status: "connecting" | "reconnecting" | "connected" | "disconnected";
   open: boolean;
-  openModal: () => void;
+  openModal: (force?: boolean) => void;
   closeModal: () => void;
 
   language: SUPPORT_LANGUAGES;
@@ -40,13 +43,17 @@ interface Store<
 
 export const useRKStore = createStore<Store<any, any>>()(
   subscribeWithSelector((set, get) => ({
+    theme: "light",
     status: "disconnected",
     language: "en",
     page: "wallet",
     activeTab: "browser",
     open: false,
-    openModal: () => {
-      set({ open: true });
+    openModal: (force = false) => {
+      if (force || get().status !== "connected") {
+        console.log("get().status", get().status);
+        set({ open: true });
+      }
     },
     closeModal: () => {
       set({ open: false });
@@ -54,8 +61,16 @@ export const useRKStore = createStore<Store<any, any>>()(
     setTab: (activeTab: Tab) => {
       set({ activeTab });
     },
+    setTheme: (theme) => {
+      set({ theme });
+    },
   }))
 );
+
+export const modalOpenSubscribe = (fn: (open: boolean) => void) => {
+  const unsubscribe = useRKStore.subscribe((s) => s.open, fn);
+  return unsubscribe;
+};
 
 export function syncAccount() {
   const accountInfo = getAccount();

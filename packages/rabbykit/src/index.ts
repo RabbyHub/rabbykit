@@ -1,11 +1,10 @@
-"use client";
 import {
   watchAccount,
   Config,
   PublicClient,
   WebSocketPublicClient,
 } from "@wagmi/core";
-import { syncAccount, useRKStore } from "./store";
+import { Theme, modalOpenSubscribe, syncAccount, useRKStore } from "./store";
 import {
   rabbyWallet,
   metaMaskWallet,
@@ -26,7 +25,7 @@ import {
   xdefiWallet,
   zerionWallet,
   tahoWallet,
-  safeWallet,
+  // safeWallet,
 } from "./wallets/connectors";
 import { mount } from "./components/Kit";
 import "./helpers/i18n";
@@ -43,10 +42,6 @@ export const createModal = <
   projectId: string;
   wagmi: Config<TPublicClient, TWebSocketPublicClient>;
 }) => {
-  if (useRKStore.getState().wagmi) {
-    throw new Error("RabbyKit Modal already initialized");
-  }
-
   useRKStore.setState({ wagmi });
 
   watchAccount(() => syncAccount());
@@ -72,7 +67,7 @@ export const createModal = <
     xdefiWallet({ chains }),
     zerionWallet({ chains, projectId }),
     tahoWallet({ chains }),
-    safeWallet({ chains }),
+    // safeWallet({ chains }),
   ]
     .filter((e) => {
       if (e.id === "brave" && !e.installed) {
@@ -81,6 +76,18 @@ export const createModal = <
       return true;
     })
     .sort((a, b) => a.name.localeCompare(b.name));
+
+  const allConnect: any[] = [];
+
+  if (wagmi.args.autoConnect) {
+    list.forEach((e) => {
+      e.connector.browser && allConnect.push(e.connector.browser);
+      e.connector.mobile?.connector &&
+        allConnect.push(e.connector.mobile?.connector);
+    });
+    wagmi.setConnectors(allConnect);
+    wagmi.autoConnect();
+  }
 
   const other = otherInjectedWallet({ chains });
   if (
@@ -94,14 +101,22 @@ export const createModal = <
 
   useRKStore.setState({ wallets: list });
 
-  mount();
+  let init = false;
 
   return {
-    openModal: () => {
-      useRKStore.setState({ open: true });
+    modalOpenSubscribe,
+    openModal: (force = false) => {
+      if (!init) {
+        init = true;
+        mount();
+      }
+      useRKStore.getState().openModal(force);
     },
     closeModal: () => {
       useRKStore.setState({ open: false });
+    },
+    setTheme: (theme: Theme) => {
+      useRKStore.getState().setTheme(theme);
     },
   };
 };

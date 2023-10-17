@@ -3,13 +3,13 @@ import {
   InjectedConnector,
   InjectedConnectorOptions,
 } from "@wagmi/core";
-import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import {
   getMobileUri,
   getWalletConnectUri,
 } from "../../../helpers/getWalletConnectUri";
 import { WalletResult } from "../../type";
 import logo from "./logo";
+import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 
 declare global {
   interface Window {

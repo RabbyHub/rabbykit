@@ -54,7 +54,7 @@
     transform: translateX(100%);
     transition: transform 0.3s;
     padding: 20px;
-    background: var(--r-neutral-bg-2, #f2f4f7);
+    background: var(--r-neutral-bg-2);
     .back {
       position: absolute;
       transform: translateX(100%);

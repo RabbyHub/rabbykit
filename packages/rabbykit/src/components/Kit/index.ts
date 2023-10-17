@@ -17,10 +17,11 @@ export const mount = () => {
     mountNode.attachShadow({ mode: "open" });
     document.body.insertAdjacentElement("afterend", mountNode!);
   }
+
   // handle refresh
   const child = mountNode?.shadowRoot?.querySelector("[data-rabbykit]");
   if (child) {
-    window.location.reload();
+    // window.location.reload();
   }
 
   if (!child) {

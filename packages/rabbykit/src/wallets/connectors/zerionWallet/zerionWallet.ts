@@ -3,13 +3,13 @@ import {
   InjectedConnector,
   InjectedConnectorOptions,
 } from "@wagmi/core";
-import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { WalletResult } from "../../type";
 import logo from "./logo";
 import {
   getMobileUri,
   getWalletConnectUri,
 } from "../../../helpers/getWalletConnectUri";
+import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 
 export interface ZerionWalletOptions {
   projectId: string;
