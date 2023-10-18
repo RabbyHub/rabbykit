@@ -3,7 +3,7 @@
 import { BaseError } from "viem";
 import { useAccount, useConfig, useConnect, useDisconnect } from "wagmi";
 import { useEffect, useRef } from "react";
-import { createModal } from "rabbykit";
+import { createModal } from "@rabby-wallet/rabbykit";
 
 export function Connect() {
   const { connector, isConnected } = useAccount();
@@ -27,16 +27,36 @@ export function Connect() {
   return (
     <div>
       <div>
-        {isConnected && (
+        <div>
+          <button
+            onClick={() => {
+              rabbkKitRef.current?.setTheme("light");
+            }}
+          >
+            light mode
+          </button>
+          <button
+            onClick={() => {
+              rabbkKitRef.current?.setTheme("dark");
+            }}
+          >
+            dark mode
+          </button>
+        </div>
+
+        {/* {isConnected && (
           <button onClick={() => disconnect()}>
             Disconnect from {connector?.name}
           </button>
-        )}
+        )} */}
         {!isConnected && (
           <button onClick={() => rabbkKitRef.current?.openModal()}>
             open RabbyKit
           </button>
         )}
+        <button onClick={() => rabbkKitRef.current?.openModal(true)}>
+          force open RabbyKit
+        </button>
         {/* {connectors
           .filter((x) => x.ready && x.id !== connector?.id)
           .map((x) => (
