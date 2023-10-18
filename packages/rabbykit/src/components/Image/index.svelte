@@ -3,7 +3,7 @@
   export let src: string;
 </script>
 
-{#if src.includes("<svg")}
+{#if src?.includes("<svg")}
   {@html src}
 {:else}
   <img {src} alt={$$props.alt} loading="lazy" />

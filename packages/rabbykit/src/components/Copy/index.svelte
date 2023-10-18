@@ -17,7 +17,6 @@
       console.log("error", error);
     }
   }
-  console.log("copied", copied);
 </script>
 
 <div

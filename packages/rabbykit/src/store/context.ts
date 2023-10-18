@@ -77,7 +77,6 @@ export function syncAccount() {
   const { address, isConnected, status } = accountInfo;
   const { chain } = getNetwork();
 
-  console.log("status", status, accountInfo);
   if (isConnected && address && chain) {
     useRKStore.setState({ isConnected, address, chainId: chain.id });
   } else if (!isConnected) {

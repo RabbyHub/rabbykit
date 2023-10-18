@@ -7,6 +7,9 @@ import svelte from "rollup-plugin-svelte";
 import sveltePreprocess, { scss } from "svelte-preprocess";
 import replace from "@rollup/plugin-replace";
 
+//@ts-ignore
+import svgo from "rollup-plugin-svgo";
+
 import { dependencies, peerDependencies } from "./package.json";
 
 const production = !process.env.ROLLUP_WATCH;
@@ -28,6 +31,25 @@ export default defineConfig([
       sourcemap: true,
     },
     plugins: [
+      svgo({
+        plugins: [
+          {
+            name: "preset-default",
+            params: {
+              overrides: {
+                removeViewBox: false,
+              },
+            },
+          },
+          "removeDimensions",
+          {
+            name: "prefixIds",
+            params: {
+              prefixIds: true,
+            },
+          },
+        ],
+      }),
       json(),
       replace({
         "process.env.NODE_ENV": JSON.stringify(production),

@@ -58,7 +58,7 @@
     .back {
       position: absolute;
       transform: translateX(100%);
-      top: 20px;
+      top: 14px;
       left: 20px;
     }
 

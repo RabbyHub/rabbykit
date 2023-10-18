@@ -8,13 +8,6 @@
     useRKStore.getState().closeModal();
   }
 
-  // function back() {
-  //   useRKStore.setState({
-  //     page: "wallet",
-  //     currentWallet: undefined,
-  //   });
-  // }
-
   const html = document.documentElement;
 
   let htmlStyleCache: Record<string, string> = {};
@@ -90,11 +83,6 @@
   }
   .close {
     top: 16px;
-  }
-  .back {
-    right: initial;
-    top: 14px;
-    left: 14px;
   }
 
   .modal-overlay {
