@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { WagmiConfig } from "wagmi";
-import { createModal } from "rabbykit";
+// import { createModal } from "@rabby-wallet/rabbykit";
 
 import { config } from "../wagmi";
 
