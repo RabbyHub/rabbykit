@@ -1,7 +1,7 @@
 import type { InjectedConnectorOptions } from "@wagmi/core/connectors/injected";
 import { WalletResult } from "../../type";
 import { Chain, InjectedConnector } from "@wagmi/core";
-import logo from "./logo";
+import logo from "./logo.svg";
 
 export interface PhantomWalletOptions {
   chains: Chain[];

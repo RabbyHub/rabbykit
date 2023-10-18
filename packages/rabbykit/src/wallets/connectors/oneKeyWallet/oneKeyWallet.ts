@@ -1,6 +1,6 @@
 import { Chain, InjectedConnector } from "@wagmi/core";
 import { WalletResult } from "../../type";
-import logo from "./logo";
+import logo from "./logo.svg";
 
 export interface OnekeyWalletOptions {
   chains: Chain[];

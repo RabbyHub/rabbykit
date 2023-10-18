@@ -4,7 +4,7 @@ import {
   InjectedConnector,
   InjectedConnectorOptions,
 } from "@wagmi/core";
-import logo from "./logo";
+import logo from "./logo.svg";
 
 export interface BraveWalletOptions {
   chains: Chain[];

@@ -6,7 +6,7 @@ import {
   getMobileUri,
   getWalletConnectUri,
 } from "../../../helpers/getWalletConnectUri";
-import logo from "./logo";
+import logo from "./logo.svg";
 export interface BitKeepWalletOptions {
   projectId: string;
   chains: Chain[];

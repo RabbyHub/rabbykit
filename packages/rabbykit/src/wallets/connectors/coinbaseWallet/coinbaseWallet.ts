@@ -1,6 +1,6 @@
 import { Chain } from "@wagmi/core";
 import { CoinbaseWalletConnector } from "@wagmi/core/connectors/coinbaseWallet";
-import logo from "./logo";
+import logo from "./logo.svg";
 import { WalletResult } from "../../type";
 
 export interface CoinbaseWalletOptions {

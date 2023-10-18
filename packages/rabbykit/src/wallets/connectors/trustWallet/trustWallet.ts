@@ -8,7 +8,7 @@ import {
   getWalletConnectUri,
 } from "../../../helpers/getWalletConnectUri";
 import { WalletResult } from "../../type";
-import logo from "./logo";
+import logo from "./logo.svg";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 
 declare global {

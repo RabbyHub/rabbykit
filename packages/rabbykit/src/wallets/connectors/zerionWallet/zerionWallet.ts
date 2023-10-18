@@ -4,7 +4,7 @@ import {
   InjectedConnectorOptions,
 } from "@wagmi/core";
 import { WalletResult } from "../../type";
-import logo from "./logo";
+import logo from "./logo.svg";
 import {
   getMobileUri,
   getWalletConnectUri,

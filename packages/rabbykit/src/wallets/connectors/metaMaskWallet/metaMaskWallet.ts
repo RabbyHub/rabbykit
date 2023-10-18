@@ -10,7 +10,7 @@ import {
   getWalletConnectUri,
 } from "../../../helpers/getWalletConnectUri";
 import { isMetaMask } from "../../../helpers/wallet";
-import logo from "./logo";
+import logo from "./logo.svg";
 
 export interface MetaMaskWalletOptions {
   projectId: string;

@@ -4,7 +4,7 @@ import {
   SafeConnectorOptions,
 } from "@wagmi/core/connectors/safe";
 import { WalletResult } from "../../type";
-import logo from "./logo";
+import logo from "./logo.svg";
 
 export interface SafeWalletOptions {
   chains: Chain[];
