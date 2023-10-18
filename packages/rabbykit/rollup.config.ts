@@ -6,6 +6,7 @@ import { dts } from "rollup-plugin-dts";
 import svelte from "rollup-plugin-svelte";
 import sveltePreprocess, { scss } from "svelte-preprocess";
 import replace from "@rollup/plugin-replace";
+import crypto from "crypto";
 
 //@ts-ignore
 import svgo from "rollup-plugin-svgo";
@@ -38,14 +39,28 @@ export default defineConfig([
             params: {
               overrides: {
                 removeViewBox: false,
+                cleanupIDs: {
+                  prefix: {
+                    toString() {
+                      return crypto.randomBytes(6).toString("hex").slice(0, 4);
+                    },
+                  },
+                },
               },
             },
           },
           "removeDimensions",
           {
-            name: "prefixIds",
+            name: "addAttributesToSVGElement",
             params: {
-              prefixIds: true,
+              attributes: [
+                {
+                  width: "100%",
+                },
+                {
+                  height: "100%",
+                },
+              ],
             },
           },
         ],
