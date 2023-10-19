@@ -8,16 +8,15 @@
   export let wallet: WalletResult;
   let logo: string = wallet.logo;
   let uri: string =
-    wallet.downloadUrls?.edge || wallet.downloadUrls?.chrome || "";
+    wallet.downloadUrls?.chrome || wallet.downloadUrls?.edge || "";
   let name: string = wallet.name;
-
   let browser = getBrowser();
 
   $: {
     if (browser === BrowserType.Safari && !wallet.downloadUrls?.[browser]) {
       browser = BrowserType.Chrome;
-      uri = wallet.downloadUrls?.edge || wallet.downloadUrls?.chrome || "";
     }
+    uri = wallet?.downloadUrls?.[browser] || uri;
   }
 </script>
 
