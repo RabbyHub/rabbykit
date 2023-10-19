@@ -38,7 +38,8 @@
   ],
   "scripts": {
     "dev": "rollup -c rollup.config.ts -w --configPlugin swc3 --bundleConfigAsCjs",
-    "build": "rm -rf ./dist &&rollup -c rollup.config.ts --configPlugin swc3 --bundleConfigAsCjs"
+    "build": "rm -rf ./dist &&rollup -c rollup.config.ts --configPlugin swc3 --bundleConfigAsCjs",
+    "prepublishOnly": "pnpm run build"
   },
   "keywords": [],
   "license": "ISC",
@@ -49,6 +50,7 @@
   },
   "dependencies": {
     "clsx": "^2.0.0",
+    "dequal": "^2.0.3",
     "qrcode": "^1.5.3",
     "react": ">=16.8",
     "svelte": "^4.2.1",
@@ -60,6 +62,9 @@
       "optional": true
     },
     "react-dom": {
+      "optional": true
+    },
+    "wagmi": {
       "optional": true
     }
   },

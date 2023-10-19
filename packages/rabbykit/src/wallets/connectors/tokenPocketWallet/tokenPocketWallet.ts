@@ -4,6 +4,7 @@ import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import { WalletResult } from "../../type";
 import {
   getMobileUri,
+  getWalletConnectConnector,
   getWalletConnectUri,
 } from "../../../helpers/getWalletConnectUri";
 import logo from "./logo.svg";
@@ -22,7 +23,7 @@ export const tokenPocketWallet = ({
   const isTokenPocketInjected =
     typeof window !== "undefined" && window.ethereum?.isTokenPocket === true;
 
-  const walletConnector = new WalletConnectConnector({
+  const walletConnector = getWalletConnectConnector({
     chains,
     options: {
       projectId,

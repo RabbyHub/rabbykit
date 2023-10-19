@@ -7,6 +7,7 @@ import { WalletResult } from "../../type";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import {
   getMobileUri,
+  getWalletConnectConnector,
   getWalletConnectUri,
 } from "../../../helpers/getWalletConnectUri";
 import { isMetaMask } from "../../../helpers/wallet";
@@ -28,7 +29,7 @@ export const metaMaskWallet = ({
     typeof window.ethereum !== "undefined" &&
     (window.ethereum.providers?.some(isMetaMask) || window.ethereum.isMetaMask);
 
-  const walletConnector = new WalletConnectConnector({
+  const walletConnector = getWalletConnectConnector({
     chains,
     options: {
       projectId,

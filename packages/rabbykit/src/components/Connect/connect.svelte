@@ -3,8 +3,9 @@
 
   import svelteStore from "../../store/context";
   import { WalletResult } from "../../wallets/type";
-  import { connect } from "@wagmi/core";
+  import { connect, disconnect, getAccount } from "@wagmi/core";
   import Image from "../Image/index.svelte";
+  import { onMount } from "svelte";
 
   export let wallet: WalletResult;
 
@@ -17,6 +18,22 @@
   };
 
   let status: "loading" | "success" | "failed" = "loading";
+
+  async function handleConnect() {
+    if (getAccount()?.isConnected) {
+      await disconnect();
+    }
+    const { browser } = wallet.connector;
+    if (browser) {
+      connect({ connector: browser });
+    } else {
+      throw new Error("no available connector");
+    }
+  }
+
+  onMount(() => {
+    handleConnect();
+  });
 
   $: {
     if (["connecting", "reconnecting"].includes($svelteStore.status)) {

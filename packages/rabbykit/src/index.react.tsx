@@ -2,6 +2,7 @@
 import { useConfig } from "wagmi";
 import { createModal } from "./index";
 import React, { useEffect, useRef, useState } from "react";
+import { useRKStore } from "./store";
 
 const Context: React.Context<ReturnType<typeof createModal> | undefined> =
   React.createContext<ReturnType<typeof createModal> | undefined>(undefined);
@@ -39,12 +40,32 @@ export const RabbyKitProvider = ({
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
-export const useRkModal = () => {
+export const useRabbykitModal = () => {
   const value = React.useContext(Context);
 
   if (!value) {
-    throw new Error("RabbyKitProvider");
+    throw new Error(
+      "useRabbykitModalStatus must be used inside RabbyKitProvider"
+    );
   }
 
-  return (b: boolean) => (b ? value?.openModal() : value?.closeModal());
+  return { open, close };
+};
+
+export const useRabbykitModalStatus = () => {
+  const value = React.useContext(Context);
+  if (!value) {
+    throw new Error(
+      "useRabbykitModalStatus must be used inside RabbyKitProvider"
+    );
+  }
+  const [open, setOpen] = useState(useRKStore.getState().open);
+  useEffect(
+    () =>
+      value.subscribeModalState((e) => {
+        setOpen(e);
+      }),
+    [value.subscribeModalState]
+  );
+  return open;
 };

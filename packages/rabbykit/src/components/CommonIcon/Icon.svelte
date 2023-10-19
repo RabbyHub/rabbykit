@@ -13,7 +13,6 @@
   export let name: keyof typeof icons;
   export let width = "20px";
   export let height = "20px";
-  export let focusable: string | number | null | undefined = undefined;
   export let hover: boolean = true;
 
   let icons = {
@@ -33,7 +32,7 @@
 <button
   style={`--icon-width:${width};--icon-height:${height}`}
   class={clsx("icon", $$props.class)}
-  class:hoverable={hover}
+  class:hover
   on:click
 >
   {@html displayIcon}
@@ -46,7 +45,7 @@
     justify-content: center;
     padding: 6px;
     cursor: pointer;
-    &.hoverable:hover {
+    &.hover:hover {
       border-radius: 4px;
       background: var(--r-neutral-card-3, #f7fafc);
     }

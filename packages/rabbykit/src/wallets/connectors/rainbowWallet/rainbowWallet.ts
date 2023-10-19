@@ -8,6 +8,7 @@ import { WalletResult } from "../../type";
 import { getWalletProviderByFlag } from "../../../helpers/wallet";
 import {
   getMobileUri,
+  getWalletConnectConnector,
   getWalletConnectUri,
 } from "../../../helpers/getWalletConnectUri";
 import logo from "./logo.svg";
@@ -26,7 +27,7 @@ export const rainbowWallet = ({
   const rainbowWalletProvider = getWalletProviderByFlag("isRainbow");
   const isRainbowInjected = !!rainbowWalletProvider;
 
-  const walletConnector = new WalletConnectConnector({
+  const walletConnector = getWalletConnectConnector({
     chains,
     options: {
       projectId,

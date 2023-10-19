@@ -3,6 +3,7 @@ import type { InjectedConnectorOptions } from "@wagmi/core/connectors/injected";
 import { WalletResult } from "../../type";
 import {
   getMobileUri,
+  getWalletConnectConnector,
   getWalletConnectUri,
 } from "../../../helpers/getWalletConnectUri";
 import logo from "./logo.svg";
@@ -57,7 +58,7 @@ export const coreWallet = ({
 }: CoreWalletOptions & InjectedConnectorOptions): WalletResult => {
   const isCoreInjected = Boolean(getCoreWalletInjectedProvider());
 
-  const walletConnector = new WalletConnectConnector({
+  const walletConnector = getWalletConnectConnector({
     chains,
     options: {
       projectId,

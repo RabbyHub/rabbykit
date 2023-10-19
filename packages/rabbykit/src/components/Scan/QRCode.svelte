@@ -1,8 +1,6 @@
 <script lang="ts">
   import QRCodeUtil from "qrcode";
   import Image from "../Image/index.svelte";
-  import { fly } from "svelte/transition";
-  import { quadOut } from "svelte/easing";
 
   export let loading: boolean;
   export let logo: string;

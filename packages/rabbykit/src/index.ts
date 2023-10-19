@@ -4,7 +4,7 @@ import {
   PublicClient,
   WebSocketPublicClient,
 } from "@wagmi/core";
-import { Theme, modalOpenSubscribe, syncAccount, useRKStore } from "./store";
+import { modalOpenSubscribe, syncAccount, useRKStore } from "./store";
 import {
   rabbyWallet,
   metaMaskWallet,
@@ -29,6 +29,8 @@ import {
 } from "./wallets/connectors";
 import { mount } from "./components/Kit";
 import "./helpers/i18n";
+import { RabbyKitModal, Theme } from "./type";
+import { sharedWalletConnectConnectors } from "./helpers/getWalletConnectUri";
 
 export const createModal = <
   TPublicClient extends PublicClient = PublicClient,
@@ -41,7 +43,7 @@ export const createModal = <
   appName: string;
   projectId: string;
   wagmi: Config<TPublicClient, TWebSocketPublicClient>;
-}) => {
+}): RabbyKitModal => {
   useRKStore.setState({ wagmi });
 
   watchAccount(() => syncAccount());
@@ -77,15 +79,15 @@ export const createModal = <
     })
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  const allConnect: any[] = [];
-
   if (wagmi.args.autoConnect) {
-    list.forEach((e) => {
-      e.connector.browser && allConnect.push(e.connector.browser);
-      e.connector.mobile?.connector &&
-        allConnect.push(e.connector.mobile?.connector);
-    });
-    wagmi.setConnectors(allConnect);
+    const allConnectors: any = [...sharedWalletConnectConnectors.values()];
+    list
+      .filter((e) => !!e.connector.browser?.ready)
+      .forEach((e) => {
+        e.connector.browser && allConnectors.push(e.connector.browser);
+      });
+
+    wagmi.setConnectors([...(wagmi?.connectors || []), ...allConnectors]);
     wagmi.autoConnect();
   }
 
@@ -104,15 +106,15 @@ export const createModal = <
   let init = false;
 
   return {
-    modalOpenSubscribe,
-    openModal: (force = false) => {
+    subscribeModalState: modalOpenSubscribe,
+    open: (force = false) => {
       if (!init) {
         init = true;
         mount();
       }
       useRKStore.getState().openModal(force);
     },
-    closeModal: () => {
+    close: () => {
       useRKStore.setState({ open: false });
     },
     setTheme: (theme: Theme) => {

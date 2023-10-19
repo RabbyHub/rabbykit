@@ -7,6 +7,7 @@ import { WalletResult } from "../../type";
 import logo from "./logo.svg";
 import {
   getMobileUri,
+  getWalletConnectConnector,
   getWalletConnectUri,
 } from "../../../helpers/getWalletConnectUri";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
@@ -29,7 +30,7 @@ export const zerionWallet = ({
       // @ts-expect-error
       typeof window.zerionWallet !== "undefined");
 
-  const walletConnector = new WalletConnectConnector({
+  const walletConnector = getWalletConnectConnector({
     chains,
     options: {
       projectId,

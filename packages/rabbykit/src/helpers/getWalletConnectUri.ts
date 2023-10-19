@@ -1,19 +1,28 @@
 import type { Connector } from "@wagmi/core/connectors";
 import { isAndroid, isMobile } from "./browser";
-// import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
+import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
+import { dequal } from "dequal";
 
-// export const getWalletConnect = () => {
-//   let wc: WalletConnectConnector;
-//   return (params: {
-//     chains: WalletConnectConnector["chains"];
-//     options: WalletConnectConnector["options"];
-//   }) => {
-//     if (!wc) {
-//       wc = new WalletConnectConnector(params);
-//     }
-//     return wc;
-//   };
-// };
+const allParams: any[] = [];
+export const sharedWalletConnectConnectors = new Map<
+  Object,
+  WalletConnectConnector
+>();
+
+export const getWalletConnectConnector = (params: {
+  chains: WalletConnectConnector["chains"];
+  options: WalletConnectConnector["options"];
+}) => {
+  const key = allParams.find((e) => dequal(params, e));
+  if (key) {
+    return sharedWalletConnectConnectors.get(key)!;
+  }
+  allParams.push(params);
+  const connector = new WalletConnectConnector(params);
+
+  sharedWalletConnectConnectors.set(params, connector);
+  return connector;
+};
 
 export async function getWalletConnectUri(
   connector: Connector

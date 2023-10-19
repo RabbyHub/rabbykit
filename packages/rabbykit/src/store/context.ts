@@ -11,10 +11,11 @@ import {
 import { WalletResult } from "../wallets/type";
 import { SUPPORT_LANGUAGES } from "../helpers";
 import zustandToSvelte from "../helpers/zustandToSvelte";
+import { Theme } from "../type";
+import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 
 type Tab = "browser" | "mobile";
 type Page = "wallet" | "connect" | "download";
-export type Theme = "light" | "dark" | "system";
 interface Store<
   TPublicClient extends PublicClient = PublicClient,
   TWebSocketPublicClient extends WebSocketPublicClient = WebSocketPublicClient
@@ -39,6 +40,9 @@ interface Store<
   address?: string;
   chainId?: number;
   wallets?: WalletResult[];
+
+  uri?: string;
+  walletConnectConnector?: WalletConnectConnector;
 }
 
 export const useRKStore = createStore<Store<any, any>>()(
@@ -51,7 +55,6 @@ export const useRKStore = createStore<Store<any, any>>()(
     open: false,
     openModal: (force = false) => {
       if (force || get().status !== "connected") {
-        console.log("get().status", get().status);
         set({ open: true });
       }
     },
@@ -74,8 +77,9 @@ export const modalOpenSubscribe = (fn: (open: boolean) => void) => {
 
 export function syncAccount() {
   const accountInfo = getAccount();
-  const { address, isConnected, status } = accountInfo;
+  const { address, isConnected, isDisconnected, status } = accountInfo;
   const { chain } = getNetwork();
+  console.log("status", status);
 
   if (isConnected && address && chain) {
     useRKStore.setState({ isConnected, address, chainId: chain.id });
@@ -83,6 +87,9 @@ export function syncAccount() {
     useRKStore.setState({ isConnected, address: undefined });
   }
 
+  if (isDisconnected) {
+    useRKStore.setState({ uri: undefined });
+  }
   useRKStore.setState({ status: status });
 }
 

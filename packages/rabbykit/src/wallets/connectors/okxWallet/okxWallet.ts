@@ -5,6 +5,7 @@ import { WalletResult } from "../../type";
 import logo from "./logo.svg";
 import {
   getMobileUri,
+  getWalletConnectConnector,
   getWalletConnectUri,
 } from "../../../helpers/getWalletConnectUri";
 
@@ -25,7 +26,7 @@ export const okxWallet = ({
     // @ts-expect-error
     typeof window.okxwallet !== "undefined";
 
-  const walletConnector = new WalletConnectConnector({
+  const walletConnector = getWalletConnectConnector({
     chains,
     options: {
       projectId,

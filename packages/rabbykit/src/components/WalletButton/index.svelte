@@ -1,6 +1,6 @@
 <script lang="ts">
   import Image from "../Image/index.svelte";
-  import { connect, disconnect, getAccount } from "@wagmi/core";
+  import { connect, disconnect, getAccount, getConfig } from "@wagmi/core";
   import { WalletResult } from "../../wallets/type";
   import { useRKStore } from "../../store/context";
   import clsx from "clsx";
@@ -12,9 +12,6 @@
   let isReady = !!browser?.ready;
 
   const handleConnect = async () => {
-    if (type !== "unused" && getAccount()?.isConnected) {
-      await disconnect();
-    }
     if (browser && isReady && type === "browser") {
       useRKStore.setState({
         page: "connect",
@@ -22,18 +19,10 @@
         type,
         status: "connecting",
       });
-      connect({ connector: browser });
       return;
     }
 
     if (type === "mobile") {
-      if (wallet.connector?.qrCode?.connector || wallet.connector?.browser) {
-        connect({
-          connector:
-            wallet.connector?.qrCode?.connector! || wallet.connector?.browser!,
-        });
-      }
-
       useRKStore.setState({
         page: "connect",
         currentWallet: wallet,

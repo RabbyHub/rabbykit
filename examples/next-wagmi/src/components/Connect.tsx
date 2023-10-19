@@ -11,12 +11,12 @@ export function Connect() {
     useConnect();
   const { disconnect } = useDisconnect();
 
-  const rabbkKitRef = useRef<ReturnType<typeof createModal>>();
+  const rabbyKitRef = useRef<ReturnType<typeof createModal>>();
   const config = useConfig();
 
   useEffect(() => {
-    if (!rabbkKitRef.current) {
-      rabbkKitRef.current = createModal({
+    if (!rabbyKitRef.current) {
+      rabbyKitRef.current = createModal({
         wagmi: config,
         appName: "test",
         projectId: "58a22d2bc1c793fc31c117ad9ceba8d9",
@@ -27,34 +27,41 @@ export function Connect() {
   return (
     <div>
       <div>
-        <div>
-          <button
-            onClick={() => {
-              rabbkKitRef.current?.setTheme("light");
-            }}
-          >
-            light mode
-          </button>
-          <button
-            onClick={() => {
-              rabbkKitRef.current?.setTheme("dark");
-            }}
-          >
-            dark mode
-          </button>
-        </div>
-
-        {/* {isConnected && (
+        {isConnected && (
           <button onClick={() => disconnect()}>
             Disconnect from {connector?.name}
           </button>
-        )} */}
+        )}
+
+        <br />
+
+        <button
+          onClick={() => {
+            rabbyKitRef.current?.setTheme("light");
+          }}
+        >
+          light mode
+        </button>
+
+        <br />
+
+        <button
+          onClick={() => {
+            rabbyKitRef.current?.setTheme("dark");
+          }}
+        >
+          dark mode
+        </button>
+        <br />
+
         {!isConnected && (
-          <button onClick={() => rabbkKitRef.current?.openModal()}>
+          <button onClick={() => rabbyKitRef.current?.open()}>
             open RabbyKit
           </button>
         )}
-        <button onClick={() => rabbkKitRef.current?.openModal(true)}>
+        <br />
+
+        <button onClick={() => rabbyKitRef.current?.open(true)}>
           force open RabbyKit
         </button>
         {/* {connectors
