@@ -15,7 +15,7 @@
     "build:examples": "pnpm run build:kit && pnpm --filter=\"./examples/next-wagmi\" build",
     "dev:kit": "pnpm --filter=rabbykit dev",
     "build:kit": "pnpm --filter=rabbykit build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "spellcheck": "cspell lint . --no-must-find-files"
   },
   "keywords": [],
   "author": "",
@@ -31,5 +31,8 @@
     "rollup-plugin-swc3": "^0.10.1",
     "rollup-swc-preserve-directives": "^0.5.0",
     "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "cspell": "^7.3.8"
   }
 }
