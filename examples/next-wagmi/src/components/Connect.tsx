@@ -38,6 +38,7 @@ export function Connect() {
         <button
           onClick={() => {
             rabbyKitRef.current?.setTheme("light");
+            rabbyKitRef.current?.open(true);
           }}
         >
           light mode
@@ -48,6 +49,7 @@ export function Connect() {
         <button
           onClick={() => {
             rabbyKitRef.current?.setTheme("dark");
+            rabbyKitRef.current?.open(true);
           }}
         >
           dark mode
