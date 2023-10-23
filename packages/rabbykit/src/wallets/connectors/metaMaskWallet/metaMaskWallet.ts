@@ -24,10 +24,7 @@ export const metaMaskWallet = ({
   projectId,
   ...options
 }: MetaMaskWalletOptions & MetaMaskConnectorOptions): WalletResult => {
-  const isMetaMaskInjected =
-    typeof window !== "undefined" &&
-    typeof window.ethereum !== "undefined" &&
-    (window.ethereum.providers?.some(isMetaMask) || window.ethereum.isMetaMask);
+  const isMetaMaskInjected = isMetaMask();
 
   const walletConnector = getWalletConnectConnector({
     chains,

@@ -30,7 +30,10 @@ import {
 import { mount } from "./components/Kit";
 import "./helpers/i18n";
 import { RabbyKitModal, Theme } from "./type";
-import { sharedWalletConnectConnectors } from "./helpers/getWalletConnectUri";
+import {
+  getCommonWalletConnect,
+  sharedWalletConnectConnectors,
+} from "./helpers/getWalletConnectUri";
 
 export const createModal = <
   TPublicClient extends PublicClient = PublicClient,
@@ -87,7 +90,11 @@ export const createModal = <
         e.connector.browser && allConnectors.push(e.connector.browser);
       });
 
-    wagmi.setConnectors([...(wagmi?.connectors || []), ...allConnectors]);
+    wagmi.setConnectors([
+      ...(wagmi?.connectors || []),
+      getCommonWalletConnect({ chains, projectId }),
+      ...allConnectors,
+    ]);
     wagmi.autoConnect();
   }
 

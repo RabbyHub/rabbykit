@@ -43,6 +43,8 @@ interface Store<
 
   uri?: string;
   walletConnectConnector?: WalletConnectConnector;
+
+  customButtons?: { name: string; logo: string; onClick: () => void }[];
 }
 
 export const useRKStore = createStore<Store<any, any>>()(

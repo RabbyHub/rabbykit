@@ -2,6 +2,7 @@ import { Chain } from "@wagmi/core";
 import { CoinbaseWalletConnector } from "@wagmi/core/connectors/coinbaseWallet";
 import logo from "./logo.svg";
 import { WalletResult } from "../../type";
+import { getWalletProvider } from "../../../helpers/wallet";
 
 export interface CoinbaseWalletOptions {
   appName: string;
@@ -13,8 +14,7 @@ export const coinbaseWallet = ({
   chains,
   ...options
 }: CoinbaseWalletOptions): WalletResult<CoinbaseWalletConnector> => {
-  const isCoinbaseWalletInjected =
-    typeof window !== "undefined" && window.ethereum?.isCoinbaseWallet === true;
+  const isCoinbaseWalletInjected = !!getWalletProvider("isCoinbaseWallet");
 
   const connector = new CoinbaseWalletConnector({
     chains,

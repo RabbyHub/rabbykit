@@ -5,7 +5,7 @@ import {
 } from "@wagmi/core";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import { WalletResult } from "../../type";
-import { getWalletProviderByFlag } from "../../../helpers/wallet";
+import { getWalletProvider } from "../../../helpers/wallet";
 import {
   getMobileUri,
   getWalletConnectConnector,
@@ -24,7 +24,7 @@ export const rainbowWallet = ({
   projectId,
   ...options
 }: RainbowWalletOptions & InjectedConnectorOptions): WalletResult => {
-  const rainbowWalletProvider = getWalletProviderByFlag("isRainbow");
+  const rainbowWalletProvider = getWalletProvider("isRainbow");
   const isRainbowInjected = !!rainbowWalletProvider;
 
   const walletConnector = getWalletConnectConnector({

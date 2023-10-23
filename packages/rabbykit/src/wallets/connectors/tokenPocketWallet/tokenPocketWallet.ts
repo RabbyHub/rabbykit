@@ -8,6 +8,7 @@ import {
   getWalletConnectUri,
 } from "../../../helpers/getWalletConnectUri";
 import logo from "./logo.svg";
+import { getWalletProvider } from "../../../helpers/wallet";
 
 export interface TokenPocketWalletOptions {
   projectId: string;
@@ -18,17 +19,17 @@ export interface TokenPocketWalletOptions {
 export const tokenPocketWallet = ({
   chains,
   projectId,
-  walletConnectOptions,
+  ...options
 }: TokenPocketWalletOptions & InjectedConnectorOptions): WalletResult => {
-  const isTokenPocketInjected =
-    typeof window !== "undefined" && window.ethereum?.isTokenPocket === true;
+  const provider = getWalletProvider("isTokenPocket");
+  const isTokenPocketInjected = !!provider;
 
   const walletConnector = getWalletConnectConnector({
     chains,
     options: {
       projectId,
       showQrModal: false,
-      ...walletConnectOptions,
+      ...options.walletConnectOptions,
     },
   });
 
@@ -45,7 +46,13 @@ export const tokenPocketWallet = ({
       ios: "https://apps.apple.com/us/app/tp-global-wallet/id6444625622",
     },
     connector: {
-      browser: new InjectedConnector({ chains }),
+      browser: new InjectedConnector({
+        chains,
+        options: {
+          getProvider: () => provider,
+          ...options,
+        },
+      }),
       qrCode: {
         getUri: () => getWalletConnectUri(walletConnector),
         connector: walletConnector,

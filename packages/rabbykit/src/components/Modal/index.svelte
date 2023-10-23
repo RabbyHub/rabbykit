@@ -3,10 +3,13 @@
   import { useRKStore } from "../../store";
   import useStore from "../../store/context";
   import Icon from "../CommonIcon/Icon.svelte";
+  import { fade, scale } from "svelte/transition";
 
   function close() {
     useRKStore.getState().closeModal();
   }
+
+  let isMobile = true;
 
   const html = document.documentElement;
 
@@ -33,11 +36,11 @@
   });
 </script>
 
-<div class="modal">
+<div class="modal" transition:fade={{ duration: 100 }}>
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
-  <div class="modal-overlay" on:click={close} />
-  <div class="modal-content">
+  <div class="modal-overlay" class:mobile={isMobile} on:click={close} />
+  <div class="modal-content" class:mobile={isMobile}>
     <div class="icon" class:close={$useStore.page === "wallet"}>
       {#if $useStore.page === "wallet"}
         <Icon name="close" on:click={close} />
@@ -49,7 +52,7 @@
   </div>
 </div>
 
-<style>
+<style lang="scss">
   .modal {
     position: fixed;
     top: 0;
@@ -73,6 +76,18 @@
     background: var(--r-neutral-bg-2);
     box-shadow: 0px 24px 80px 0px rgba(0, 0, 0, 0.2);
     overflow: hidden;
+
+    &.mobile {
+      width: 100vw;
+      max-width: 100vw;
+      height: auto;
+      top: initial;
+      left: 0;
+      bottom: 0;
+      transform: translateZ(0);
+      box-shadow: 0px -8px 8px 0px rgba(0, 0, 0, 0.08);
+      border-radius: 16px 16px 0px 0px;
+    }
   }
 
   .icon {
@@ -92,5 +107,8 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
+    &.mobile {
+      background-color: transparent;
+    }
   }
 </style>

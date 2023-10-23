@@ -1,17 +1,19 @@
 <script lang="ts">
   import WalletButton from "../WalletButton/index.svelte";
   import { _ as t } from "svelte-i18n";
-  import useStore from "../../store/context";
+  import useStore, { useRKStore } from "../../store/context";
   import { isSupportBrowser } from "../../helpers/wallet";
-  export let active: "browser" | "mobile";
-  export let onChange: (tab: "browser" | "mobile") => void;
-
-  let detected = true;
+  import Button from "../WalletButton/button.svelte";
+  import scan from "./scan.svg";
+  import {
+    commonWalletConnect,
+    getWalletConnectUri,
+  } from "../../helpers/getWalletConnectUri";
+  import logo from "./walletConnect.svg";
 
   const list = $useStore.wallets || [];
 
   const browserList = list.filter((w) => isSupportBrowser(w));
-  const mobileList = list.filter((w) => !!w.connector?.qrCode?.getUri);
 
   const readyBrowserList = browserList.filter(
     (w) => w.installed && !!w.connector.browser?.ready
@@ -21,79 +23,76 @@
     (w) => !w.installed || !w.connector.browser?.ready
   );
 
-  if (!readyBrowserList.length) {
-    detected = false;
-  }
+  const handleScan = () => {
+    useRKStore.setState({
+      page: "connect",
+      currentWallet: {
+        id: "walletConnect",
+        logo,
+        name: "Mobile Wallet",
+        connector: {
+          qrCode: {
+            getUri: () => getWalletConnectUri(commonWalletConnect!),
+            connector: commonWalletConnect,
+          },
+        },
+      },
+      type: "mobile",
+      status: "connecting",
+    });
+  };
 </script>
 
 <div class="scroll">
-  <div class="container">
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <!-- svelte-ignore a11y-no-static-element-interactions -->
-    <div
-      class="item"
-      class:active={active === "browser"}
-      on:click={() => {
-        onChange("browser");
-      }}
-    >
-      {$t("Browser Wallet")}
-    </div>
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <!-- svelte-ignore a11y-no-static-element-interactions -->
-    <div
-      class="item"
-      class:active={active === "mobile"}
-      on:click={() => {
-        onChange("mobile");
-      }}
-    >
-      {$t("Mobile Wallet")}
-    </div>
-  </div>
+  <div class="title">Select your wallet to login</div>
+  <div class="ready-wallet-container">
+    {#each readyBrowserList as wallet}
+      <WalletButton {wallet} type="browser" />
+    {/each}
 
-  {#if active === "browser"}
-    {#if detected}
-      <div class="wallet-container" style="margin-bottom:32px">
-        {#each readyBrowserList as wallet}
-          <WalletButton className="wallet" {wallet} type="browser" />
-        {/each}
-      </div>
-      <div class="sub-title">
-        {$t(
-          "The following wallets are not installed or in conflict with others"
-        )}
-      </div>
-      <div class="wallet-container">
-        {#each unusedBrowserList as wallet}
-          <WalletButton className="wallet" {wallet} type="unused" />
-        {/each}
-      </div>
-    {:else}
-      <div class="sub-title">
-        {$t(
-          "No wallet found. The following wallets are not installed or in conflict with others"
-        )}
-      </div>
-      <div class="wallet-container">
-        {#each browserList as wallet}
-          <WalletButton className="wallet" {wallet} type="unused" />
-        {/each}
-      </div>
-    {/if}
-  {:else}
-    <div class="sub-title">{$t("Scan with mobile wallets to connect")}</div>
-    <div class="wallet-container">
-      {#each mobileList as wallet}
-        <WalletButton className="wallet" {wallet} type="mobile" />
+    <Button
+      type="browser"
+      name={"Scan with Mobile Wallet"}
+      logo={scan}
+      on:click={handleScan}
+    />
+    {#if $useStore.customButtons}
+      {#each $useStore.customButtons as b}
+        <Button
+          type="browser"
+          name={b.name}
+          logo={b.logo}
+          on:click={b.onClick}
+        />
       {/each}
-    </div>
-  {/if}
+    {/if}
+  </div>
+  <div class="sub-title">
+    {$t("The following wallets are not installed or in conflict with others")}
+  </div>
+  <div class="wallet-container">
+    {#each unusedBrowserList as wallet}
+      <WalletButton {wallet} type="unused" />
+    {/each}
+  </div>
 
   <div class="rk-tip">{$t("Powered by RabbyKit")}</div>
 </div>
 
 <style lang="scss">
+  .title {
+    background: var(--r-neutral-bg-2);
+    position: sticky;
+    top: 0;
+    left: 0;
+    margin: 0 0 0 -20px;
+    padding: 0 20px;
+    padding-bottom: 16px;
+    color: var(--r-neutral-title-1);
+    text-align: center;
+    font-size: 18px;
+    font-weight: 510;
+  }
   .scroll {
     height: 100%;
     max-height: 100%;
@@ -106,41 +105,16 @@
       display: none; /* Safari and Chrome */
     }
   }
-  .container {
-    background: var(--r-neutral-bg-2);
-    position: sticky;
-    top: 0;
-    left: 0;
-    display: flex;
-    margin: 0 0 0 -20px;
-    padding-left: 20px;
-    gap: 20px;
-    margin-bottom: 20px;
-  }
-  .item {
-    color: var(--r-neutral-body);
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 510;
-    line-height: normal;
-    padding-bottom: 4px;
-    cursor: pointer;
-    &:not(.active):hover {
-      color: var(--r-neutral-title-1);
-    }
 
-    &.active {
-      color: var(--r-blue-default);
-      position: relative;
-      &::after {
-        position: absolute;
-        content: "";
-        width: 100%;
-        height: 2px;
-        background: var(--r-blue-default);
-        left: 0;
-        bottom: 0;
-      }
+  .ready-wallet-container {
+    display: flex;
+    flex-direction: column;
+    padding-right: 20px;
+    & > :global(button) {
+      margin-bottom: 12px;
+    }
+    & > :global(button:last-child) {
+      margin-bottom: 20px;
     }
   }
 
@@ -157,7 +131,7 @@
   }
 
   .sub-title {
-    color: var(--r-neutral-foot, #6a7587);
+    color: var(--r-neutral-foot);
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
@@ -168,7 +142,7 @@
     margin-top: 26px;
     margin-bottom: 20px;
     padding-right: 20px;
-    color: var(--r-neutral-foot, #6a7587);
+    color: var(--r-neutral-foot);
     text-align: center;
     font-size: 12px;
   }

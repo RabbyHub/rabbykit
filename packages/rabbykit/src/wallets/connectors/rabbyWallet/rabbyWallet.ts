@@ -5,7 +5,7 @@ import {
 } from "@wagmi/core";
 import logo from "./logo.svg";
 import { WalletResult } from "../../type";
-import { isRabby } from "../../../helpers/wallet";
+import { getWalletProvider, isRabby } from "../../../helpers/wallet";
 
 export interface RabbyWalletOptions {
   chains: Chain[];
@@ -14,7 +14,8 @@ export const rabbyWallet = ({
   chains,
   ...options
 }: RabbyWalletOptions & InjectedConnectorOptions): WalletResult => {
-  const isInstalled = isRabby();
+  const provider = getWalletProvider("isRabby");
+  const isInstalled = !!provider;
 
   return {
     id: "rabby",
@@ -26,7 +27,13 @@ export const rabbyWallet = ({
     },
     installed: isInstalled,
     connector: {
-      browser: new InjectedConnector({ chains, options }),
+      browser: new InjectedConnector({
+        chains,
+        options: {
+          getProvider: () => provider,
+          ...options,
+        },
+      }),
     },
   };
 };

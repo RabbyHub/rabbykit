@@ -1,10 +1,4 @@
-import {
-  Chain,
-  InjectedConnector,
-  InjectedConnectorOptions,
-  WindowProvider,
-  mainnet,
-} from "@wagmi/core";
+import { WindowProvider } from "@wagmi/core";
 // import { optimism, polygon } from "@wagmi/core/chains";
 import { WalletResult } from "../wallets/type";
 
@@ -34,6 +28,7 @@ export function isMetaMask(ethereum?: (typeof window)["ethereum"]): boolean {
   if (ethereum.isTokenary) return false;
   if (ethereum.isZeal) return false;
   if (ethereum.isZerion) return false;
+  if (ethereum.isRabby) return false;
   return true;
 }
 
@@ -111,9 +106,8 @@ type InjectedProviderFlags = {
   isZeal?: true;
   isZerion?: true;
 };
-
-export const getWalletProviderByFlag = (
-  flag: "isRainbow"
+export const getWalletProvider = (
+  flag: keyof InjectedProviderFlags
 ): WindowProvider | undefined => {
   if (typeof window === "undefined" || typeof window.ethereum === "undefined")
     return;

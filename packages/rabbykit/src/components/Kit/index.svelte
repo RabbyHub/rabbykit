@@ -3,6 +3,8 @@
   import Provider from "../Provider.svelte";
   import Modal from "../Modal/index.svelte";
   import Tab from "../Tab/index.svelte";
+  import Mobile from "../mobile/index.svelte";
+
   import Connecting from "../Connect/connect.svelte";
   import Scan from "../Scan/index.svelte";
   import Install from "../Install/index.svelte";
@@ -24,7 +26,8 @@
 <Provider>
   {#if open}
     <Modal>
-      <Tab active={$svelteStore.activeTab} onChange={$svelteStore.setTab} />
+      <!-- <Tab /> -->
+      <Mobile />
       <div class="sub-page" class:show={showSubPage}>
         <div class="back">
           <Icon name="back" on:click={back} />

@@ -3,6 +3,25 @@ import { isAndroid, isMobile } from "./browser";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import { dequal } from "dequal";
 
+export let commonWalletConnect: WalletConnectConnector | undefined;
+export const getCommonWalletConnect = (params: {
+  projectId: string;
+  chains: WalletConnectConnector["chains"];
+  options?: Omit<WalletConnectConnector["options"], "projectId">;
+}) => {
+  if (!commonWalletConnect) {
+    commonWalletConnect = new WalletConnectConnector({
+      chains: params.chains,
+      options: {
+        projectId: params.projectId,
+        showQrModal: false,
+        ...params.options,
+      },
+    });
+  }
+  return commonWalletConnect;
+};
+
 const allParams: any[] = [];
 export const sharedWalletConnectConnectors = new Map<
   Object,
