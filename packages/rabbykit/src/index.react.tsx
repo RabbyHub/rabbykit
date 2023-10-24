@@ -49,7 +49,7 @@ export const useRabbykitModal = () => {
     );
   }
 
-  return { open, close };
+  return value;
 };
 
 export const useRabbykitModalStatus = () => {

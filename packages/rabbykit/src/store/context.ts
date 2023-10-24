@@ -11,7 +11,7 @@ import {
 import { WalletResult } from "../wallets/type";
 import { SUPPORT_LANGUAGES } from "../helpers";
 import zustandToSvelte from "../helpers/zustandToSvelte";
-import { CustomButton, Disclaimer, Theme } from "../type";
+import { CustomButton, Disclaimer, RabbyKitModal, Theme } from "../type";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 
 type Tab = "browser" | "mobile";
@@ -21,16 +21,12 @@ interface Store<
   TWebSocketPublicClient extends WebSocketPublicClient = WebSocketPublicClient
 > {
   theme?: Theme;
-  setTheme: (theme: Theme) => void;
   status: "connecting" | "reconnecting" | "connected" | "disconnected";
   open: boolean;
-  openModal: (force?: boolean) => void;
-  closeModal: () => void;
 
   language: SUPPORT_LANGUAGES;
   page: Page;
   activeTab: Tab;
-  setTab: (activeTab: Tab) => void;
 
   currentWallet?: WalletResult;
   type?: Tab;
@@ -45,8 +41,15 @@ interface Store<
   walletConnectConnector?: WalletConnectConnector;
 
   customButtons?: CustomButton[];
-
   disclaimer?: Disclaimer;
+
+  setTab: (activeTab: Tab) => void;
+  openModal: (force?: boolean) => void;
+  closeModal: () => void;
+  setTheme: (theme: Theme) => void;
+
+  setDisclaimer: RabbyKitModal["setDisclaimer"];
+  setCustomButtons: RabbyKitModal["setCustomButtons"];
 }
 
 export const useRKStore = createStore<Store<any, any>>()(

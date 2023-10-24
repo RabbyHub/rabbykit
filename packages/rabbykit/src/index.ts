@@ -29,7 +29,7 @@ import {
 } from "./wallets/connectors";
 import { mount } from "./components/Kit";
 import "./helpers/i18n";
-import { RabbyKitModal, Theme } from "./type";
+import { CustomButton, Disclaimer, RabbyKitModal, Theme } from "./type";
 import {
   getCommonWalletConnect,
   sharedWalletConnectConnectors,
@@ -42,10 +42,14 @@ export const createModal = <
   appName,
   projectId,
   wagmi,
+  disclaimer,
+  customButtons,
 }: {
   appName: string;
   projectId: string;
   wagmi: Config<TPublicClient, TWebSocketPublicClient>;
+  disclaimer?: Disclaimer;
+  customButtons?: CustomButton[];
 }): RabbyKitModal => {
   useRKStore.setState({ wagmi });
 
@@ -108,11 +112,13 @@ export const createModal = <
     list.unshift(other);
   }
 
-  useRKStore.setState({ wallets: list });
+  useRKStore.setState({ wallets: list, disclaimer, customButtons });
 
   let init = false;
 
   return {
+    setDisclaimer: useRKStore.getState().setDisclaimer,
+    setCustomButtons: useRKStore.getState().setCustomButtons,
     subscribeModalState: modalOpenSubscribe,
     open: (force = false) => {
       if (!init) {
