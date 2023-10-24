@@ -56,7 +56,7 @@
       logo={scan}
       on:click={handleScan}
     />
-    {#if $useStore.customButtons}
+    {#if $useStore.customButtons && $useStore.customButtons.length > 0}
       {#each $useStore.customButtons as b}
         <Button
           type="browser"

@@ -9,6 +9,7 @@
   import Scan from "../Scan/index.svelte";
   import Install from "../Install/index.svelte";
   import Icon from "../CommonIcon/Icon.svelte";
+  import { isMobile } from "../../helpers/browser";
 
   function back() {
     useRKStore.setState({
@@ -16,6 +17,7 @@
       currentWallet: undefined,
     });
   }
+  let isMobileEnv = isMobile();
 
   $: open = $svelteStore.open;
   $: currentWallet = $svelteStore.currentWallet;
@@ -26,22 +28,25 @@
 <Provider>
   {#if open}
     <Modal>
-      <!-- <Tab /> -->
-      <Mobile />
-      <div class="sub-page" class:show={showSubPage}>
-        <div class="back">
-          <Icon name="back" on:click={back} />
-        </div>
-        {#if $svelteStore.page === "connect" && !!currentWallet}
-          {#if $svelteStore.type === "browser"}
-            <Connecting wallet={currentWallet} />
-          {:else}
-            <Scan wallet={currentWallet} />
+      {#if isMobileEnv}
+        <Mobile />
+      {:else}
+        <Tab />
+        <div class="sub-page" class:show={showSubPage}>
+          <div class="back">
+            <Icon name="back" on:click={back} />
+          </div>
+          {#if $svelteStore.page === "connect" && !!currentWallet}
+            {#if $svelteStore.type === "browser"}
+              <Connecting wallet={currentWallet} />
+            {:else}
+              <Scan wallet={currentWallet} />
+            {/if}
+          {:else if $svelteStore.page === "download" && !!currentWallet}
+            <Install wallet={currentWallet} />
           {/if}
-        {:else if $svelteStore.page === "download" && !!currentWallet}
-          <Install wallet={currentWallet} />
-        {/if}
-      </div>
+        </div>
+      {/if}
     </Modal>
   {/if}
 </Provider>

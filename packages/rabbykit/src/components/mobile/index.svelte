@@ -39,27 +39,29 @@
     : $t("Unable to Connect Wallet");
   let name =
     readyBrowserList?.[0]?.mobileName || readyBrowserList?.[0]?.name || "";
-  let url1 = "";
-  let url2 = "";
+  let termsOfServiceUrl = $useStore.disclaimer?.term;
+  let privacyPolicyUrl = $useStore.disclaimer?.privacy;
+  let showDisclaimer = !!termsOfServiceUrl && !!privacyPolicyUrl;
 </script>
 
 <div class="container">
   <div class="title">{title}</div>
   {#if canConnect}
     <button on:click={handleConnect} style="margin-bottom: 16px;"
-      >connect {name}</button
+      >{$t("Connect x", { values: { name } })}</button
     >
-    <div class="desc">
-      By connecting your wallet you agree to the <a href={url1} target="_blank"
-        >Terms of Service</a
-      >
-      and <a href={url2}>Privacy Policy</a>
-    </div>
+    {#if showDisclaimer}
+      <div class="desc">
+        {@html $t("disclaimer", {
+          values: { termsOfServiceUrl, privacyPolicyUrl },
+        })}
+      </div>
+    {/if}
   {:else}
     <div class="desc" style="margin-bottom: 16px;">
-      当前网页环境Dapp无法连接钱包，你可以在电脑或手机钱包中打开并体验完整功能
+      {$t("unsupported mobile env")}
     </div>
-    <button on:click={copyDappUrl}>Copy Dapp URL</button>
+    <button on:click={copyDappUrl}>{$t("Copy Dapp URL")}</button>
   {/if}
 </div>
 
@@ -84,7 +86,7 @@
     text-align: center;
     font-size: 13px;
     font-weight: 400;
-    a {
+    :global(a) {
       color: var(--r-neutral-body);
     }
   }

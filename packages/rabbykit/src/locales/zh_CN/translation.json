@@ -25,5 +25,12 @@
   "If you already have installed": "2.如果你已经安装了 {name}?",
   "Make sure your wallet is enabled and disable other plugin wallets": "请确保你的钱包已启用并禁用其他插件钱包",
 
-  "Powered by RabbyKit": "Powered by RabbyKit"
+  "Powered by RabbyKit": "Powered by RabbyKit",
+
+  "Connect Wallet": "Connect Wallet",
+  "Unable to Connect Wallet": "Unable to Connect Wallet",
+  "Connect x": "Connect {name}",
+  "Copy Dapp URL": "Copy Dapp URL",
+  "unsupported mobile env": "当前网页环境Dapp无法连接钱包，你可以在电脑或手机钱包中打开并体验完整功能",
+  "disclaimer": "By connecting your wallet you agree to the <a href={termsOfServiceUrl} target=\"_blank\">Terms of Service</a> and <a href={privacyPolicyUrl} target=\"_blank\">Privacy Policy</a>"
 }

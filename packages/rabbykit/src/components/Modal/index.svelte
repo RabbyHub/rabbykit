@@ -3,13 +3,12 @@
   import { useRKStore } from "../../store";
   import useStore from "../../store/context";
   import Icon from "../CommonIcon/Icon.svelte";
-  import { fade, scale } from "svelte/transition";
+  import { fade } from "svelte/transition";
+  import { isMobile } from "../../helpers/browser";
 
   function close() {
     useRKStore.getState().closeModal();
   }
-
-  let isMobile = false;
 
   const html = document.documentElement;
 
@@ -34,13 +33,14 @@
       currentWallet: undefined,
     });
   });
+  let isMobileEnv = isMobile();
 </script>
 
 <div class="modal" transition:fade={{ duration: 100 }}>
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
-  <div class="modal-overlay" class:mobile={isMobile} on:click={close} />
-  <div class="modal-content" class:mobile={isMobile}>
+  <div class="modal-overlay" class:mobile={isMobileEnv} on:click={close} />
+  <div class="modal-content" class:mobile={isMobileEnv}>
     <div class="icon" class:close={$useStore.page === "wallet"}>
       {#if $useStore.page === "wallet"}
         <Icon name="close" on:click={close} />

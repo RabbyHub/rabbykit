@@ -11,7 +11,7 @@ import {
 import { WalletResult } from "../wallets/type";
 import { SUPPORT_LANGUAGES } from "../helpers";
 import zustandToSvelte from "../helpers/zustandToSvelte";
-import { Theme } from "../type";
+import { CustomButton, Disclaimer, Theme } from "../type";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 
 type Tab = "browser" | "mobile";
@@ -44,7 +44,9 @@ interface Store<
   uri?: string;
   walletConnectConnector?: WalletConnectConnector;
 
-  customButtons?: { name: string; logo: string; onClick: () => void }[];
+  customButtons?: CustomButton[];
+
+  disclaimer?: Disclaimer;
 }
 
 export const useRKStore = createStore<Store<any, any>>()(
@@ -69,6 +71,14 @@ export const useRKStore = createStore<Store<any, any>>()(
     setTheme: (theme) => {
       set({ theme });
     },
+
+    setDisclaimer: (disclaimer?: Disclaimer) => {
+      set({ disclaimer });
+    },
+
+    setCustomButtons: (customButtons?: CustomButton[]) => {
+      set({ customButtons });
+    },
   }))
 );
 
@@ -81,7 +91,8 @@ export function syncAccount() {
   const accountInfo = getAccount();
   const { address, isConnected, isDisconnected, status } = accountInfo;
   const { chain } = getNetwork();
-  console.log("status", status);
+
+  // console.log("status", status);
 
   if (isConnected && address && chain) {
     useRKStore.setState({ isConnected, address, chainId: chain.id });

@@ -29,5 +29,9 @@
   "Powered by RabbyKit": "Powered by RabbyKit",
 
   "Connect Wallet": "Connect Wallet",
-  "Unable to Connect Wallet": "Unable to Connect Wallet"
+  "Unable to Connect Wallet": "Unable to Connect Wallet",
+  "Connect x": "Connect {name}",
+  "Copy Dapp URL": "Copy Dapp URL",
+  "unsupported mobile env": "Currently the web environment Dapp can not connect to the wallet, you can open and experience the full functionality in the computer or mobile wallet",
+  "disclaimer": "By connecting your wallet you agree to the <a href={termsOfServiceUrl} target=\"_blank\">Terms of Service</a> and <a href={privacyPolicyUrl} target=\"_blank\">Privacy Policy</a>"
 }
