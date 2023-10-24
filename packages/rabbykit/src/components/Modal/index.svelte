@@ -9,7 +9,7 @@
     useRKStore.getState().closeModal();
   }
 
-  let isMobile = true;
+  let isMobile = false;
 
   const html = document.documentElement;
 
