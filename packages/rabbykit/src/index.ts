@@ -25,7 +25,7 @@ import {
   xdefiWallet,
   zerionWallet,
   tahoWallet,
-  safeWallet,
+  // safeWallet,
 } from "./wallets/connectors";
 import { mount } from "./components/Kit";
 import "./helpers/i18n";
@@ -78,11 +78,11 @@ export const createModal = <
     xdefiWallet({ chains }),
     zerionWallet({ chains, projectId }),
     tahoWallet({ chains }),
-    safeWallet({
-      chains,
-      allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/],
-      debug: false,
-    }),
+    // safeWallet({
+    //   chains,
+    //   allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/],
+    //   debug: false,
+    // }),
   ]
     .filter((e) => {
       if (e.id === "brave" && !e.installed) {
