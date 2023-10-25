@@ -1,6 +1,6 @@
 {
   "name": "@rabby-wallet/rabbykit",
-  "version": "0.0.1-alpha-2.5",
+  "version": "0.0.1-alpha-2.6",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
