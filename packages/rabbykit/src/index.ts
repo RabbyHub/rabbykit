@@ -4,7 +4,7 @@ import {
   PublicClient,
   WebSocketPublicClient,
 } from "@wagmi/core";
-import { modalOpenSubscribe, syncAccount, useRKStore } from "./store";
+import { modalOpenSubscribe, syncAccount, syncMipd, useRKStore } from "./store";
 import {
   rabbyWallet,
   metaMaskWallet,
@@ -52,6 +52,8 @@ export const createModal = <
   customButtons?: CustomButton[];
 }): RabbyKitModal => {
   useRKStore.setState({ wagmi });
+
+  syncMipd();
 
   watchAccount(() => syncAccount());
 

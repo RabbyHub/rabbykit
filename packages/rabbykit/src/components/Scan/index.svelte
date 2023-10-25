@@ -71,7 +71,7 @@
     } catch (error) {
       console.error("getUri() error:", error);
       success = false;
-      failed = false;
+      failed = true;
       loading = false;
     }
   }

@@ -10,6 +10,8 @@
     getWalletConnectUri,
   } from "../../helpers/getWalletConnectUri";
   import logo from "./walletConnect.svg";
+  import { WalletResult } from "../../wallets/type";
+  import { InjectedConnector, WindowProvider, getConfig } from "@wagmi/core";
 
   const list = $useStore.wallets || [];
 
@@ -22,6 +24,25 @@
   const unusedBrowserList = browserList.filter(
     (w) => !w.installed || !w.connector.browser?.ready
   );
+
+  let otherEip6963Providers: WalletResult[] = $useStore.mipd
+    .filter((p) => {
+      if (readyBrowserList.some((r) => r.name === p.info.name)) {
+        return false;
+      }
+      return true;
+    })
+    .map((e) => ({
+      id: e.info.rdns,
+      name: e.info.name,
+      logo: e.info.icon,
+      connector: {
+        browser: new InjectedConnector({
+          chains: getConfig().chains,
+          options: { getProvider: () => e.provider as WindowProvider },
+        }),
+      },
+    }));
 
   const handleScan = () => {
     useRKStore.setState({
@@ -47,6 +68,10 @@
   <div class="title">Select your wallet to login</div>
   <div class="ready-wallet-container">
     {#each readyBrowserList as wallet}
+      <WalletButton {wallet} type="browser" />
+    {/each}
+
+    {#each otherEip6963Providers as wallet}
       <WalletButton {wallet} type="browser" />
     {/each}
 

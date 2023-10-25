@@ -13,6 +13,7 @@ import { SUPPORT_LANGUAGES } from "../helpers";
 import zustandToSvelte from "../helpers/zustandToSvelte";
 import { CustomButton, Disclaimer, RabbyKitModal, Theme } from "../type";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
+import { EIP6963ProviderDetail, createStore as createMipdStore } from "mipd";
 
 type Tab = "browser" | "mobile";
 type Page = "wallet" | "connect" | "download";
@@ -50,6 +51,8 @@ interface Store<
 
   setDisclaimer: RabbyKitModal["setDisclaimer"];
   setCustomButtons: RabbyKitModal["setCustomButtons"];
+
+  mipd: readonly EIP6963ProviderDetail[];
 }
 
 export const useRKStore = createStore<Store<any, any>>()(
@@ -60,6 +63,7 @@ export const useRKStore = createStore<Store<any, any>>()(
     page: "wallet",
     activeTab: "browser",
     open: false,
+    mipd: [],
     openModal: (force = false) => {
       if (force || get().status !== "connected") {
         set({ open: true });
@@ -108,5 +112,18 @@ export function syncAccount() {
   }
   useRKStore.setState({ status: status });
 }
+
+export const syncMipd = () => {
+  const mipdStore = createMipdStore();
+  useRKStore.setState({ mipd: mipdStore.getProviders() });
+
+  const unsubscribe = mipdStore.subscribe((p) => {
+    useRKStore.setState({ mipd: p });
+  });
+  return () => {
+    unsubscribe();
+    mipdStore.clear();
+  };
+};
 
 export default zustandToSvelte(useRKStore);
