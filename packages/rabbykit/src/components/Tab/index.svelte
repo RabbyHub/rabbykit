@@ -21,9 +21,9 @@
     (w) => w.installed && !!w.connector.browser?.ready
   );
 
-  const unusedBrowserList = browserList.filter(
-    (w) => !w.installed || !w.connector.browser?.ready
-  );
+  const unusedBrowserList = browserList
+    .filter((w) => !w.installed || !w.connector.browser?.ready)
+    .filter((e) => !$useStore.mipd.some((p) => p.info.name === e.name));
 
   let otherEip6963Providers: WalletResult[] = $useStore.mipd
     .filter((p) => {
