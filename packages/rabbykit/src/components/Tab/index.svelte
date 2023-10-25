@@ -97,7 +97,7 @@
   </div>
   <div class="wallet-container">
     {#each unusedBrowserList as wallet}
-      <WalletButton {wallet} type="unused" />
+      <WalletButton {wallet} type="unused" size="normal" />
     {/each}
   </div>
 

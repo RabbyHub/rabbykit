@@ -3,6 +3,7 @@
   import clsx from "clsx";
 
   export let type: "browser" | "mobile" | "unused";
+  export let size: "lg" | "normal" = "lg";
   export let name: string;
   export let logo: string;
 </script>
@@ -10,6 +11,7 @@
 <button
   on:click
   class={clsx("button", $$props.class)}
+  class:lg={size === "lg"}
   class:ready={type === "browser"}
   class:mobile={type === "mobile"}
   class:unused={type === "unused"}
@@ -41,7 +43,7 @@
   {/if}
 </button>
 
-<style>
+<style lang="scss">
   .button {
     width: 206px;
     height: 56px;
@@ -59,6 +61,13 @@
     color: var(--r-neutral-title-1);
     font-weight: 590;
     border: 0.5px solid transparent;
+
+    &.lg {
+      height: 64px;
+      &:hover {
+        border-width: 1px;
+      }
+    }
   }
   .button.ready {
     width: 100%;

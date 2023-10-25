@@ -5,6 +5,7 @@
 
   export let wallet: WalletResult;
   export let type: "browser" | "mobile" | "unused";
+  export let size: "lg" | "normal" = "lg";
 
   let { browser } = wallet.connector;
   let isReady = !!browser?.ready;
@@ -43,4 +44,4 @@
     type === "mobile" ? wallet.mobileName || wallet.name : wallet.name || "";
 </script>
 
-<Button {type} {name} {logo} on:click={handleConnect} />
+<Button {type} {name} {logo} {size} on:click={handleConnect} />
