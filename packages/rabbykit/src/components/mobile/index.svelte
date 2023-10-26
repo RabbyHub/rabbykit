@@ -39,12 +39,19 @@
     : $t("Unable to Connect Wallet");
   let name =
     readyBrowserList?.[0]?.mobileName || readyBrowserList?.[0]?.name || "";
+
   let termsOfServiceUrl = $useStore.disclaimer?.term;
+
   let privacyPolicyUrl = $useStore.disclaimer?.privacy;
+
   let showDisclaimer = !!termsOfServiceUrl && !!privacyPolicyUrl;
 </script>
 
-<div class="container">
+<div
+  class="container"
+  class:unable={!canConnect}
+  class:disclaimer={privacyPolicyUrl && showDisclaimer}
+>
   <div class="title">{title}</div>
   {#if canConnect}
     <button on:click={handleConnect} style="margin-bottom: 16px;"
@@ -70,8 +77,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 148px;
+    height: 128px;
+    height: var(128px + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+    &.unable,
+    &.disclaimer {
+      height: 170px;
+      height: var(170px + env(safe-area-inset-bottom));
+    }
   }
   .title {
     color: var(--r-neutral-title-1);

@@ -85,6 +85,7 @@
       left: 0;
       bottom: 0;
       transform: translateZ(0);
+      background: var(--r-neutral-bg-1);
       box-shadow: 0px -8px 8px 0px rgba(0, 0, 0, 0.08);
       border-radius: 16px 16px 0px 0px;
     }

@@ -62,10 +62,21 @@
       status: "connecting",
     });
   };
+
+  let box: HTMLDivElement;
+  let scrollTop: number;
 </script>
 
-<div class="scroll">
-  <div class="title">Select your wallet to login</div>
+<div
+  class="scroll"
+  bind:this={box}
+  on:scroll={() => {
+    scrollTop = box.scrollTop;
+  }}
+>
+  <div class="title" class:borderB={scrollTop > 0}>
+    Select your wallet to login
+  </div>
   <div class="ready-wallet-container">
     {#each readyBrowserList as wallet}
       <WalletButton {wallet} type="browser" />
@@ -117,6 +128,10 @@
     text-align: center;
     font-size: 18px;
     font-weight: 510;
+    border-bottom: 0.5px solid transparent;
+    &.borderB {
+      border-bottom: 0.5px solid var(--r-neutral-line);
+    }
   }
   .scroll {
     height: 100%;
