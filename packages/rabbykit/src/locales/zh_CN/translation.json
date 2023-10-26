@@ -15,12 +15,16 @@
 
   "Request Cancelled": "Request Canceled",
   "You canceled the request": "You canceled the request.",
-  "Scan with your Mobile wallet": "Connect with your Mobile wallet",
+
+  "mobile wallet": "mobile wallet",
+
+  "Scan with your Mobile wallet": "Scan with your mobile wallet",
   "Copy URL": "Copy URL",
+  "Connect with mobile wallet": "Connect with mobile wallet",
 
   "How to use": "How to use {name}?",
   "Install the Extension": "Install the Extension",
-  "If you haven't installed": "1. 如果你还没有安装 {name}?",
+  "If you haven't installed": "1. 如果你还没有安装 {name}",
   "downloaded by clicking the button below": "可以点击下方按钮下载 {name}.",
   "If you already have installed": "2.如果你已经安装了 {name}?",
   "Make sure your wallet is enabled and disable other plugin wallets": "请确保你的钱包已启用并禁用其他插件钱包",

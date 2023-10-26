@@ -50,7 +50,7 @@
       currentWallet: {
         id: "walletConnect",
         logo,
-        name: "Mobile Wallet",
+        name: $t("mobile wallet"),
         connector: {
           qrCode: {
             getUri: () => getWalletConnectUri(commonWalletConnect!),
@@ -88,7 +88,7 @@
 
     <Button
       type="browser"
-      name={"Scan with Mobile Wallet"}
+      name={$t("Connect with mobile  wallet")}
       logo={scan}
       on:click={handleScan}
     />

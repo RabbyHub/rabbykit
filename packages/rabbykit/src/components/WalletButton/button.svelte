@@ -61,9 +61,11 @@
     color: var(--r-neutral-title-1);
     font-weight: 590;
     border: 0.5px solid transparent;
+    font-size: 16px;
 
     &.lg {
       height: 64px;
+      border-width: 1px;
       &:hover {
         border-width: 1px;
       }
@@ -93,6 +95,7 @@
   }
 
   .button.unused {
+    font-size: 15px;
     font-weight: 510;
     box-shadow: none;
     border-radius: 8px;

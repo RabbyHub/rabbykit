@@ -16,12 +16,15 @@
   "Request Cancelled": "Request Canceled",
   "You canceled the request": "You canceled the request.",
 
-  "Scan with your Mobile wallet": "Connect with your mobile wallet",
+  "mobile wallet": "mobile wallet",
+
+  "Scan with your Mobile wallet": "Scan with your mobile wallet",
   "Copy URL": "Copy URL",
+  "Connect with mobile wallet": "Connect with mobile wallet",
 
   "How to use": "How to use {name}?",
   "Install the Extension": "Install the Extension",
-  "If you haven't installed": "1. If you haven't installed {name}?",
+  "If you haven't installed": "1. If you haven't installed {name}",
   "downloaded by clicking the button below": "Download {name} here",
   "If you already have installed": "2. If you have installed {name}:",
   "Make sure your wallet is enabled and disable other plugin wallets": "Enable {name} extension and disable other browser extension wallets",
@@ -32,6 +35,6 @@
   "Unable to Connect Wallet": "Unable to Connect Wallet",
   "Connect x": "Connect {name}",
   "Copy Dapp URL": "Copy Dapp URL",
-  "unsupported mobile env": "Currently the web environment Dapp can not connect to the wallet, you can open and experience the full functionality in the computer or mobile wallet",
+  "unsupported mobile env": "The Dapp cannot connect to wallets in the current web environment. Please use your computer or mobile wallet for full functionality",
   "disclaimer": "By connecting your wallet you agree to the <a href={termsOfServiceUrl} target=\"_blank\">Terms of Service</a> and <a href={privacyPolicyUrl} target=\"_blank\">Privacy Policy</a>"
 }
