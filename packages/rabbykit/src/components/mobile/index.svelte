@@ -78,12 +78,12 @@
     flex-direction: column;
     align-items: center;
     height: 128px;
-    height: var(128px + env(safe-area-inset-bottom));
+    height: calc(128px + env(safe-area-inset-bottom));
     padding-bottom: env(safe-area-inset-bottom);
     &.unable,
     &.disclaimer {
       height: 170px;
-      height: var(170px + env(safe-area-inset-bottom));
+      height: calc(170px + env(safe-area-inset-bottom));
     }
   }
   .title {
