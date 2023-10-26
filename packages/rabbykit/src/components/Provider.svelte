@@ -71,28 +71,28 @@
   }
   .dark {
     --r-blue-light-1: rgba(112, 132, 255, 0.1);
-    /* --r-blue-light-2: ; */
+    --r-blue-light-2: rgba(112, 132, 255, 0.1);
     --r-blue-default: #7084ff;
     --r-green-default: #2abb7f;
-    /* --r-green-light: ; */
-    /* --r-orange-default: ; */
-    /* --r-orange-light: ; */
+    --r-green-light: rgba(42, 187, 127, 0.2);
+    --r-orange-default: #ffc64a;
+    --r-orange-light: rgba(255, 198, 74, 0.2);
     --r-red-default: #ef5c48;
-    /* --r-red-light: ; */
-    /* --r-red-dark: ; */
-    /* --r-red-light-2: ; */
+    --r-red-light: rgba(239, 92, 72, 0.2);
+    --r-red-dark: #ae2a19;
+    --r-red-light-2: rgba(174, 42, 25, 0.2);
     --r-neutral-title-1: #f7fafc;
     --r-neutral-body: #d3d8e0;
     --r-neutral-foot: #babec5;
     --r-neutral-line: rgba(255, 255, 255, 0.1);
-    /* --r-neutral-bg-1: ; */
+    --r-neutral-bg-1: #3d4251;
     --r-neutral-bg-2: #3d4251;
     --r-neutral-card-3: rgba(255, 255, 255, 0.06);
     --r-neutral-card-1: rgba(255, 255, 255, 0.06);
-    /* --r-neutral-card-2: ; */
-    /* --r-neutral-card-3: ; */
-    /* --r-neutral-title-2: ; */
-    /* --r-neutral-black: ; */
+    --r-neutral-card-2: rgba(255, 255, 255, 0.06);
+    --r-neutral-card-3: rgba(255, 255, 255, 0.06);
+    --r-neutral-title-2: #fff;
+    --r-neutral-black: #000;
     --modal-shadow: 0px 24px 80px 0px rgba(0, 0, 0, 0.2);
     --button-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
 
