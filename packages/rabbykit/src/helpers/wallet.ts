@@ -1,5 +1,4 @@
 import { WindowProvider } from "@wagmi/core";
-// import { optimism, polygon } from "@wagmi/core/chains";
 import { WalletResult } from "../wallets/type";
 
 export function isMetaMask(ethereum?: (typeof window)["ethereum"]): boolean {
@@ -28,7 +27,7 @@ export function isMetaMask(ethereum?: (typeof window)["ethereum"]): boolean {
   if (ethereum.isTokenary) return false;
   if (ethereum.isZeal) return false;
   if (ethereum.isZerion) return false;
-  if (ethereum.isRabby) return false;
+  if (ethereum.isRainbow) return false;
   return true;
 }
 
@@ -42,19 +41,6 @@ export const isRabby = () => {
   );
 };
 
-// export const injected = () =>
-//   new InjectedConnector({
-//     chains: [mainnet, polygon, optimism],
-//     options: {
-//       shimDisconnect: true,
-//       name: (detectedName) =>
-//         `Injected (${
-//           typeof detectedName === "string"
-//             ? detectedName
-//             : detectedName.join(", ")
-//         })`,
-//     },
-//   });
 //https://github.com/wagmi-dev/wagmi/blob/38306606d2fd72a4c6918323bf86a1afda348638/packages/connectors/src/types.ts#L11
 type InjectedProviderFlags = {
   isApexWallet?: true;
@@ -120,27 +106,6 @@ export const getWalletProvider = (
     ? window.ethereum
     : undefined;
 };
-
-// export const getInjectedConnector = ({
-//   flag,
-//   chains,
-//   ...options
-// }: {
-//   flag: keyof InjectedProviderFlags;
-//   chains: Chain[];
-// } & InjectedConnectorOptions) => {
-//   const provider = getWalletProviderByFlag(flag);
-//   if (!!provider) {
-//     return new InjectedConnector({
-//       chains,
-//       options: {
-//         getProvider: () => provider,
-//         ...options,
-//       },
-//     });
-//   }
-//   return;
-// };
 
 export const isSupportBrowser = (wallet: WalletResult) => {
   return !!(
