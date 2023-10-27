@@ -28,6 +28,26 @@ export function isMetaMask(ethereum?: (typeof window)["ethereum"]): boolean {
   if (ethereum.isZeal) return false;
   if (ethereum.isZerion) return false;
   if (ethereum.isRainbow) return false;
+  if (ethereum.isTrust || ethereum.isTrustWallet) return false;
+  if (ethereum.isXDEFI) return false;
+  if (ethereum.isStatus) return false;
+  if (ethereum.isTalisman) return false;
+  if (ethereum.isTally) return false;
+  if (ethereum.isPhantom) return false;
+  if (ethereum.isCoinbaseWallet) return false;
+  if (ethereum.isDawn) return false;
+  if (ethereum.isEnkrypt) return false;
+  if (ethereum.isExodus) return false;
+  if (ethereum.isFrame) return false;
+  if (ethereum.isFrontier) return false;
+  if (ethereum.isGamestop) return false;
+  if (ethereum.isHyperPay) return false;
+  if (ethereum.isImToken) return false;
+  if (ethereum.isKuCoinWallet) return false;
+  if (ethereum.isBitski) return false;
+  if (ethereum.isBifrost) return false;
+  if (ethereum.isBackpack) return false;
+
   return true;
 }
 
