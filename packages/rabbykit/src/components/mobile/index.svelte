@@ -1,18 +1,32 @@
 <script lang="ts">
-  import { isSupportBrowser } from "../../helpers/wallet";
   import { _ as t } from "svelte-i18n";
 
   import useStore from "../../store/context";
-  import { connect } from "@wagmi/core";
+  import { InjectedConnector, connect, getConfig } from "@wagmi/core";
 
-  const list = $useStore.wallets || [];
-  const browserList = list.filter((w) => isSupportBrowser(w));
+  const browserList = $useStore.wallets || [];
 
   const readyBrowserList = browserList.filter(
     (w) => w.installed && !!w.connector.browser?.ready
   );
 
   let isConnecting = false;
+
+  let canConnect = readyBrowserList.length > 0 || !!window.ethereum;
+
+  const mobileConnector =
+    readyBrowserList[0]?.connector.browser ||
+    new InjectedConnector({
+      chains: getConfig().chains,
+      options: {
+        shimDisconnect: true,
+        name: (detectedName) => {
+          return typeof detectedName === "string"
+            ? detectedName
+            : detectedName.join(",");
+        },
+      },
+    });
 
   function copyDappUrl() {
     window.navigator.clipboard.writeText(window.location.href);
@@ -21,9 +35,9 @@
   function handleConnect() {
     if (isConnecting) return;
     isConnecting = true;
-    if (readyBrowserList[0].connector.browser) {
-      connect({ connector: readyBrowserList[0].connector.browser! })
-        .then((e) => {
+    if (mobileConnector) {
+      connect({ connector: mobileConnector })
+        .then(() => {
           $useStore.closeModal();
         })
         .finally(() => {
@@ -32,13 +46,10 @@
     }
   }
 
-  let canConnect = readyBrowserList.length > 0;
-
   let title = canConnect
     ? $t("Connect Wallet")
     : $t("Unable to Connect Wallet");
-  let name =
-    readyBrowserList?.[0]?.mobileName || readyBrowserList?.[0]?.name || "";
+  let name = mobileConnector?.name || "wallet";
 
   let termsOfServiceUrl = $useStore.disclaimer?.term;
 
