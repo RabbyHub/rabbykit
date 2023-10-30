@@ -13,9 +13,7 @@
   import { WalletResult } from "../../wallets/type";
   import { InjectedConnector, WindowProvider, getConfig } from "@wagmi/core";
 
-  const list = $useStore.wallets || [];
-
-  const browserList = list.filter((w) => isSupportBrowser(w));
+  const browserList = $useStore.wallets || [];
 
   const readyBrowserList = browserList.filter(
     (w) => w.installed && !!w.connector.browser?.ready
@@ -23,6 +21,7 @@
 
   const unusedBrowserList = browserList
     .filter((w) => !w.installed || !w.connector.browser?.ready)
+    .filter((w) => isSupportBrowser(w))
     .filter((e) => !$useStore.mipd.some((p) => p.info.name === e.name));
 
   let otherEip6963Providers: WalletResult[] = $useStore.mipd
