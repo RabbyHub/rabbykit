@@ -109,7 +109,7 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     &.mobile {
-      background-color: transparent;
+      background-color: rgba(0, 0, 0, 0.4);
     }
   }
 </style>
