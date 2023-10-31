@@ -85,12 +85,12 @@
       <WalletButton {wallet} type="browser" />
     {/each}
 
-    <Button
+    <!-- <Button
       type="browser"
       name={$t("Connect with mobile  wallet")}
       logo={scan}
       on:click={handleScan}
-    />
+    /> -->
     {#if $useStore.customButtons && $useStore.customButtons.length > 0}
       {#each $useStore.customButtons as b}
         <Button
