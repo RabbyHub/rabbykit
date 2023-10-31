@@ -37,7 +37,7 @@
       logo: e.info.icon,
       connector: {
         browser: new InjectedConnector({
-          chains: getConfig().chains,
+          chains: $useStore.chains,
           options: { getProvider: () => e.provider as WindowProvider },
         }),
       },
@@ -85,12 +85,15 @@
       <WalletButton {wallet} type="browser" />
     {/each}
 
-    <!-- <Button
-      type="browser"
-      name={$t("Connect with mobile  wallet")}
-      logo={scan}
-      on:click={handleScan}
-    /> -->
+    {#if $useStore.showWalletConnect}
+      <Button
+        type="browser"
+        name={$t("Connect with mobile  wallet")}
+        logo={scan}
+        on:click={handleScan}
+      />
+    {/if}
+
     {#if $useStore.customButtons && $useStore.customButtons.length > 0}
       {#each $useStore.customButtons as b}
         <Button

@@ -3,6 +3,7 @@ import {
   Config,
   PublicClient,
   WebSocketPublicClient,
+  Chain,
 } from "@wagmi/core";
 import { modalOpenSubscribe, syncAccount, syncMipd, useRKStore } from "./store";
 import {
@@ -29,7 +30,7 @@ import {
 } from "./wallets/connectors";
 import { mount } from "./components/Kit";
 import "./helpers/i18n";
-import { CustomButton, Disclaimer, RabbyKitModal, Theme } from "./type";
+import { CustomButton, Disclaimer, Hook, RabbyKitModal, Theme } from "./type";
 import {
   getCommonWalletConnect,
   sharedWalletConnectConnectors,
@@ -39,25 +40,27 @@ export const createModal = <
   TPublicClient extends PublicClient = PublicClient,
   TWebSocketPublicClient extends WebSocketPublicClient = WebSocketPublicClient
 >({
+  chains,
   appName,
   projectId,
   wagmi,
   disclaimer,
   customButtons,
+  showWalletConnect = true,
 }: {
+  chains: Chain[];
   appName: string;
   projectId: string;
   wagmi: Config<TPublicClient, TWebSocketPublicClient>;
   disclaimer?: Disclaimer;
   customButtons?: CustomButton[];
+  showWalletConnect?: boolean;
 }): RabbyKitModal => {
   useRKStore.setState({ wagmi });
 
   syncMipd();
 
   watchAccount(() => syncAccount());
-
-  const chains = wagmi.chains!;
 
   const list = [
     rabbyWallet({ chains }),
@@ -118,7 +121,13 @@ export const createModal = <
     list.unshift(other);
   }
 
-  useRKStore.setState({ wallets: list, disclaimer, customButtons });
+  useRKStore.setState({
+    chains,
+    wallets: list,
+    disclaimer,
+    customButtons,
+    showWalletConnect,
+  });
 
   let init = false;
 
@@ -126,12 +135,12 @@ export const createModal = <
     setDisclaimer: useRKStore.getState().setDisclaimer,
     setCustomButtons: useRKStore.getState().setCustomButtons,
     subscribeModalState: modalOpenSubscribe,
-    open: (force = false) => {
+    open: (params: { force?: boolean } & Hook) => {
       if (!init) {
         init = true;
         mount();
       }
-      useRKStore.getState().openModal(force);
+      useRKStore.getState().openModal(params);
     },
     close: () => {
       useRKStore.setState({ open: false });

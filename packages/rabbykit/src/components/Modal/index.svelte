@@ -34,9 +34,18 @@
     });
   });
   let isMobileEnv = isMobile();
+
+  function outroend() {
+    $useStore.openHooks?.forEach((e) => e?.onModalClosed?.());
+    $useStore.configHook?.onModalClosed?.();
+    const openHooks = [...($useStore.openHooks || [])?.slice(1)];
+    useRKStore.setState({
+      openHooks,
+    });
+  }
 </script>
 
-<div class="modal" transition:fade={{ duration: 100 }}>
+<div class="modal" transition:fade={{ duration: 100 }} on:outroend={outroend}>
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div class="modal-overlay" class:mobile={isMobileEnv} on:click={close} />

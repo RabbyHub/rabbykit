@@ -5,7 +5,10 @@
   import Icon from "../CommonIcon/Icon.svelte";
   import Copy from "../Copy/index.svelte";
   import { WalletResult } from "../../wallets/type";
-  import svelteStore, { useRKStore } from "../../store/context";
+  import svelteStore, {
+    rabbykitConnect,
+    useRKStore,
+  } from "../../store/context";
   import { connect, disconnect, getAccount } from "@wagmi/core";
 
   export let wallet: WalletResult;
@@ -37,7 +40,7 @@
           }
         });
 
-        connect({
+        rabbykitConnect({
           connector: connector,
         });
       } else {
@@ -47,7 +50,7 @@
               useRKStore.setState({ uri: undefined });
             }
           });
-          connect({
+          rabbykitConnect({
             connector: connector,
           });
         }
@@ -91,7 +94,7 @@
     if (wallet?.connector.qrCode?.connector) {
       useRKStore.setState({ uri: undefined });
       refreshLoading = true;
-      connect({ connector: wallet?.connector.qrCode?.connector });
+      rabbykitConnect({ connector: wallet?.connector.qrCode?.connector });
       await getUri();
       refreshLoading = false;
       success = false;

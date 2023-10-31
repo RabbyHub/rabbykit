@@ -7,13 +7,18 @@ import {
   Config,
   getAccount,
   getNetwork,
+  Chain,
+  mainnet,
+  connect,
+  ConnectArgs,
 } from "@wagmi/core";
 import { WalletResult } from "../wallets/type";
 import { SUPPORT_LANGUAGES } from "../helpers";
 import zustandToSvelte from "../helpers/zustandToSvelte";
-import { CustomButton, Disclaimer, RabbyKitModal, Theme } from "../type";
+import { CustomButton, Disclaimer, Hook, RabbyKitModal, Theme } from "../type";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import { EIP6963ProviderDetail, createStore as createMipdStore } from "mipd";
+import { goerli } from "viem/chains";
 
 type Tab = "browser" | "mobile";
 type Page = "wallet" | "connect" | "download";
@@ -21,6 +26,7 @@ interface Store<
   TPublicClient extends PublicClient = PublicClient,
   TWebSocketPublicClient extends WebSocketPublicClient = WebSocketPublicClient
 > {
+  chains: Chain[];
   theme?: Theme;
   status: "connecting" | "reconnecting" | "connected" | "disconnected";
   open: boolean;
@@ -44,8 +50,10 @@ interface Store<
   customButtons?: CustomButton[];
   disclaimer?: Disclaimer;
 
+  showWalletConnect: boolean;
+
   setTab: (activeTab: Tab) => void;
-  openModal: (force?: boolean) => void;
+  openModal: (params: { force?: boolean } & Hook) => void;
   closeModal: () => void;
   setTheme: (theme: Theme) => void;
 
@@ -53,20 +61,27 @@ interface Store<
   setCustomButtons: RabbyKitModal["setCustomButtons"];
 
   mipd: readonly EIP6963ProviderDetail[];
+
+  configHook?: Hook;
+
+  openHooks?: Hook[];
 }
 
 export const useRKStore = createStore<Store<any, any>>()(
   subscribeWithSelector((set, get) => ({
+    chains: [mainnet, goerli],
     theme: "light",
     status: "disconnected",
     language: "en",
     page: "wallet",
     activeTab: "browser",
     open: false,
+    showWalletConnect: true,
     mipd: [],
-    openModal: (force = false) => {
+    openModal: ({ force, ...hooks }) => {
       if (force || get().status !== "connected") {
-        set({ open: true });
+        const previousOpenHooks = get().openHooks || [];
+        set({ open: true, openHooks: [...previousOpenHooks, hooks] });
       }
     },
     closeModal: () => {
@@ -99,8 +114,6 @@ export function syncAccount() {
   const { address, isConnected, isDisconnected, status } = accountInfo;
   const { chain } = getNetwork();
 
-  // console.log("status", status);
-
   if (isConnected && address && chain) {
     useRKStore.setState({ isConnected, address, chainId: chain.id });
   } else if (!isConnected) {
@@ -124,6 +137,21 @@ export const syncMipd = () => {
     unsubscribe();
     mipdStore.clear();
   };
+};
+
+export const rabbykitConnect = (prams: ConnectArgs) => {
+  return connect(prams)
+    .then(() => {
+      const { configHook, openHooks } = useRKStore.getState();
+      openHooks?.forEach((o) => o.onConnect?.());
+      configHook?.onConnect?.();
+    })
+    .catch((error) => {
+      const { configHook, openHooks } = useRKStore.getState();
+      openHooks?.forEach((o) => o.onConnectError?.(error));
+      configHook?.onConnectError?.(error);
+      throw error;
+    });
 };
 
 export default zustandToSvelte(useRKStore);

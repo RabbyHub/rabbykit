@@ -1,7 +1,7 @@
 <script lang="ts">
   import { _ as t } from "svelte-i18n";
 
-  import svelteStore from "../../store/context";
+  import svelteStore, { rabbykitConnect } from "../../store/context";
   import { WalletResult } from "../../wallets/type";
   import { connect, disconnect, getAccount } from "@wagmi/core";
   import Image from "../Image/index.svelte";
@@ -14,7 +14,7 @@
 
   let retry = () => {
     if (wallet.connector.browser && wallet.connector.browser?.ready)
-      connect({ connector: wallet.connector.browser });
+      rabbykitConnect({ connector: wallet.connector.browser });
   };
 
   let status: "loading" | "success" | "failed" = "loading";
@@ -25,7 +25,7 @@
     }
     const { browser } = wallet.connector;
     if (browser) {
-      connect({ connector: browser });
+      rabbykitConnect({ connector: browser });
     } else {
       throw new Error("no available connector");
     }

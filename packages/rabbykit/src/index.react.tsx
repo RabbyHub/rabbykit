@@ -1,5 +1,5 @@
 "use client";
-import { useConfig } from "wagmi";
+import { Chain, useConfig } from "wagmi";
 import { createModal } from "./index";
 import React, { useEffect, useRef, useState } from "react";
 import { useRKStore } from "./store";
@@ -11,7 +11,12 @@ export const RabbyKitProvider = ({
   children,
   projectId,
   appName,
-}: React.PropsWithChildren<{ projectId: string; appName: string }>) => {
+  chains,
+}: React.PropsWithChildren<{
+  projectId: string;
+  appName: string;
+  chains: Chain[];
+}>) => {
   const wagmiConfig = useConfig();
 
   if (React.useContext(Context)) {
@@ -30,6 +35,7 @@ export const RabbyKitProvider = ({
   const rabbykitRef = useRef<ReturnType<typeof createModal>>();
   if (!rabbykitRef.current && wagmiConfig) {
     rabbykitRef.current = createModal({
+      chains,
       wagmi: wagmiConfig,
       projectId,
       appName,

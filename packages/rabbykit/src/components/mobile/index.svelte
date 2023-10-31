@@ -1,7 +1,7 @@
 <script lang="ts">
   import { _ as t } from "svelte-i18n";
 
-  import useStore from "../../store/context";
+  import useStore, { rabbykitConnect } from "../../store/context";
   import { InjectedConnector, connect, getConfig } from "@wagmi/core";
 
   const browserList = $useStore.wallets || [];
@@ -17,7 +17,7 @@
   const mobileConnector =
     readyBrowserList[0]?.connector.browser ||
     new InjectedConnector({
-      chains: getConfig().chains,
+      chains: $useStore.chains,
       options: {
         shimDisconnect: true,
         name: (detectedName) => {
@@ -36,7 +36,7 @@
     if (isConnecting) return;
     isConnecting = true;
     if (mobileConnector) {
-      connect({ connector: mobileConnector })
+      rabbykitConnect({ connector: mobileConnector })
         .then(() => {
           $useStore.closeModal();
         })
