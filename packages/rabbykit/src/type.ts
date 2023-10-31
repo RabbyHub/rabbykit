@@ -11,7 +11,7 @@ export type Hook = {
 };
 
 export type RabbyKitModal = {
-  open: (params: { force?: boolean } & Hook) => void;
+  open: (params?: { forceOpen?: boolean } & Hook) => void;
 
   close: () => void;
 
@@ -22,10 +22,4 @@ export type RabbyKitModal = {
   setCustomButtons: (customButtons?: CustomButton[]) => void;
 
   subscribeModalState: (fn: (open: boolean) => void) => () => void;
-
-  onModalClosed?: () => void;
-
-  onConnected?: () => void;
-
-  onRejected?: () => void;
 };

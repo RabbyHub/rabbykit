@@ -47,6 +47,9 @@ export const createModal = <
   disclaimer,
   customButtons,
   showWalletConnect = true,
+  onConnect,
+  onConnectError,
+  onModalClosed,
 }: {
   chains: Chain[];
   appName: string;
@@ -55,7 +58,7 @@ export const createModal = <
   disclaimer?: Disclaimer;
   customButtons?: CustomButton[];
   showWalletConnect?: boolean;
-}): RabbyKitModal => {
+} & Hook): RabbyKitModal => {
   useRKStore.setState({ wagmi });
 
   syncMipd();
@@ -127,6 +130,11 @@ export const createModal = <
     disclaimer,
     customButtons,
     showWalletConnect,
+    configHook: {
+      onConnect,
+      onConnectError,
+      onModalClosed,
+    },
   });
 
   let init = false;
@@ -135,7 +143,7 @@ export const createModal = <
     setDisclaimer: useRKStore.getState().setDisclaimer,
     setCustomButtons: useRKStore.getState().setCustomButtons,
     subscribeModalState: modalOpenSubscribe,
-    open: (params: { force?: boolean } & Hook) => {
+    open: (params) => {
       if (!init) {
         init = true;
         mount();

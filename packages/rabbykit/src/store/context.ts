@@ -53,9 +53,9 @@ interface Store<
   showWalletConnect: boolean;
 
   setTab: (activeTab: Tab) => void;
-  openModal: (params: { force?: boolean } & Hook) => void;
-  closeModal: () => void;
-  setTheme: (theme: Theme) => void;
+  openModal: RabbyKitModal["open"];
+  closeModal: RabbyKitModal["close"];
+  setTheme: RabbyKitModal["setTheme"];
 
   setDisclaimer: RabbyKitModal["setDisclaimer"];
   setCustomButtons: RabbyKitModal["setCustomButtons"];
@@ -78,10 +78,13 @@ export const useRKStore = createStore<Store<any, any>>()(
     open: false,
     showWalletConnect: true,
     mipd: [],
-    openModal: ({ force, ...hooks }) => {
-      if (force || get().status !== "connected") {
+    openModal: (params) => {
+      const { forceOpen, ...hooks } = params || {};
+      if (forceOpen || get().status !== "connected") {
         const previousOpenHooks = get().openHooks || [];
-        set({ open: true, openHooks: [...previousOpenHooks, hooks] });
+        if (hooks) {
+          set({ open: true, openHooks: [...previousOpenHooks, hooks] });
+        }
       }
     },
     closeModal: () => {
