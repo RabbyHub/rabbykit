@@ -82,9 +82,7 @@ export const useRKStore = createStore<Store<any, any>>()(
       const { forceOpen, ...hooks } = params || {};
       if (forceOpen || get().status !== "connected") {
         const previousOpenHooks = get().openHooks || [];
-        if (hooks) {
-          set({ open: true, openHooks: [...previousOpenHooks, hooks] });
-        }
+        set({ open: true, openHooks: [...previousOpenHooks, hooks] });
       }
     },
     closeModal: () => {
