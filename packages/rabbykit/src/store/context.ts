@@ -80,7 +80,7 @@ export const useRKStore = createStore<Store<any, any>>()(
     mipd: [],
     openModal: (params) => {
       const { forceOpen, ...hooks } = params || {};
-      if (forceOpen || get().status !== "connected") {
+      if (forceOpen || !getAccount().isConnected) {
         const previousOpenHooks = get().openHooks || [];
         set({ open: true, openHooks: [...previousOpenHooks, hooks] });
       }
