@@ -156,5 +156,10 @@ export const createModal = <
     setTheme: (theme: Theme) => {
       useRKStore.getState().setTheme(theme);
     },
+
+    getTheme: () => useRKStore.getState().theme,
+    getCustomButtons: () => useRKStore.getState().customButtons,
+    getDisclaimer: () => useRKStore.getState().disclaimer,
+    getOpenState: () => useRKStore.getState().open,
   };
 };

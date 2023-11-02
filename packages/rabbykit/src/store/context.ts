@@ -27,7 +27,7 @@ interface Store<
   TWebSocketPublicClient extends WebSocketPublicClient = WebSocketPublicClient
 > {
   chains: Chain[];
-  theme?: Theme;
+  theme: Theme;
   status: "connecting" | "reconnecting" | "connected" | "disconnected";
   open: boolean;
 
