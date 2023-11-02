@@ -29,7 +29,7 @@
     "zerion",
     "zustand"
   ],
-  "ignoreWords": ["mipd"],
+  "ignoreWords": ["mipd", "outroend"],
   "ignoreRegExpList": ["/[A-Za-z0-9]{46}/"],
   "ignorePaths": [
     "*.svg",
