@@ -4,6 +4,7 @@ import { BaseError } from "viem";
 import { useAccount, useConfig, useConnect, useDisconnect } from "wagmi";
 import { useEffect, useRef } from "react";
 import { createModal } from "@rabby-wallet/rabbykit";
+import { supportChains } from "../wagmi";
 
 export function Connect() {
   const { connector, isConnected } = useAccount();
@@ -17,9 +18,12 @@ export function Connect() {
   useEffect(() => {
     if (!rabbyKitRef.current) {
       rabbyKitRef.current = createModal({
+        showWalletConnect: true,
+        chains: supportChains,
         wagmi: config,
         appName: "test",
         projectId: "58a22d2bc1c793fc31c117ad9ceba8d9",
+        customButtons: [],
       });
     }
   }, [config]);
@@ -38,7 +42,7 @@ export function Connect() {
         <button
           onClick={() => {
             rabbyKitRef.current?.setTheme("light");
-            rabbyKitRef.current?.open(true);
+            rabbyKitRef.current?.open();
           }}
         >
           light mode
@@ -49,7 +53,7 @@ export function Connect() {
         <button
           onClick={() => {
             rabbyKitRef.current?.setTheme("dark");
-            rabbyKitRef.current?.open(true);
+            rabbyKitRef.current?.open();
           }}
         >
           dark mode
@@ -63,7 +67,7 @@ export function Connect() {
         )}
         <br />
 
-        <button onClick={() => rabbyKitRef.current?.open(true)}>
+        <button onClick={() => rabbyKitRef.current?.open({ forceOpen: true })}>
           force open RabbyKit
         </button>
         {/* {connectors
