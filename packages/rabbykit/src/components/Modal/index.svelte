@@ -38,9 +38,8 @@
   function outroend() {
     $useStore.openHooks?.forEach((e) => e?.onModalClosed?.());
     $useStore.configHook?.onModalClosed?.();
-    const openHooks = [...($useStore.openHooks || [])?.slice(1)];
     useRKStore.setState({
-      openHooks,
+      openHooks: [],
     });
   }
 </script>
