@@ -26,30 +26,33 @@ interface Store<
   TPublicClient extends PublicClient = PublicClient,
   TWebSocketPublicClient extends WebSocketPublicClient = WebSocketPublicClient
 > {
-  chains: Chain[];
-  theme: Theme;
-  status: "connecting" | "reconnecting" | "connected" | "disconnected";
   open: boolean;
-
+  theme: Theme;
   language: SUPPORT_LANGUAGES;
+
   page: Page;
   activeTab: Tab;
-
   currentWallet?: WalletResult;
   type?: Tab;
 
+  chains: Chain[];
   wagmi?: Config<TPublicClient, TWebSocketPublicClient>;
+  status: "connecting" | "reconnecting" | "connected" | "disconnected";
   isConnected?: boolean;
   address?: string;
   chainId?: number;
-  wallets?: WalletResult[];
 
+  wallets?: WalletResult[];
   uri?: string;
   walletConnectConnector?: WalletConnectConnector;
 
+  mipd: readonly EIP6963ProviderDetail[];
+
+  configHook?: Hook;
+  openHooks?: Hook[];
+
   customButtons?: CustomButton[];
   disclaimer?: Disclaimer;
-
   showWalletConnect: boolean;
 
   setTab: (activeTab: Tab) => void;
@@ -59,12 +62,6 @@ interface Store<
 
   setDisclaimer: RabbyKitModal["setDisclaimer"];
   setCustomButtons: RabbyKitModal["setCustomButtons"];
-
-  mipd: readonly EIP6963ProviderDetail[];
-
-  configHook?: Hook;
-
-  openHooks?: Hook[];
 }
 
 export const useRKStore = createStore<Store<any, any>>()(

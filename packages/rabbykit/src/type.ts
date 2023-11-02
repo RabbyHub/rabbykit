@@ -8,6 +8,7 @@ export type Hook = {
   onConnect?: () => void;
   onConnectError?: (error: Error) => void;
   onModalClosed?: () => void;
+  onModalClosedByManualOperation?: () => void;
 };
 
 export type RabbyKitModal = {

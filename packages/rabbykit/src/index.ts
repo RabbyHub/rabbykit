@@ -50,6 +50,7 @@ export const createModal = <
   onConnect,
   onConnectError,
   onModalClosed,
+  onModalClosedByManualOperation,
 }: {
   chains: Chain[];
   appName: string;
@@ -134,6 +135,7 @@ export const createModal = <
       onConnect,
       onConnectError,
       onModalClosed,
+      onModalClosedByManualOperation,
     },
   });
 

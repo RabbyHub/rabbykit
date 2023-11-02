@@ -6,8 +6,11 @@
   import { fade } from "svelte/transition";
   import { isMobile } from "../../helpers/browser";
 
+  let isManualOperation = false;
+
   function close() {
     useRKStore.getState().closeModal();
+    isManualOperation = true;
   }
 
   const html = document.documentElement;
@@ -36,6 +39,14 @@
   let isMobileEnv = isMobile();
 
   function outroend() {
+    if (isManualOperation) {
+      useRKStore
+        .getState()
+        .openHooks?.forEach((e) => e?.onModalClosedByManualOperation?.());
+      useRKStore.getState().configHook?.onModalClosedByManualOperation?.();
+      isManualOperation = false;
+    }
+
     $useStore.openHooks?.forEach((e) => e?.onModalClosed?.());
     $useStore.configHook?.onModalClosed?.();
     useRKStore.setState({
