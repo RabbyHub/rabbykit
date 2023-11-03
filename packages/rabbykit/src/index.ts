@@ -60,13 +60,9 @@ export const createModal = <
   customButtons?: CustomButton[];
   showWalletConnect?: boolean;
 } & Hook): RabbyKitModal => {
-  useRKStore.setState({ wagmi });
-
-  syncMipd();
-
   watchAccount(() => syncAccount());
 
-  const list = [
+  const wallets = [
     rabbyWallet({ chains }),
     metaMaskWallet({ chains, projectId }),
     coinbaseWallet({ chains, appName }),
@@ -99,35 +95,34 @@ export const createModal = <
     })
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  if (wagmi.args.autoConnect) {
-    const allConnectors: any = [...sharedWalletConnectConnectors.values()];
-    list
-      .filter((e) => !!e.connector.browser?.ready)
-      .forEach((e) => {
-        e.connector.browser && allConnectors.push(e.connector.browser);
-      });
-
-    wagmi.setConnectors([
-      ...(wagmi?.connectors || []),
-      getCommonWalletConnect({ chains, projectId }),
-      ...allConnectors,
-    ]);
-    wagmi.autoConnect();
-  }
+  const allConnectors: any = [...sharedWalletConnectConnectors.values()];
+  wallets
+    .filter((e) => !!e.connector.browser?.ready && e.installed)
+    .forEach((e) => {
+      e.connector.browser && allConnectors.push(e.connector.browser);
+    });
 
   const other = otherInjectedWallet({ chains });
+
   if (
     other.installed &&
     other.connector.browser?.ready &&
     other.connector.browser?.name &&
-    !list.some((e) => other.connector.browser?.name.includes(e.name))
+    !wallets.some((e) => other.connector.browser?.name.includes(e.name))
   ) {
-    list.unshift(other);
+    wallets.unshift(other);
   }
 
+  wagmi.setConnectors([
+    ...(wagmi?.connectors || []),
+    getCommonWalletConnect({ chains, projectId }),
+    ...allConnectors,
+  ]);
+
   useRKStore.setState({
+    wagmi,
+    wallets,
     chains,
-    wallets: list,
     disclaimer,
     customButtons,
     showWalletConnect,
@@ -138,6 +133,12 @@ export const createModal = <
       onModalClosedByManualOperation,
     },
   });
+
+  syncMipd();
+
+  if (wagmi.args.autoConnect) {
+    wagmi.autoConnect();
+  }
 
   let init = false;
 

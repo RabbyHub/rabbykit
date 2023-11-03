@@ -19,6 +19,7 @@ import { CustomButton, Disclaimer, Hook, RabbyKitModal, Theme } from "../type";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import { EIP6963ProviderDetail, createStore as createMipdStore } from "mipd";
 import { goerli } from "viem/chains";
+import { wrapperEIP6963Wallet } from "../helpers/mipd";
 
 type Tab = "browser" | "mobile";
 type Page = "wallet" | "connect" | "download";
@@ -125,12 +126,48 @@ export function syncAccount() {
 }
 
 export const syncMipd = () => {
-  const mipdStore = createMipdStore();
-  useRKStore.setState({ mipd: mipdStore.getProviders() });
+  const syncState = (eip6963Wallets: readonly EIP6963ProviderDetail[]) => {
+    const allEIP6963Wallets = eip6963Wallets
+      .filter((p) => {
+        if (
+          (useRKStore.getState().wallets || []).some(
+            (r) => r.connector.browser?.ready && r.name === p.info.name
+          )
+        ) {
+          return false;
+        }
+        return true;
+      })
+      .map((e) => wrapperEIP6963Wallet(e, useRKStore.getState().chains));
 
-  const unsubscribe = mipdStore.subscribe((p) => {
-    useRKStore.setState({ mipd: p });
+    useRKStore.setState((s) => ({
+      mipd: detectedEIP6963wallets,
+      wallets: [...(s.wallets || []), ...allEIP6963Wallets].sort((a, b) =>
+        a.name.localeCompare(b.name)
+      ),
+    }));
+
+    const { wagmi, wallets } = useRKStore.getState();
+    if (wagmi) {
+      wagmi?.setConnectors([
+        ...allEIP6963Wallets
+          .filter((item) => wallets?.some((e) => e.id === item.id))
+          .map((e) => e.connector?.browser!),
+        ...(wagmi?.connectors || []),
+      ]);
+    }
+  };
+
+  const mipdStore = createMipdStore();
+
+  const detectedEIP6963wallets = mipdStore.getProviders();
+
+  syncState(detectedEIP6963wallets);
+
+  const unsubscribe = mipdStore.subscribe((arr) => {
+    syncState(arr);
   });
+
   return () => {
     unsubscribe();
     mipdStore.clear();
