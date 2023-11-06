@@ -11,6 +11,7 @@
     "npm": ">=999.0.0"
   },
   "scripts": {
+    "dev:doc": "pnpm --filter=\"./site/doc\" dev",
     "dev:examples": "pnpm --filter=\"./examples/next-wagmi\" dev",
     "build:examples": "pnpm run build:kit && pnpm --filter=\"./examples/next-wagmi\" build",
     "dev:kit": "pnpm --filter=rabbykit dev",
