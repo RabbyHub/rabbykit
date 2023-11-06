@@ -12,39 +12,32 @@ export interface ConfigOptions<
   config: Config<TPublicClient, TWebSocketPublicClient>;
 }
 
-type RKConnector<C extends Connector = Connector> = {
-  connector: C;
-  getUri?: () => Promise<string | null | undefined>;
-};
+interface RabbyKitConnector<C extends Connector = Connector> {
+  browser?: C;
+  mobile?: {
+    getUri?: () => Promise<string>;
+    connector?: C;
+  };
+  qrCode?: {
+    getUri?: () => Promise<string>;
+    connector?: C;
+  };
+}
 
 export type WalletResult<C extends Connector = Connector> = {
   id: string;
   name: string;
-  shortName?: string;
-  logos: {
-    default: string;
-    transparent?: string;
-    connectorButton?: string;
-    qrCode?: string;
-    appIcon?: string;
-    mobile?: string;
-  };
-  logoBackground?: string;
-  scannable?: boolean;
+  mobileName?: string;
+  logo: string;
   installed?: boolean;
   downloadUrls?: {
-    website?: string;
+    chrome?: string;
+    firefox?: string;
+    edge?: string;
     android?: string;
     ios?: string;
-    mobile?: string;
-    qrCode?: string;
-    chrome?: string;
-    edge?: string;
-    firefox?: string;
-    opera?: string;
     safari?: string;
-    browserExtension?: string;
-    brave?: string;
   };
-  createConnector: () => RKConnector<C>;
+  connector: RabbyKitConnector<C>;
+  mobileUA?: (ua: string) => boolean;
 };

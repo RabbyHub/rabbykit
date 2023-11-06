@@ -4,8 +4,12 @@ import { preserveDirective } from "rollup-swc-preserve-directives";
 import json from "@rollup/plugin-json";
 import { dts } from "rollup-plugin-dts";
 import svelte from "rollup-plugin-svelte";
-import sveltePreprocess from "svelte-preprocess";
+import sveltePreprocess, { scss } from "svelte-preprocess";
 import replace from "@rollup/plugin-replace";
+import crypto from "crypto";
+
+//@ts-ignore
+import svgo from "rollup-plugin-svgo";
 
 import { dependencies, peerDependencies } from "./package.json";
 
@@ -15,10 +19,9 @@ const external = [
   ...Object.keys(dependencies),
   ...Object.keys(peerDependencies),
 ];
+// .filter((e) => e !== "svelte");
 
-console.log("dependencies", dependencies);
-
-const input = ["./src/index.ts"];
+const input = ["./src/index.ts", "./src/index.react.tsx"];
 export default defineConfig([
   {
     input,
@@ -29,6 +32,39 @@ export default defineConfig([
       sourcemap: true,
     },
     plugins: [
+      svgo({
+        plugins: [
+          {
+            name: "preset-default",
+            params: {
+              overrides: {
+                removeViewBox: false,
+                cleanupIDs: {
+                  prefix: {
+                    toString() {
+                      return crypto.randomBytes(6).toString("hex").slice(0, 4);
+                    },
+                  },
+                },
+              },
+            },
+          },
+          "removeDimensions",
+          {
+            name: "addAttributesToSVGElement",
+            params: {
+              attributes: [
+                {
+                  width: "100%",
+                },
+                {
+                  height: "100%",
+                },
+              ],
+            },
+          },
+        ],
+      }),
       json(),
       replace({
         "process.env.NODE_ENV": JSON.stringify(production),
@@ -36,7 +72,7 @@ export default defineConfig([
       }),
       // common(),
       svelte({
-        preprocess: sveltePreprocess({ sourceMap: !production }),
+        preprocess: [sveltePreprocess({ sourceMap: !production }), scss()],
         compilerOptions: {
           dev: !production,
         },
@@ -51,7 +87,18 @@ export default defineConfig([
           sourceMaps: true,
           jsc: {
             externalHelpers: true,
+            minify: production
+              ? {
+                  compress: {
+                    passes: 2,
+                    const_to_let: false,
+                  },
+                  mangle: {},
+                  module: true,
+                }
+              : undefined,
           },
+          minify: production,
         })
       ),
       preserveDirective(),
@@ -67,6 +114,9 @@ export default defineConfig([
     output: {
       format: "esm",
       dir: "dist",
+      entryFileNames: (e) => {
+        return `${e.name.replace("src/", "")}.d.ts`;
+      },
     },
     plugins: [dts()],
   },
