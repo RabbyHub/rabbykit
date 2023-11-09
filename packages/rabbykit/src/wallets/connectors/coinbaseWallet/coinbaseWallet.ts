@@ -40,8 +40,8 @@ export const coinbaseWallet = ({
     },
     connector: {
       browser: connector,
-      mobile: { getUri },
-      qrCode: { getUri },
+      mobile: { getUri, connector },
+      qrCode: { getUri, connector },
     },
   };
 };

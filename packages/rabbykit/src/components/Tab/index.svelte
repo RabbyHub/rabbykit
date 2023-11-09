@@ -1,15 +1,11 @@
 <script lang="ts">
   import WalletButton from "../WalletButton/index.svelte";
+  import Scroll from "../Common/Scroll.svelte";
   import { _ as t } from "svelte-i18n";
   import useStore, { useRKStore } from "../../store/context";
   import { isSupportBrowser } from "../../helpers/wallet";
   import Button from "../WalletButton/button.svelte";
   import scan from "./scan.svg";
-  import {
-    commonWalletConnect,
-    getWalletConnectUri,
-  } from "../../helpers/getWalletConnectUri";
-  import logo from "./walletConnect.svg";
 
   const browserList = $useStore.wallets || [];
 
@@ -24,37 +20,12 @@
 
   const handleScan = () => {
     useRKStore.setState({
-      page: "connect",
-      currentWallet: {
-        id: "walletConnect",
-        logo,
-        name: $t("mobile wallet"),
-        connector: {
-          qrCode: {
-            getUri: () => getWalletConnectUri(commonWalletConnect!),
-            connector: commonWalletConnect,
-          },
-        },
-      },
-      type: "mobile",
-      status: "connecting",
+      page: "wc-select",
     });
   };
-
-  let box: HTMLDivElement;
-  let scrollTop: number;
 </script>
 
-<div
-  class="scroll"
-  bind:this={box}
-  on:scroll={() => {
-    scrollTop = box.scrollTop;
-  }}
->
-  <div class="title" class:borderB={scrollTop > 0}>
-    Select your wallet to login
-  </div>
+<Scroll title={$t("Select your wallet to login")}>
   <div class="ready-wallet-container">
     {#each readyBrowserList as wallet}
       <WalletButton {wallet} type="browser" />
@@ -90,39 +61,9 @@
   </div>
 
   <div class="rk-tip">{$t("Powered by RabbyKit")}</div>
-</div>
+</Scroll>
 
 <style lang="scss">
-  .title {
-    background: var(--r-neutral-bg-2);
-    position: sticky;
-    top: 0;
-    left: 0;
-    margin: 0 0 0 -20px;
-    padding: 0 20px;
-    padding-bottom: 16px;
-    color: var(--r-neutral-title-1);
-    text-align: center;
-    font-size: 18px;
-    font-weight: 510;
-    border-bottom: 0.5px solid transparent;
-    &.borderB {
-      border-bottom: 0.5px solid var(--r-neutral-line);
-    }
-  }
-  .scroll {
-    height: 100%;
-    max-height: 100%;
-    margin: 0 -20px;
-    padding-left: 20px;
-    overflow: auto;
-    -ms-overflow-style: none; /* Internet Explorer 10+ */
-    scrollbar-width: none; /* Firefox */
-    &::-webkit-scrollbar {
-      display: none; /* Safari and Chrome */
-    }
-  }
-
   .ready-wallet-container {
     display: flex;
     flex-direction: column;

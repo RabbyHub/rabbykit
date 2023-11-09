@@ -26,6 +26,7 @@ import {
   xdefiWallet,
   zerionWallet,
   tahoWallet,
+  imTokenWallet,
   // safeWallet,
 } from "./wallets/connectors";
 import { mount } from "./components/Kit";
@@ -81,6 +82,7 @@ export const createModal = <
     xdefiWallet({ chains }),
     zerionWallet({ chains, projectId }),
     tahoWallet({ chains }),
+    imTokenWallet({ chains, projectId }),
     // safeWallet({
     //   chains,
     //   allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/],

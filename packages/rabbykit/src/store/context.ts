@@ -22,7 +22,7 @@ import { goerli } from "viem/chains";
 import { wrapperEIP6963Wallet } from "../helpers/mipd";
 
 type Tab = "browser" | "mobile";
-type Page = "wallet" | "connect" | "download";
+type Page = "wallet" | "connect" | "wc-select" | "download";
 interface Store<
   TPublicClient extends PublicClient = PublicClient,
   TWebSocketPublicClient extends WebSocketPublicClient = WebSocketPublicClient

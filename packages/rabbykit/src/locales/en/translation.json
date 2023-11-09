@@ -36,5 +36,8 @@
   "Connect x": "Connect {name}",
   "Copy Dapp URL": "Copy Dapp URL",
   "unsupported mobile env": "The Dapp cannot connect to wallets in the current web environment. Please use your computer or mobile wallet for full functionality",
-  "disclaimer": "By connecting your wallet you agree to the <a href={termsOfServiceUrl} target=\"_blank\">Terms of Service</a> and <a href={privacyPolicyUrl} target=\"_blank\">Privacy Policy</a>"
+  "disclaimer": "By connecting your wallet you agree to the <a href={termsOfServiceUrl} target=\"_blank\">Terms of Service</a> and <a href={privacyPolicyUrl} target=\"_blank\">Privacy Policy</a>",
+
+  "Select your Mobile Wallet": "Select your Mobile Wallet",
+  "Select your wallet to login": "Select your wallet to login"
 }
