@@ -15,13 +15,20 @@ import {
 import { WalletResult } from "../wallets/type";
 import { SUPPORT_LANGUAGES } from "../helpers";
 import zustandToSvelte from "../helpers/zustandToSvelte";
-import { CustomButton, Disclaimer, Hook, RabbyKitModal, Theme } from "../type";
+import {
+  CustomButton,
+  Disclaimer,
+  Hook,
+  RabbyKitModal,
+  Theme,
+  Type,
+} from "../type";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import { EIP6963ProviderDetail, createStore as createMipdStore } from "mipd";
 import { goerli } from "viem/chains";
 import { wrapperEIP6963Wallet } from "../helpers/mipd";
 
-type Tab = "browser" | "mobile";
+type Tab = Type;
 type Page = "wallet" | "connect" | "wc-select" | "download";
 interface Store<
   TPublicClient extends PublicClient = PublicClient,
@@ -44,7 +51,6 @@ interface Store<
   chainId?: number;
 
   wallets?: WalletResult[];
-  uri?: string;
   walletConnectConnector?: WalletConnectConnector;
 
   mipd: readonly EIP6963ProviderDetail[];
@@ -120,7 +126,7 @@ export function syncAccount() {
   }
 
   if (isDisconnected) {
-    useRKStore.setState({ uri: undefined });
+    // useRKStore.setState({ uri: undefined });
   }
   useRKStore.setState({ status: status });
 }

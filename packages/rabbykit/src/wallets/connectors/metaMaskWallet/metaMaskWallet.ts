@@ -72,7 +72,8 @@ export const metaMaskWallet = ({
         getUri: () =>
           getMobileUri({
             connector: walletConnector,
-            iosUri: (uri) =>
+            iosUri: (uri) => `metamask://wc?uri=${encodeURIComponent(uri)}`,
+            androidUri: (uri) =>
               `https://metamask.app.link/wc?uri=${encodeURIComponent(uri)}`,
           }),
         connector: walletConnector,

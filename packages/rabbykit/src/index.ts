@@ -34,6 +34,7 @@ import "./helpers/i18n";
 import { CustomButton, Disclaimer, Hook, RabbyKitModal, Theme } from "./type";
 import {
   getCommonWalletConnect,
+  getWalletConnectLegacyConnector,
   sharedWalletConnectConnectors,
 } from "./helpers/getWalletConnectUri";
 
@@ -118,6 +119,7 @@ export const createModal = <
   wagmi.setConnectors([
     ...(wagmi?.connectors || []),
     getCommonWalletConnect({ chains, projectId }),
+    getWalletConnectLegacyConnector({ chains, projectId }),
     ...allConnectors,
   ]);
 

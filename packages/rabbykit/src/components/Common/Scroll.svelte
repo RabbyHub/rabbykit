@@ -1,11 +1,17 @@
 <script lang="ts">
+  import { isMobile } from "../../helpers/browser";
+
   export let title: string;
+  export let className = "";
+
   let box: HTMLDivElement;
   let scrollTop: number;
+  let isMobileEnv = isMobile();
 </script>
 
 <div
-  class="scroll"
+  class={`scroll ${className}`}
+  class:mobile={isMobileEnv}
   bind:this={box}
   on:scroll={() => {
     scrollTop = box.scrollTop;
@@ -32,6 +38,16 @@
     &::-webkit-scrollbar {
       display: none; /* Safari and Chrome */
     }
+
+    &.mobile {
+      padding-top: 0;
+      .title {
+        margin: 0;
+        padding: 0;
+        padding-top: 18px;
+        background: var(--r-neutral-bg-1);
+      }
+    }
   }
 
   .title {
@@ -47,6 +63,7 @@
     font-size: 18px;
     font-weight: 510;
     border-bottom: 0.5px solid transparent;
+
     &.borderB {
       border-bottom: 0.5px solid var(--r-neutral-line);
     }

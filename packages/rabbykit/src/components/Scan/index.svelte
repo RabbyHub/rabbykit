@@ -5,18 +5,14 @@
   import Icon from "../CommonIcon/Icon.svelte";
   import Copy from "../Copy/index.svelte";
   import { WalletResult } from "../../wallets/type";
-  import svelteStore, {
-    rabbykitConnect,
-    useRKStore,
-  } from "../../store/context";
-  import { connect, disconnect, getAccount } from "@wagmi/core";
+  import svelteStore, { rabbykitConnect } from "../../store/context";
+  import { disconnect, getAccount } from "@wagmi/core";
 
   export let wallet: WalletResult;
   export let size: number = 280;
 
   let uri = "loading";
   let loading = true;
-
   let shouldWaitDisconnect = false;
 
   async function handleConnect() {
@@ -29,32 +25,9 @@
       wallet.connector?.qrCode?.connector || wallet.connector?.browser;
 
     if (connector) {
-      const lastConnector = useRKStore.getState().walletConnectConnector;
-      const isSame = lastConnector === connector;
-
-      if (lastConnector && !isSame) {
-        useRKStore.setState({ uri: undefined });
-        connector?.once("message", async (e) => {
-          if (e.type !== "connecting") {
-            useRKStore.setState({ uri: undefined });
-          }
-        });
-
-        rabbykitConnect({
-          connector: connector,
-        });
-      } else {
-        if (!useRKStore.getState().uri) {
-          connector?.once("message", async (e) => {
-            if (e.type !== "connecting") {
-              useRKStore.setState({ uri: undefined });
-            }
-          });
-          rabbykitConnect({
-            connector: connector,
-          });
-        }
-      }
+      rabbykitConnect({
+        connector: connector,
+      });
 
       await getUri();
     }
@@ -63,13 +36,13 @@
   async function getUri() {
     try {
       loading = true;
-
-      const code =
-        $svelteStore?.uri || (await wallet.connector.qrCode?.getUri?.());
+      const code = await wallet.connector.qrCode?.getUri?.();
       if (code) {
         uri = code;
-        useRKStore.setState({ uri });
         loading = false;
+        refreshLoading = false;
+        success = false;
+        failed = false;
       }
     } catch (error) {
       console.error("getUri() error:", error);
@@ -91,14 +64,12 @@
   });
 
   async function refresh() {
-    if (wallet?.connector.qrCode?.connector) {
-      useRKStore.setState({ uri: undefined });
+    const connector =
+      wallet.connector?.qrCode?.connector || wallet.connector?.browser;
+    if (connector) {
       refreshLoading = true;
-      rabbykitConnect({ connector: wallet?.connector.qrCode?.connector });
+      rabbykitConnect({ connector });
       await getUri();
-      refreshLoading = false;
-      success = false;
-      failed = false;
     }
   }
 
@@ -150,7 +121,7 @@
       <div class="tip success">{$t("Connection Successful")}</div>
     {:else}
       <div class="tip">{$t("Scan with your Mobile wallet")}</div>
-      <Copy copyText={uri} />
+      <Copy copyText={uri} disable={failed || loading} />
     {/if}
   </section>
 </div>

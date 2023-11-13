@@ -97,6 +97,7 @@
     overflow: hidden;
 
     &.mobile {
+      padding: 0;
       width: 100vw;
       max-width: 100vw;
       height: auto;
@@ -107,6 +108,11 @@
       background: var(--r-neutral-bg-1);
       box-shadow: 0px -8px 8px 0px rgba(0, 0, 0, 0.08);
       border-radius: 16px 16px 0px 0px;
+
+      .close {
+        top: 13px;
+        right: 6px;
+      }
     }
   }
 

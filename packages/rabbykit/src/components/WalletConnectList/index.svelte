@@ -11,10 +11,7 @@
 <Scroll title={$t("Select your Mobile Wallet")}>
   <div class="wallet-container">
     {#each walletConnectList as wallet}
-      <WalletButton {wallet} type="mobile" />
-    {/each}
-    {#each walletConnectList as wallet}
-      <WalletButton {wallet} type="mobile" />
+      <WalletButton {wallet} type="qrCode" />
     {/each}
   </div>
 </Scroll>

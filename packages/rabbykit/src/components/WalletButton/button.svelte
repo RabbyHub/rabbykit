@@ -1,9 +1,10 @@
 <script lang="ts">
+  import { Type } from "../../type";
   import Image from "../Image/index.svelte";
   import clsx from "clsx";
 
-  export let type: "browser" | "mobile" | "unused";
-  export let size: "lg" | "normal" = "lg";
+  export let type: Type;
+  export let size: "lg" | "normal" | "sm" = "lg";
   export let name: string;
   export let logo: string;
 </script>
@@ -11,8 +12,10 @@
 <button
   on:click
   class={clsx("button", $$props.class)}
+  class:sm={size === "sm"}
   class:lg={size === "lg"}
   class:ready={type === "browser"}
+  class:qrCode={type === "qrCode"}
   class:mobile={type === "mobile"}
   class:unused={type === "unused"}
   {...$$restProps}
@@ -82,14 +85,14 @@
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
   }
 
-  .button.mobile {
+  .button.qrCode {
     font-weight: 510;
     border-radius: 8px;
     box-shadow: none;
     border: 0.5px solid var(--r-neutral-line);
   }
 
-  .button.mobile:hover {
+  .button.qrCode:hover {
     border: 0.5px solid var(--r-blue-default);
     box-shadow: none;
   }
@@ -107,6 +110,31 @@
   .button.unused:hover {
     border-radius: 8px;
     border: 1px solid var(--r-blue-default);
+    background: transparent;
+  }
+
+  .button.mobile {
+    padding: 12px 0;
+    padding-left: 16px;
+    width: 100%;
+    height: 48px;
+    font-size: 14px;
+    font-weight: 510;
+    box-shadow: none;
+    border-radius: 8px;
+    color: var(--r-neutral-body);
+    border: 0.5px solid var(--r-neutral-line);
+    background: transparent;
+
+    .logo {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .button.mobile:hover {
+    border-radius: 8px;
+    border: 0.5px solid var(--r-neutral-line);
     background: transparent;
   }
 

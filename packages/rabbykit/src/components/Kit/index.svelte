@@ -9,7 +9,6 @@
   import Connecting from "../Connect/connect.svelte";
   import Scan from "../Scan/index.svelte";
   import Install from "../Install/index.svelte";
-  import Icon from "../CommonIcon/Icon.svelte";
   import WalletConnectList from "../WalletConnectList/index.svelte";
   import { isMobile } from "../../helpers/browser";
 
@@ -33,7 +32,7 @@
     $svelteStore.page === "wc-select" ||
     ($svelteStore.page === "connect" &&
       !!$svelteStore.currentWallet &&
-      $svelteStore.type === "mobile");
+      $svelteStore.type === "qrCode");
   $: showOtherSubPage = ["connect", "download"].includes($svelteStore.page);
 
   $: console.log("$svelteStore.page", $svelteStore.page);
@@ -54,7 +53,7 @@
         <Card
           show={$svelteStore.page === "connect" &&
             !!currentWallet &&
-            $svelteStore.type === "mobile"}
+            $svelteStore.type === "qrCode"}
           back={backWcList}
         >
           {#if !!currentWallet}

@@ -77,39 +77,28 @@ export async function getWalletConnectUri(
   connector: Connector
 ): Promise<string> {
   const provider = await connector.getProvider();
-  // if (connector instanceof WalletConnectLegacyConnector) {
-  //   console.log("provider", provider, provider.connector.uri);
-  //   provider.on("message", (...arg: any) => {
-  //     console.log("message", ...arg);
-  //   });
 
-  //   provider.on("session_update", (...arg: any) => {
-  //     console.log("session_update", ...arg);
-  //   });
-  //   return new Promise<string>((resolve) => {
-  //     setTimeout(() => {
-  //       resolve(provider.connector.uri);
-  //     }, 500);
-  //   });
-  // }
-  return new Promise<string>((resolve) => {
+  return new Promise<string>((resolve, reject) => {
     if (connector instanceof WalletConnectLegacyConnector) {
       let id: NodeJS.Timer;
+      let retry = 0;
       id = setInterval(() => {
-        console.log(
-          "provider",
-          provider,
-          provider.connector.handshakeTopic,
-          provider.connector.uri
-        );
-
+        if (retry >= 30) {
+          clearInterval(id);
+          return reject();
+        }
         if (provider.connector.handshakeTopic) {
           clearInterval(id);
           return resolve(provider.connector.uri);
         }
+        retry++;
       }, 100);
+      return;
     }
     provider.once("display_uri", resolve);
+    setTimeout(() => {
+      return reject();
+    }, 3000);
   });
 }
 

@@ -3,6 +3,7 @@ import { WalletResult } from "../../type";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import {
   getMobileUri,
+  getWalletConnectConnector,
   //   getWalletConnectConnector,
   getWalletConnectLegacyConnector,
   getWalletConnectUri,

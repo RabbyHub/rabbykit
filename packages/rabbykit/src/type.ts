@@ -1,5 +1,7 @@
 export type Theme = "light" | "dark" | "system";
 
+export type Type = "browser" | "qrCode" | "mobile" | "unused";
+
 export type Disclaimer = { term: string; privacy: string };
 
 export type CustomButton = { name: string; logo: string; onClick: () => void };
