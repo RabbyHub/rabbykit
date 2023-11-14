@@ -1,8 +1,7 @@
 <script lang="ts">
   import { _ as t } from "svelte-i18n";
 
-  import svelteStore, { rabbykitConnect } from "../../store/context";
-  import { InjectedConnector, connect, getConfig } from "@wagmi/core";
+  import svelteStore from "../../store/context";
   import Scroll from "../Common/Scroll.svelte";
   import WalletButton from "../WalletButton/index.svelte";
 

@@ -18,14 +18,6 @@ export const getWalletConnectLegacyConnector = (params: {
         projectId: params.projectId,
         bridge: "https://derelay.rabby.io",
         qrcode: false,
-        clientMeta: {
-          description: "rabby",
-          url: "https://rabby.io",
-          icons: [
-            "https://static-assets.rabby.io/files/122da969-da58-42e9-ab39-0a8dd38d94b8.png",
-          ],
-          name: "Rabby",
-        },
         ...params.options,
       },
     });

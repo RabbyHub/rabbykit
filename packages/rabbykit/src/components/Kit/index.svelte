@@ -4,6 +4,8 @@
   import Modal from "../Modal/index.svelte";
   import Tab from "../Tab/index.svelte";
   import Mobile from "../mobile/index.svelte";
+  import InMobileApp from "../mobile/InMobileApp.svelte";
+
   import Card from "../Modal/Card.svelte";
 
   import Connecting from "../Connect/connect.svelte";
@@ -25,6 +27,7 @@
     });
   }
   let isMobileEnv = isMobile();
+  let detectWindowEthereum = !!window?.ethereum;
 
   $: open = $svelteStore.open;
   $: currentWallet = $svelteStore.currentWallet;
@@ -34,15 +37,17 @@
       !!$svelteStore.currentWallet &&
       $svelteStore.type === "qrCode");
   $: showOtherSubPage = ["connect", "download"].includes($svelteStore.page);
-
-  $: console.log("$svelteStore.page", $svelteStore.page);
 </script>
 
 <Provider>
   {#if open}
     <Modal>
       {#if isMobileEnv}
-        <Mobile />
+        {#if detectWindowEthereum}
+          <InMobileApp />
+        {:else}
+          <Mobile />
+        {/if}
       {:else}
         <Tab />
 

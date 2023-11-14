@@ -2,7 +2,7 @@
   import { _ as t } from "svelte-i18n";
 
   import useStore, { rabbykitConnect } from "../../store/context";
-  import { InjectedConnector, connect, getConfig } from "@wagmi/core";
+  import { InjectedConnector } from "@wagmi/core";
 
   const browserList = $useStore.wallets || [];
 
@@ -98,6 +98,7 @@
     }
   }
   .title {
+    padding-top: 20px;
     color: var(--r-neutral-title-1);
     text-align: center;
     font-size: 18px;

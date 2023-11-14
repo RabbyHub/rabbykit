@@ -53,6 +53,7 @@ export const createModal = <
   onConnectError,
   onModalClosed,
   onModalClosedByManualOperation,
+  theme = "light",
 }: {
   chains: Chain[];
   appName: string;
@@ -61,6 +62,7 @@ export const createModal = <
   disclaimer?: Disclaimer;
   customButtons?: CustomButton[];
   showWalletConnect?: boolean;
+  theme?: Theme;
 } & Hook): RabbyKitModal => {
   watchAccount(() => syncAccount());
 

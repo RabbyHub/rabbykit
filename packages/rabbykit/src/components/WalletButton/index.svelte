@@ -1,4 +1,5 @@
 <script lang="ts">
+  import svelteStore from "../../store/context";
   import { WalletResult } from "../../wallets/type";
   import { rabbykitConnect, useRKStore } from "../../store/context";
   import Button from "./button.svelte";
@@ -33,15 +34,17 @@
     }
 
     if (type === "mobile") {
-      // if (wallet.connector?.browser?.ready) {
-      //   rabbykitConnect({ connector: wallet.connector?.browser });
-      // } else
       if (
         wallet.connector?.mobile?.getUri &&
         wallet.connector?.mobile.connector
       ) {
         try {
-          rabbykitConnect({ connector: wallet.connector?.mobile.connector });
+          rabbykitConnect({
+            connector: wallet.connector?.mobile.connector,
+          }).then(() => {
+            $svelteStore.closeModal();
+          });
+
           const mobileUri = await wallet.connector?.mobile?.getUri();
           if (mobileUri) {
             if (mobileUri.startsWith("http")) {
