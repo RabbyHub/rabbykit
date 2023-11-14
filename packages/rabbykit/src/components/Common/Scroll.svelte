@@ -64,6 +64,7 @@
     font-size: 18px;
     font-weight: 510;
     border-bottom: 0.5px solid transparent;
+    z-index: var(--z-index-scroll);
 
     &.borderB {
       border-bottom: 0.5px solid var(--r-neutral-line);

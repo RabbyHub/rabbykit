@@ -129,6 +129,16 @@
     .logo {
       width: 24px;
       height: 24px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      /* fix ios borderRadius */
+      & > :global(svg) {
+        min-width: 48px;
+        width: 48px;
+        height: 48px;
+        transform: scale(0.5);
+      }
     }
   }
 

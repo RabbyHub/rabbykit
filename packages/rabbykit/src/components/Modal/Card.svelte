@@ -27,6 +27,7 @@
     padding: 20px;
     padding-bottom: 0;
     background: var(--r-neutral-bg-2);
+    z-index: var(--z-index-page);
     .back {
       position: absolute;
       transform: translateX(100%);

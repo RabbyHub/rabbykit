@@ -100,6 +100,8 @@
   }
 
   [data-rabbykit] {
+    --z-index-scroll: 1;
+    --z-index-page: 2;
     @extend .light;
     font-family: var(--rk-font);
 
