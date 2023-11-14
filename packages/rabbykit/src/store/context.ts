@@ -69,10 +69,13 @@ interface Store<
 
   setDisclaimer: RabbyKitModal["setDisclaimer"];
   setCustomButtons: RabbyKitModal["setCustomButtons"];
+
+  isMobile: boolean;
 }
 
 export const useRKStore = createStore<Store<any, any>>()(
   subscribeWithSelector((set, get) => ({
+    isMobile: false,
     chains: [mainnet, goerli],
     theme: "light",
     status: "disconnected",

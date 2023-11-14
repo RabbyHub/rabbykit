@@ -16,7 +16,13 @@
   const html = document.documentElement;
 
   let htmlStyleCache: Record<string, string> = {};
+  function resize() {
+    useRKStore.setState({ isMobile: isMobile() });
+  }
+
   onMount(() => {
+    resize();
+    window.addEventListener("resize", resize);
     htmlStyleCache.position = html.style.position;
     htmlStyleCache.overflow = html.style.overflow;
 
@@ -25,6 +31,8 @@
   });
 
   onDestroy(() => {
+    window.removeEventListener("resize", resize);
+
     html.style.position = htmlStyleCache.position;
     if (htmlStyleCache.overflow) {
       html.style.overflow = htmlStyleCache.overflow;
@@ -36,7 +44,6 @@
       currentWallet: undefined,
     });
   });
-  let isMobileEnv = isMobile();
 
   function outroend() {
     if (isManualOperation) {
@@ -53,6 +60,8 @@
       openHooks: [],
     });
   }
+
+  $: isMobileEnv = !!$useStore.isMobile;
 </script>
 
 <div class="modal" transition:fade={{ duration: 100 }} on:outroend={outroend}>

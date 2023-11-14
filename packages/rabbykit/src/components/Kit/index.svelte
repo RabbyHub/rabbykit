@@ -4,7 +4,7 @@
   import Modal from "../Modal/index.svelte";
   import Tab from "../Tab/index.svelte";
   import Mobile from "../mobile/index.svelte";
-  import InMobileApp from "../mobile/InMobileApp.svelte";
+  import InMobileApp from "../mobile/InWalletBrowser.svelte";
 
   import Card from "../Modal/Card.svelte";
 
@@ -12,7 +12,6 @@
   import Scan from "../Scan/index.svelte";
   import Install from "../Install/index.svelte";
   import WalletConnectList from "../WalletConnectList/index.svelte";
-  import { isMobile } from "../../helpers/browser";
 
   function back() {
     useRKStore.setState({
@@ -26,9 +25,9 @@
       currentWallet: undefined,
     });
   }
-  let isMobileEnv = isMobile();
-  let detectWindowEthereum = !!window?.ethereum;
 
+  $: isMobileEnv = $svelteStore.isMobile;
+  $: detectWindowEthereum = !!window?.ethereum;
   $: open = $svelteStore.open;
   $: currentWallet = $svelteStore.currentWallet;
   $: isQrCodePage =

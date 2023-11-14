@@ -1,17 +1,16 @@
 <script lang="ts">
-  import { isMobile } from "../../helpers/browser";
+  import svelteStore from "../../store/context";
 
   export let title: string;
   export let className = "";
 
   let box: HTMLDivElement;
   let scrollTop: number;
-  let isMobileEnv = isMobile();
 </script>
 
 <div
   class={`scroll ${className}`}
-  class:mobile={isMobileEnv}
+  class:mobile={$svelteStore.isMobile}
   bind:this={box}
   on:scroll={() => {
     scrollTop = box.scrollTop;
@@ -41,6 +40,8 @@
 
     &.mobile {
       padding-top: 0;
+      margin: 0;
+      padding: 0;
       .title {
         margin: 0;
         padding: 0;

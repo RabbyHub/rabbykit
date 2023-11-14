@@ -85,16 +85,18 @@
 
 <style lang="scss">
   .container {
+    --safe-area-inset-bottom: env(safe-area-inset-bottom);
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 128px;
-    height: calc(128px + env(safe-area-inset-bottom));
-    padding-bottom: env(safe-area-inset-bottom);
+    height: 140px;
+    height: calc(140px + (var(--safe-area-inset-bottom)));
+    padding-bottom: var(--safe-area-inset-bottom);
     &.unable,
     &.disclaimer {
       height: 170px;
-      height: calc(170px + env(safe-area-inset-bottom));
+      height: calc(170px + var(--safe-area-inset-bottom));
     }
   }
   .title {
