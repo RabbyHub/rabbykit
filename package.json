@@ -13,6 +13,7 @@
   "scripts": {
     "dev:doc": "pnpm --filter=\"./site/doc\" dev",
     "dev:examples": "pnpm --filter=\"./examples/next-wagmi\" dev",
+    "build:doc": "pnpm --filter=\"./site/doc\" build",
     "build:examples": "pnpm run build:kit && pnpm --filter=\"./examples/next-wagmi\" build",
     "dev:kit": "pnpm --filter=rabbykit dev",
     "build:kit": "pnpm --filter=rabbykit build",
