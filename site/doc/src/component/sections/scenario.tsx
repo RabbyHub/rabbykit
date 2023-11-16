@@ -11,7 +11,7 @@ export const ConnectScenario = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const sliderRef = useRef<(targetIndex: number) => void>();
   return (
-    <section className="w-full ">
+    <section className="w-full pt-[100px]">
       <div className="max-w-[986px] w-full mx-auto flex flex-col items-center">
         <div className="text-center text-title1 text-[40px] font-[510] mb-[12px]">
           Tailored for every Dapp scenario
