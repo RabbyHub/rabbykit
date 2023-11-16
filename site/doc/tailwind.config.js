@@ -18,6 +18,7 @@ module.exports = {
         title2: "rgba(255, 255, 255, 1)",
         "blue-default": "rgba(112, 132, 255, 1)",
         line: "rgba(211, 216, 224, 1)",
+        foot: "rgba(106, 117, 135, 1)",
       },
     },
   },

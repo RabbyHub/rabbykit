@@ -16,7 +16,7 @@ export const ConnectButton = () => {
       className={clsx(
         "py-[10px]",
         isConnected ? "px-[12px]" : "px-[15px]",
-        "h-10 relative bg-indigo-400 rounded-md flex gap-[6px] items-center justify-center text-center text-white text-base "
+        "h-10 relative bg-blue-default rounded-md flex gap-[6px] items-center justify-center text-center text-white text-base "
       )}
       onClick={() => {
         if (!isConnected) {

@@ -31,7 +31,7 @@ const ClipText = () => {
 export function Header(props) {
   return (
     <section
-      className="bg-slate-900  flex flex-col  items-center"
+      className="bg-foot  flex flex-col  items-center"
       style={{
         backgroundImage: `url(${bg.src})`,
         backgroundRepeat: "no-repeat",
@@ -40,7 +40,7 @@ export function Header(props) {
     >
       <div className="w-full max-w-[960px] h-[64px] flex items-center justify-between py-3">
         <LogoName name="Rabby Kit" />
-        {/* <button className="w-36 h-10 relative bg-indigo-400 rounded-md flex items-center justify-center text-center text-white text-base ">
+        {/* <button className="w-36 h-10 relative bg-blue-default rounded-md flex items-center justify-center text-center text-white text-base ">
           Connect Wallet
         </button> */}
         <ConnectButton />

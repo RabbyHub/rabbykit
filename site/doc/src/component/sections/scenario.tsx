@@ -44,7 +44,6 @@ export const ConnectScenario = () => {
           renderCenterLeftControls={() => null}
           renderCenterRightControls={() => null}
           renderBottomCenterControls={({ currentSlide, goToSlide }) => {
-            console.log("currentSlide", currentSlide);
             setCurrentSlide(currentSlide);
             sliderRef.current = goToSlide;
             return null;
