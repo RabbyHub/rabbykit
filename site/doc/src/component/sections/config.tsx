@@ -277,40 +277,36 @@ function WalletItem({
       <style jsx>{`
         .item {
           width: 100%;
-          height: 82px;
+          height: 64px;
           border-radius: var(--rk-primary-button-border-radius, 8.194px);
           background: var(--rk-primary-button-bg, var(--r-neutral-card-1));
-          box-shadow: 0px 5.06351px 10.12701px 0px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
           display: flex;
           align-items: center;
-          padding: 0 22px;
+          padding: 10px 20px;
           color: var(--rk-primary-button-color, var(--r-neutral-title-1));
           font-family: SF Pro;
-          font-size: 20.254px;
+          font-size: 16px
           font-style: normal;
           font-weight: 590;
           line-height: normal;
         }
         .wallet-icon {
-          width: 33.853px;
-          height: 33.853px;
+          width: 28px;
+          height: 28px;
         }
-        .sub .wallet-icon {
-          width: 30.821px;
-          height: 30.821px;
-        }
+
         .item.sub {
-          width: 220px;
-          height: 62px;
+          width: 206px;
+          height: 56px;
           background: transparent;
           color: var(--r-neutral-body);
           font-family: SF Pro;
-          font-size: 16.511px;
+          font-size: 15px;
           font-style: normal;
           font-weight: 510;
           line-height: normal;
-          border-radius: 8.806px;
-          border: 1.101px solid var(--r-neutral-line);
+          border: 0.5px solid var(--r-neutral-line);
         }
       `}</style>
     </div>
@@ -320,9 +316,7 @@ function WalletItem({
 const Preview = ({ theme, cssVar }: { theme?: string; cssVar?: string }) => {
   return (
     <div className={clsx("modal flex flex-col items-center", theme)}>
-      <div className="title mt-[26px] mb-[20px]">
-        Select your wallet to login
-      </div>
+      <div className="title mb-[20px]">Select your wallet to login</div>
       <div className="flex flex-col gap-[15px] w-full">
         {demoList.map((fill, idx) => (
           <WalletItem fill={fill} idx={idx} key={idx} />
@@ -358,9 +352,9 @@ const Preview = ({ theme, cssVar }: { theme?: string; cssVar?: string }) => {
             --r-neutral-line: rgba(255, 255, 255, 0.1);
           }
           .modal {
-            padding: 0 25px;
-            width: 504.927px;
-            height: 635px;
+            padding: 20px;
+            width: 460px;
+            height: 540px;
             overflow: hidden;
             border-radius: var(
               --rk-modal-border-radius,
@@ -382,8 +376,7 @@ const Preview = ({ theme, cssVar }: { theme?: string; cssVar?: string }) => {
           .title {
             color: var(--r-neutral-title-1);
             text-align: center;
-            font-family: SF Pro;
-            font-size: 22.786px;
+            font-size: 18px;
             font-style: normal;
             font-weight: 510;
             line-height: normal;

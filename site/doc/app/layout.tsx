@@ -1,7 +1,7 @@
+import { Metadata } from "next";
 import seoConfig from "../seo.config";
-export const metadata = {
-  title: seoConfig.title,
-  description: seoConfig.description,
+export const metadata: Metadata = {
+  ...seoConfig,
 };
 import { Providers } from "../src/component/rabbykit";
 import "./globals.css";
