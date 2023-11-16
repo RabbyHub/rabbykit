@@ -1,5 +1,8 @@
 import React from "react";
 import type { DocsThemeConfig } from "nextra-theme-docs";
+import { Navbar, useConfig } from "nextra-theme-docs";
+import { useFSRoute } from "nextra/hooks";
+// import { useMenu } from "nextra/context";
 
 const config: DocsThemeConfig = {
   logo: <span>RabbyKit Doc</span>,
@@ -14,6 +17,17 @@ const config: DocsThemeConfig = {
   footer: {
     text: "RabbyKit",
   },
+  // navbar: {
+  //   component: (props) => {
+  //     const config = useConfig();
+  //     const activeRoute = useFSRoute();
+  //     console.log("config", { config, activeRoute });
+  //     if (activeRoute === "/") {
+  //       return null;
+  //     }
+  //     return <Navbar {...props} />;
+  //   },
+  // },
 };
 
 export default config;

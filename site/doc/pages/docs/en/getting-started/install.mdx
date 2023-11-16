@@ -1,13 +1,11 @@
 import { Callout, Steps, Card } from "nextra/components";
 
-# JavaScript and Rabbykit
-
-## Install
+## 安装
 
 <Steps>
-### Install
+### 安装依赖
 
-Install ConnectKit and its peer dependencies
+安装 Rabbykit 及其依赖
 
 ```sh npm2yarn
 npm i @rabby-wallet/rabbykit @wagmi/core viem
@@ -15,7 +13,7 @@ npm i @rabby-wallet/rabbykit @wagmi/core viem
 
 ### 使用 Rabbykit 和 wagmi
 
-first setup `wagmi`，then setup `rabbykit`
+配置好`wagmi`，然后设置`rabbykit`
 
 ```ts filename="app.ts"
 import { configureChains, createConfig, mainnet } from "@wagmi/core";
@@ -43,10 +41,12 @@ export const rabbyKit = createModal({
   projectId: "yourProjectId",
   appName: "RabbyKit",
 });
+//打开钱包连接弹窗
 rabbykit.open();
 
 console.log("current rabbykit modal open status:", rabbyKit.getOpenState());
 
+//关闭钱包连接弹窗
 rabbykit.close();
 ```
 
