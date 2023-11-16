@@ -189,7 +189,7 @@ importers:
   site/doc:
     dependencies:
       '@rabby-wallet/rabbykit':
-        specifier: workspace:0.0.1-alpha-2.21
+        specifier: workspace:*
         version: link:../../packages/rabbykit
       clsx:
         specifier: ^2.0.0

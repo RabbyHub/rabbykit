@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@rabby-wallet/rabbykit": "workspace:0.0.1-alpha-2.21",
+    "@rabby-wallet/rabbykit": "workspace:*",
     "clsx": "^2.0.0",
     "next": "14",
     "nextra": "^2.13.2",
