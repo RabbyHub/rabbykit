@@ -2,7 +2,7 @@
 import { useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import bg from "./bg-3.png";
-import { ChromePicker, ColorResult } from "react-color";
+import { ChromePicker } from "react-color";
 import { useClickAway } from "react-use";
 
 const defaultCustomColor =
@@ -33,6 +33,7 @@ const allConfig = [
   {
     name: " Modal border radius",
     field: "--rk-modal-border-radius",
+    defaultIndex: 2,
     data: [
       { name: "20", value: "20px" },
       { name: "16", value: "16px" },
@@ -67,6 +68,7 @@ const allConfig = [
   {
     name: "Primary Button border radius",
     field: "--rk-primary-button-border-radius",
+    defaultIndex: 3,
     data: [
       { name: "20", value: "20px" },
       { name: "16", value: "16px" },
@@ -107,10 +109,8 @@ export const ConfigDemo = () => {
         <div className="flex flex-col gap-[32px]">
           {allConfig.map((e) => (
             <Item
-              key={e.name + e.type}
-              name={e.name}
-              data={e.data}
-              type={e.type}
+              key={e.name}
+              {...e}
               onUpdate={(v) => {
                 if (e.type === "theme") {
                   setTheme(v);
@@ -146,14 +146,16 @@ const Item = ({
   data,
   type,
   onUpdate,
+  defaultIndex = 0,
 }: {
   name: string;
   type?: string;
+  defaultIndex?: number;
   data: { name?: string; value: string }[];
   onUpdate: (v: string) => void;
 }) => {
   const isColor = useMemo(() => type === "color", [type]);
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(defaultIndex);
   const colorRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const [color, setColor] = useState<string>();
@@ -212,12 +214,13 @@ const Item = ({
                 <ChromePicker
                   color={color}
                   onChange={(e) => {
-                    setColor(e.hex);
+                    const rgba = `rgba(${e.rgb.r},${e.rgb.g},${e.rgb.b},${
+                      e.rgb?.a || 1
+                    })`;
+                    setColor(rgba);
+                    onUpdate(rgba);
                   }}
                   className="absolute top-[36px] left-1/2 z-50 -translate-x-1/2"
-                  onChangeComplete={(e) => {
-                    onUpdate(e.hex);
-                  }}
                 />
               )}
             </button>
@@ -273,7 +276,7 @@ function WalletItem({
       )}
       <style jsx>{`
         .item {
-          width: 454px;
+          width: 100%;
           height: 82px;
           border-radius: var(--rk-primary-button-border-radius, 8.194px);
           background: var(--rk-primary-button-bg, var(--r-neutral-card-1));
@@ -320,7 +323,7 @@ const Preview = ({ theme, cssVar }: { theme?: string; cssVar?: string }) => {
       <div className="title mt-[26px] mb-[20px]">
         Select your wallet to login
       </div>
-      <div className="flex flex-col gap-[15px]">
+      <div className="flex flex-col gap-[15px] w-full">
         {demoList.map((fill, idx) => (
           <WalletItem fill={fill} idx={idx} key={idx} />
         ))}
@@ -329,7 +332,7 @@ const Preview = ({ theme, cssVar }: { theme?: string; cssVar?: string }) => {
       <div className="second">
         The following wallets are not installed or in conflict with others
       </div>
-      <div className="flex justify-between w-full max-w-[454px]">
+      <div className="flex justify-between w-full max-w-[454px] ">
         <WalletItem fill={"#D9D9D9"} idx={6} isSecond />
         <WalletItem fill={"#D9D9D9"} idx={7} isSecond />
       </div>
@@ -355,6 +358,7 @@ const Preview = ({ theme, cssVar }: { theme?: string; cssVar?: string }) => {
             --r-neutral-line: rgba(255, 255, 255, 0.1);
           }
           .modal {
+            padding: 0 25px;
             width: 504.927px;
             height: 635px;
             overflow: hidden;
@@ -386,6 +390,7 @@ const Preview = ({ theme, cssVar }: { theme?: string; cssVar?: string }) => {
           }
 
           .second {
+            width: 100%;
             margin-top: 20px;
             margin-bottom: 10px;
             color: var(--r-neutral-foot);
