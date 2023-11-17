@@ -111,6 +111,7 @@
 
     & > a {
       color: var(--r-neutral-foot);
+      text-decoration: none;
       &:hover {
         text-decoration: underline;
       }
