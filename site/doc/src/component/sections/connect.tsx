@@ -5,8 +5,8 @@ const protocols = [
   {
     name: "EIP-6963",
     src: "/eip-6963.svg",
-    width: 48,
-    height: 48,
+    width: 40,
+    height: 40,
     href: "https://eips.ethereum.org/EIPS/eip-6963",
   },
   {
@@ -123,14 +123,14 @@ export const ConnectIntro = () => {
         <div className="text-center text-title1 text-2xl  mt-[100px] mb-[24px]">
           Supported Protocols
         </div>
-        <div className="flex items-center gap-[18px] w-full">
+        <div className="flex items-center gap-[18px] w-full mb-[100px]">
           {protocols.map(({ href, src, name, width, height }, idx) => (
             <a
               href={href}
               target="_blank"
               rel="noreferrer"
               className={clsx(
-                idx === 0 ? "gap-[9px]" : "gap-[12px]",
+                "gap-[12px]",
                 "hover:shadow",
                 "flex-1 h-32 pt-6 pb-7 bg-gray-100 rounded flex-col justify-center items-center  inline-flex"
               )}
@@ -145,6 +145,8 @@ export const ConnectIntro = () => {
           wallets={extensionWallets}
           title={"Extension wallet"}
         />
+
+        <div className="mt-[50px]" />
 
         <SupportedWallets wallets={mobileWallets} title={"Mobile wallet"} />
       </div>
@@ -161,7 +163,7 @@ function SupportedWallets({
 }) {
   return (
     <>
-      <div className="text-center text-title1 text-2xl  mt-[100px] mb-[24px]">
+      <div className="text-center text-title1 text-2xl  mb-[24px]">
         Supported Wallets
       </div>
 

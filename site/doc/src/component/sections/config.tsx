@@ -80,10 +80,10 @@ export const ConfigDemo = () => {
       style={{
         backgroundImage: `url(${bg.src})`,
         backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
+        backgroundSize: "100% 100%",
       }}
     >
-      <div className="text-center text-title2 text-[40px] font-[510px]">
+      <div className="text-center text-title2 text-[40px] font-bold">
         Streamlined Design and Easy Configuration
       </div>
       <div className="text-center text-title2 text-opacity-70 text-[36px]">
@@ -110,7 +110,7 @@ export const ConfigDemo = () => {
             target="_blank"
             rel="noreferrer"
             style={{
-              fontSize: 15,
+              fontSize: "13px",
               fontStyle: "normal",
               fontWeight: 400,
               lineHeight: "normal",
@@ -155,7 +155,9 @@ const Item = ({
   return (
     <div>
       <div className="text-[16px] font-[510] text-title2 mb-[9px]">{name}</div>
-      <div className={clsx("flex items-center", "gap-[8px]")}>
+      <div
+        className={clsx("flex items-center relative left-[-4px]", "gap-[4px]")}
+      >
         {data.map((e, idx) => {
           const isLast = idx === data.length - 1;
           return (
@@ -321,10 +323,10 @@ const Preview = ({
     <div className={clsx("modal flex flex-col items-center", theme)}>
       <div className="title mb-[20px]">Select your wallet to login</div>
       <div className="flex flex-col gap-[15px] w-full">
-        {demoList.slice(0, isCustom ? undefined : -1).map((fill, idx) => (
+        {demoList.map((fill, idx) => (
           <WalletItem
             fill={fill}
-            idx={idx}
+            idx={idx + 1}
             key={idx}
             isCustom={isCustom && idx === 4}
           />
@@ -335,13 +337,8 @@ const Preview = ({
         The following wallets are not installed or in conflict with others
       </div>
       <div className="flex justify-between w-full max-w-[454px] flex-wrap gap-[8px]">
-        {Array.from({ length: 4 }, () => 1).map((_, idx) => (
-          <WalletItem
-            fill={"#D9D9D9"}
-            idx={(isCustom ? 5 : 4) + idx}
-            isSecond
-            key={idx}
-          />
+        {Array.from({ length: 2 }, () => 1).map((_, idx) => (
+          <WalletItem fill={"#D9D9D9"} idx={5 + idx + 1} isSecond key={idx} />
         ))}
       </div>
 

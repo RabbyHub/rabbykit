@@ -31,14 +31,7 @@ const ClipText = () => {
 
 export function Header() {
   return (
-    <section
-      className="bg-foot  flex flex-col  items-center"
-      style={{
-        backgroundImage: `url(${bg.src})`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-      }}
-    >
+    <section className="bg-title1  flex flex-col  items-center">
       <div className="w-full max-w-[960px] h-[64px] flex items-center justify-between py-3">
         <LogoName name="Rabby Kit" />
         <ConnectButton />
@@ -53,14 +46,15 @@ export function Header() {
         </span>
       </div>
 
-      <ViewDocButton className="mb-10" />
+      <ViewDocButton className="" />
 
       <Image
         src={"/hero.png"}
         alt={""}
-        width={960}
-        height={660}
+        width={1068}
+        height={960}
         className="mb-6"
+        priority
       />
     </section>
   );

@@ -40,7 +40,7 @@ export const ConnectScenario = () => {
         </div>
 
         <Carousel
-          className="rounded-[8px] overflow-hidden"
+          className="rounded-[8px] overflow-hidden bg-card-2"
           renderCenterLeftControls={() => null}
           renderCenterRightControls={() => null}
           renderBottomCenterControls={({ currentSlide, goToSlide }) => {
@@ -49,31 +49,40 @@ export const ConnectScenario = () => {
             return null;
           }}
         >
-          <Image
-            src={"/scenario/browser.png"}
-            alt={""}
-            width={986}
-            height={680}
-          />
-          <Image
-            src={"/scenario/mobile.png"}
-            alt={""}
-            width={986}
-            height={680}
-          />
-          <Image
-            src={"/scenario/mobile-browser.png"}
-            alt={""}
-            width={986}
-            height={680}
-          />
+          <div className="flex justify-center pt-[34px] h-full">
+            <Image
+              src={"/scenario/browser.png"}
+              alt={""}
+              width={913}
+              height={611}
+              priority
+            />
+          </div>
+          <div className="flex items-center justify-center h-full">
+            <Image
+              src={"/scenario/mobile.png"}
+              alt={""}
+              width={302}
+              height={625}
+              priority
+            />
+          </div>
+          <div className="flex items-center justify-center h-full">
+            <Image
+              src={"/scenario/mobile-browser.png"}
+              alt={""}
+              width={302}
+              height={625}
+              priority
+            />
+          </div>
         </Carousel>
 
         <div
           style={{
             backgroundImage: `url(${bg.src})`,
             backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
+            backgroundSize: "100% 100%",
           }}
           className={clsx(
             "w-full h-[260px] flex flex-col items-center justify-center  bg-black ",
