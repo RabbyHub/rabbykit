@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import Image from "next/image";
 
 const protocols = [
@@ -6,12 +7,14 @@ const protocols = [
     src: "/eip-6963.svg",
     width: 48,
     height: 48,
+    href: "https://eips.ethereum.org/EIPS/eip-6963",
   },
   {
     name: "Wallet Connect",
     src: "/wallet-connect.svg",
     width: 40,
     height: 40,
+    href: "https://walletconnect.com/",
   },
 
   {
@@ -19,6 +22,7 @@ const protocols = [
     src: "/coinbase.svg",
     width: 40,
     height: 40,
+    href: "https://docs.cloud.coinbase.com",
   },
 ];
 
@@ -39,7 +43,7 @@ const extensionWallets = [
     link: "https://metamask.io/",
   },
   {
-    name: "Rabby",
+    name: "Rabby Wallet",
     src: "/wallets/rabby.svg",
     link: "https://rabby.io/",
   },
@@ -105,10 +109,10 @@ export const ConnectIntro = () => {
   return (
     <div className="w-full bg-white pt-[100px] pb-[135px] ">
       <div className="max-w-[1120px] w-full flex flex-col items-center mx-auto">
-        <div className="text-center text-title1 text-4xl  mb-3">
+        <div className="text-center text-title1 text-4xl font-[510]  mb-3">
           No more wallet conflicts in exchange for a smooth user experience
         </div>
-        <div className="text-center text-body text-4xl font-normal mb-[40px]">
+        <div className="text-center text-body text-[36px] font-normal mb-[40px]">
           Compatible with all. Varied for choice.
         </div>
       </div>
@@ -120,14 +124,20 @@ export const ConnectIntro = () => {
           Supported Protocols
         </div>
         <div className="flex items-center gap-[18px] w-full">
-          {protocols.map(({ src, name, width, height }) => (
-            <div className="flex-1 h-32 pt-6 pb-7 bg-gray-100 rounded flex-col justify-center items-center gap-3 inline-flex">
-              <div className="w-12 h-12 relative flex-col justify-start items-start flex" />
+          {protocols.map(({ href, src, name, width, height }, idx) => (
+            <a
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              className={clsx(
+                idx === 0 ? "gap-[9px]" : "gap-[12px]",
+                "hover:shadow",
+                "flex-1 h-32 pt-6 pb-7 bg-gray-100 rounded flex-col justify-center items-center  inline-flex"
+              )}
+            >
               <Image src={src} alt={name} width={width} height={height} />
-              <div className="text-center text-title1 text-lg font-bold ">
-                {name}
-              </div>
-            </div>
+              <div className="text-center text-title1 text-lg">{name}</div>
+            </a>
           ))}
         </div>
 
@@ -154,12 +164,7 @@ function SupportedWallets({
       <div className="text-center text-title1 text-2xl  mt-[100px] mb-[24px]">
         Supported Wallets
       </div>
-      <div className="w-[200px] h-[44px] inline-flex items-center justify-center gap-[6px] bg-card-2 mb-[16px]">
-        <Image src={"/browser.svg"} alt={""} width={20} height={20} />
-        <div className="text-center text-body text-[15px] font-[510]">
-          {title}
-        </div>
-      </div>
+
       <div className="w-full flex flex-wrap">
         {wallets.map(({ src, name, link }) => (
           <a
@@ -169,8 +174,8 @@ function SupportedWallets({
             rel="noreferrer"
             className="w-[160px] h-[120px] flex flex-col justify-center items-center gap-[12px] hover:bg-card-2 hover:rounded-md"
           >
-            <Image src={src} alt={name} width={52} height={52} />
-            <div className="text-[18px] font-[510] text-title1">{name}</div>
+            <Image src={src} alt={name} width={44} height={44} />
+            <div className="text-[16px] font-[510] text-title1">{name}</div>
           </a>
         ))}
       </div>

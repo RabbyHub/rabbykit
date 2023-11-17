@@ -14,6 +14,7 @@
   "dependencies": {
     "@rabby-wallet/rabbykit": "workspace:*",
     "clsx": "^2.0.0",
+    "colord": "^2.9.3",
     "next": "14",
     "nextra": "^2.13.2",
     "nextra-theme-docs": "^2.13.2",

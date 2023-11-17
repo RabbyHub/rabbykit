@@ -5,7 +5,6 @@ import { RabbykitContext } from "./rabbykit";
 import { useAccount, useDisconnect } from "wagmi";
 import Image from "next/image";
 import clsx from "clsx";
-
 export const ConnectButton = () => {
   const kit = useContext(RabbykitContext);
   const { isConnected, address } = useAccount();
@@ -15,8 +14,9 @@ export const ConnectButton = () => {
     <button
       className={clsx(
         "py-[10px]",
-        isConnected ? "px-[12px]" : "px-[15px]",
-        "h-10 relative bg-blue-default rounded-md flex gap-[6px] items-center justify-center text-center text-white text-base "
+        isConnected ? "px-[12px] bg-blue-disable" : "px-[15px] bg-blue-default",
+        "hover:shadow-button-hover",
+        "h-10 relative  rounded-md flex gap-[6px] items-center justify-center text-center text-white text-base"
       )}
       onClick={() => {
         if (!isConnected) {

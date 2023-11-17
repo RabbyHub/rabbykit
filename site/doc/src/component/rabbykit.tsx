@@ -41,7 +41,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   }, []);
   return (
     <WagmiConfig config={config}>
-      {mounted && kit && (
+      {mounted && initRef && kit && (
         <RabbykitContext.Provider value={kit}>
           {children}
         </RabbykitContext.Provider>

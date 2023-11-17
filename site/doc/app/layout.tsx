@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   ...seoConfig,
 };
 import { Providers } from "../src/component/rabbykit";
-import "./globals.css";
+import "../style/globals.css";
 
 export default function RootLayout({
   children,

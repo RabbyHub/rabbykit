@@ -4,6 +4,9 @@ const withNextra = require("nextra")({
 });
 
 module.exports = withNextra({
+  experimental: {
+    esmExternals: "loose",
+  },
   // i18n: {
   //   locales: ["en-US", "zh-CN"],
   //   defaultLocale: "zh-CN",

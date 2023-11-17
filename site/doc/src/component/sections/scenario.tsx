@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import clsx from "clsx";
 import bg from "./bg-2.png";
-import Link from "next/link";
+import { ViewDocButton } from "../viewDocButton";
 
 const list = ["PC Browser", " Mobile Wallet", "Mobile Browser"];
 export const ConnectScenario = () => {
@@ -84,12 +84,7 @@ export const ConnectScenario = () => {
             View the Docs and Get Rabby Kit for your Dapp
           </div>
 
-          <Link
-            href="/docs/en/getting-started/overview"
-            className="w-[224px] h-[52px]  bg-blue-default rounded-md justify-center items-center inline-flex text-center text-title2 text-[20px] font-[510]"
-          >
-            View the Docs
-          </Link>
+          <ViewDocButton />
         </div>
       </div>
     </section>

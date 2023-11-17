@@ -3,6 +3,7 @@ import * as React from "react";
 import { LogoName } from "../logo";
 import bg from "./bg.png";
 import { ConnectButton } from "../connectButton";
+import { ViewDocButton } from "../viewDocButton";
 
 const ClipText = () => {
   return (
@@ -28,7 +29,7 @@ const ClipText = () => {
   );
 };
 
-export function Header(props) {
+export function Header() {
   return (
     <section
       className="bg-foot  flex flex-col  items-center"
@@ -40,20 +41,20 @@ export function Header(props) {
     >
       <div className="w-full max-w-[960px] h-[64px] flex items-center justify-between py-3">
         <LogoName name="Rabby Kit" />
-        {/* <button className="w-36 h-10 relative bg-blue-default rounded-md flex items-center justify-center text-center text-white text-base ">
-          Connect Wallet
-        </button> */}
         <ConnectButton />
       </div>
 
-      <div className="w-full max-w-[1200px] text-center mt-12 mb-10">
-        <span className="text-white text-6xl font-bold ">A </span>
+      <div className="w-full max-w-[1200px] text-[52px] text-center mt-12 mb-10">
+        <span className="text-white font-bold ">A </span>
         <ClipText />
-        <span className="text-white text-6xl font-bold ">
+        <span className="text-white font-bold ">
           {" "}
-          to connect all wallets for all Dapp developers
+          to connect all wallets <br /> for all Dapp developers
         </span>
       </div>
+
+      <ViewDocButton className="mb-10" />
+
       <Image
         src={"/hero.png"}
         alt={""}

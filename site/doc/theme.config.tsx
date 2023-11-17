@@ -1,6 +1,6 @@
 import React from "react";
 import type { DocsThemeConfig } from "nextra-theme-docs";
-import { useConfig, useTheme } from "nextra-theme-docs";
+import { useConfig } from "nextra-theme-docs";
 import seoConfig from "./seo.config";
 
 const config: DocsThemeConfig = {
@@ -11,10 +11,10 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: "https://github.com/RabbyHub/rabbykit/site/doc",
 
-  i18n: [
-    { locale: "en-US", text: "English" },
-    { locale: "zh-CN", text: "中文" },
-  ],
+  // i18n: [
+  //   { locale: "en-US", text: "English" },
+  //   { locale: "zh-CN", text: "中文" },
+  // ],
 
   useNextSeoProps: () => ({ titleTemplate: "%s – RabbyKit" }),
 

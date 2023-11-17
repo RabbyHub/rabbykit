@@ -4,6 +4,8 @@ import clsx from "clsx";
 import bg from "./bg-3.png";
 import { ChromePicker } from "react-color";
 import { useClickAway } from "react-use";
+import { docPath } from "../../../constant";
+import { colord } from "colord";
 
 const defaultCustomColor =
   "conic-gradient(from 180deg at 50% 50%, #F77E7E 0deg, #E2EF48 73.12608897686005deg, #7AB765 127.50206708908081deg, #6DB0B0 168.7528109550476deg, #4877EF 223.12880516052246deg, #EC48EF 296.25511407852173deg, #EF4848 360deg)";
@@ -18,24 +20,26 @@ const allConfig = [
     ],
   },
   {
-    name: "Modal Background",
+    name: "Main Color",
     type: "color",
-    field: "--rk-modal-bg",
+    field: "--rk-hover-border-color",
     data: [
-      { value: "#F2F4F7" },
-      { value: "#2C3435" },
-      { value: "#000" },
+      { value: "#7084FF" },
+      { value: "#2ABB7F" },
+      { value: "#FFB020" },
+      { value: "#E34935" },
+      { value: "#48D1EF" },
+      { value: "#D848EF" },
       {
         value: defaultCustomColor,
       },
     ],
   },
   {
-    name: " Modal border radius",
-    field: "--rk-modal-border-radius",
-    defaultIndex: 2,
+    name: "Radius",
+    field: "--rk-radius",
+    defaultIndex: 1,
     data: [
-      { name: "20", value: "20px" },
       { name: "16", value: "16px" },
       { name: "12", value: "12px" },
       { name: "8", value: "8px" },
@@ -44,39 +48,11 @@ const allConfig = [
     ],
   },
   {
-    name: "Primary Button Text Color",
-    type: "color",
-    field: "--rk-primary-button-color",
-    data: [
-      { value: "#192945" },
-      { value: "#4B4B4B" },
-      { value: "#858585" },
-      { value: defaultCustomColor },
-    ],
-  },
-  {
-    name: "Primary Button Background",
-    type: "color",
-    field: "--rk-primary-button-bg",
-    data: [
-      { value: "#FFF" },
-      { value: "#FF8787" },
-      { value: "#87B0FF" },
-      { value: defaultCustomColor },
-    ],
-  },
-  {
-    name: "Primary Button border radius",
-    field: "--rk-primary-button-border-radius",
-    defaultIndex: 3,
-    data: [
-      { name: "20", value: "20px" },
-      { name: "16", value: "16px" },
-      { name: "12", value: "12px" },
-      { name: "8", value: "8px" },
-      { name: "4", value: "4px" },
-      { name: "0", value: "0" },
-    ],
+    name: "Customized Button",
+    field: "isCustom",
+    type: "bool",
+    defaultIndex: 0,
+    data: [{ name: "+1", value: "0" }],
   },
 ];
 
@@ -86,10 +62,18 @@ export const ConfigDemo = () => {
   const cssVar = useMemo(
     () =>
       Object.keys(css)
-        .map((e) => `${e}:${css[e]};`)
+        .map((e) => {
+          let v = `${e}:${css[e]};`;
+          if (e === "--rk-hover-border-color") {
+            v += `--rk-hover-bg:${colord(css[e]).alpha(0.15).toRgbString()};`;
+          }
+          return v;
+        })
         .join(""),
     [css]
   );
+  const isCustom = css["isCustom"] !== "1";
+
   return (
     <div
       className="w-full pt-[100px] pb-[110px]"
@@ -121,21 +105,24 @@ export const ConfigDemo = () => {
             />
           ))}
 
-          <div
+          <a
+            href={docPath}
+            target="_blank"
+            rel="noreferrer"
             style={{
-              color: "#FFF",
               fontSize: 15,
               fontStyle: "normal",
               fontWeight: 400,
               lineHeight: "normal",
               textDecorationLine: "underline",
             }}
+            className="text-white text-opacity-60"
           >
             Learn more
-          </div>
+          </a>
         </div>
 
-        <Preview theme={theme} cssVar={cssVar} />
+        <Preview theme={theme} cssVar={cssVar} isCustom={isCustom} />
       </div>
     </div>
   );
@@ -155,8 +142,9 @@ const Item = ({
   onUpdate: (v: string) => void;
 }) => {
   const isColor = useMemo(() => type === "color", [type]);
+  const isBool = useMemo(() => type === "bool", [type]);
+
   const [active, setActive] = useState(defaultIndex);
-  const colorRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const [color, setColor] = useState<string>();
   const ref = useRef<HTMLButtonElement>(null);
@@ -166,13 +154,8 @@ const Item = ({
 
   return (
     <div>
-      <div className="text-[20px] font-[510] text-title2">{name}</div>
-      <div
-        className={clsx(
-          "flex items-center",
-          isColor ? "gap-[8px]" : "gap-[12px]"
-        )}
-      >
+      <div className="text-[16px] font-[510] text-title2 mb-[9px]">{name}</div>
+      <div className={clsx("flex items-center", "gap-[8px]")}>
         {data.map((e, idx) => {
           const isLast = idx === data.length - 1;
           return (
@@ -180,17 +163,22 @@ const Item = ({
               key={e.value}
               ref={isLast ? ref : undefined}
               className={clsx(
-                "relative",
+                "relative ",
                 "bg-transparent p-[4px] border rounded-[8px]",
-                active === idx ? "border-white" : "border-transparent"
+                active === idx
+                  ? "border-white"
+                  : "border-transparent hover:border-white hover:border-opacity-10"
               )}
               onClick={() => {
-                setActive(idx);
-                colorRef.current?.click();
+                if (isBool) {
+                  setActive((n) => Number(!n));
+                } else {
+                  setActive(idx);
+                }
                 if (isColor && isLast) {
                   setOpen(true);
                 } else {
-                  onUpdate(e.value);
+                  onUpdate(isBool ? (active ? "0" : "1") : e.value);
                 }
               }}
             >
@@ -205,7 +193,7 @@ const Item = ({
                 className={clsx(
                   "rounded-[6px] relative",
                   isColor ? "w-[32px] h-[32px]" : "px-[24px] py-[10px] ",
-                  "text-[15px] font-[510] text-title2"
+                  "text-[14px] font-[510] text-title2"
                 )}
               >
                 {e.name}
@@ -237,11 +225,13 @@ function WalletItem({
   fill,
   idx,
   isSecond,
+  isCustom = false,
 }: {
   fill: string;
   idx: number;
   className?: string;
   isSecond?: boolean;
+  isCustom?: boolean;
 }) {
   return (
     <div className={clsx("item", isSecond && "sub")}>
@@ -254,7 +244,7 @@ function WalletItem({
         <circle cx="17.88" cy="16.9264" r="16.9264" fill={fill} />
       </svg>
       <div className={clsx(isSecond ? "ml-[13px]" : "ml-[15px]")}>
-        Wallet {idx}
+        {isCustom ? `Customized Button` : `Wallet ${idx}`}
       </div>
       {!isSecond && (
         <svg
@@ -278,7 +268,7 @@ function WalletItem({
         .item {
           width: 100%;
           height: 64px;
-          border-radius: var(--rk-primary-button-border-radius, 8.194px);
+          border-radius: var(--rk-radius, 8.194px);
           background: var(--rk-primary-button-bg, var(--r-neutral-card-1));
           box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
           display: flex;
@@ -291,13 +281,18 @@ function WalletItem({
           font-weight: 590;
           line-height: normal;
         }
+        .item:first-of-type{
+          border: 1px solid var(--rk-hover-border-color, #7084FF);
+          background: var(--rk-hover-bg,var(--r-blue-light-1));
+
+        }
         .wallet-icon {
           width: 28px;
           height: 28px;
         }
 
         .item.sub {
-          width: 206px;
+          width: 204px;
           height: 56px;
           background: transparent;
           color: var(--r-neutral-body);
@@ -313,22 +308,41 @@ function WalletItem({
   );
 }
 
-const Preview = ({ theme, cssVar }: { theme?: string; cssVar?: string }) => {
+const Preview = ({
+  theme,
+  cssVar,
+  isCustom,
+}: {
+  theme?: string;
+  cssVar?: string;
+  isCustom?: boolean;
+}) => {
   return (
     <div className={clsx("modal flex flex-col items-center", theme)}>
       <div className="title mb-[20px]">Select your wallet to login</div>
       <div className="flex flex-col gap-[15px] w-full">
-        {demoList.map((fill, idx) => (
-          <WalletItem fill={fill} idx={idx} key={idx} />
+        {demoList.slice(0, isCustom ? undefined : -1).map((fill, idx) => (
+          <WalletItem
+            fill={fill}
+            idx={idx}
+            key={idx}
+            isCustom={isCustom && idx === 4}
+          />
         ))}
       </div>
 
       <div className="second">
         The following wallets are not installed or in conflict with others
       </div>
-      <div className="flex justify-between w-full max-w-[454px] ">
-        <WalletItem fill={"#D9D9D9"} idx={6} isSecond />
-        <WalletItem fill={"#D9D9D9"} idx={7} isSecond />
+      <div className="flex justify-between w-full max-w-[454px] flex-wrap gap-[8px]">
+        {Array.from({ length: 4 }, () => 1).map((_, idx) => (
+          <WalletItem
+            fill={"#D9D9D9"}
+            idx={(isCustom ? 5 : 4) + idx}
+            isSecond
+            key={idx}
+          />
+        ))}
       </div>
 
       <style jsx>
@@ -341,6 +355,7 @@ const Preview = ({ theme, cssVar }: { theme?: string; cssVar?: string }) => {
             --r-neutral-foot: #6a7587;
             --r-neutral-card-1: #fff;
             --r-neutral-line: #d3d8e0;
+            --r-blue-light-1: rgba(238, 241, 255, 1);
             ${cssVar}
           }
           .modal.dark {
@@ -350,6 +365,7 @@ const Preview = ({ theme, cssVar }: { theme?: string; cssVar?: string }) => {
             --r-neutral-foot: #babec5;
             --r-neutral-card-1: rgba(255, 255, 255, 0.06);
             --r-neutral-line: rgba(255, 255, 255, 0.1);
+            --r-blue-light-1: rgba(112, 132, 255, 0.1);
           }
           .modal {
             padding: 20px;
@@ -357,7 +373,7 @@ const Preview = ({ theme, cssVar }: { theme?: string; cssVar?: string }) => {
             height: 540px;
             overflow: hidden;
             border-radius: var(
-              --rk-modal-border-radius,
+              --rk-radius,
               var(--fallback-modal-border-radius)
             );
             border: 2.048px solid rgba(255, 255, 255, 0.1);
