@@ -60,7 +60,11 @@
     {/each}
   </div>
 
-  <div class="rk-tip">{$t("Powered by RabbyKit")}</div>
+  <div class="rk-tip">
+    <a href="https://rabbykit.rabby.io" target="_blank" rel="noreferrer"
+      >{$t("Powered by RabbyKit")}</a
+    >
+  </div>
 </Scroll>
 
 <style lang="scss">
@@ -97,11 +101,19 @@
     margin-bottom: 12px;
   }
   .rk-tip {
+    display: block;
     margin-top: 26px;
     margin-bottom: 20px;
     padding-right: 20px;
-    color: var(--r-neutral-foot);
     text-align: center;
     font-size: 12px;
+    color: var(--r-neutral-foot);
+
+    & > a {
+      color: var(--r-neutral-foot);
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 </style>
