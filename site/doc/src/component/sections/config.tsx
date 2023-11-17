@@ -83,10 +83,10 @@ export const ConfigDemo = () => {
         backgroundSize: "100% 100%",
       }}
     >
-      <div className="text-center text-title2 text-[40px] font-bold">
+      <div className="text-center text-title2 text-[36px] font-[510]">
         Streamlined Design and Easy Configuration
       </div>
-      <div className="text-center text-title2 text-opacity-70 text-[36px]">
+      <div className="text-center text-title2 text-opacity-70 text-[32px]">
         Match your Dapp perfectly with minimal efforts
       </div>
       <div className="mx-auto w-full max-w-[960px] flex justify-between mt-[88px]">

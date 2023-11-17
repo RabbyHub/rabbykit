@@ -109,10 +109,10 @@ export const ConnectIntro = () => {
   return (
     <div className="w-full bg-white pt-[100px] pb-[135px] ">
       <div className="max-w-[1120px] w-full flex flex-col items-center mx-auto">
-        <div className="text-center text-title1 text-4xl font-[510]  mb-3">
+        <div className="text-center text-title1 text-[36px] font-[510]  mb-3">
           No more wallet conflicts in exchange for a smooth user experience
         </div>
-        <div className="text-center text-body text-[36px] font-normal mb-[40px]">
+        <div className="text-center text-body text-[32px] font-normal mb-[40px]">
           Compatible with all. Varied for choice.
         </div>
       </div>

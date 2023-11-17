@@ -13,10 +13,10 @@ export const ConnectScenario = () => {
   return (
     <section className="w-full pt-[100px]">
       <div className="max-w-[986px] w-full mx-auto flex flex-col items-center">
-        <div className="text-center text-title1 text-[40px] font-[510] mb-[12px]">
+        <div className="text-center text-title1 text-[36px] font-[510] mb-[12px]">
           Tailored for every Dapp scenario
         </div>
-        <div className="text-center text-body text-[30px] mb-[44px]">
+        <div className="text-center text-body text-[32px] mb-[44px]">
           Provide users with a better experience connecting wallets.
         </div>
 
