@@ -221,7 +221,14 @@ const Item = ({
   );
 };
 
-const demoList = ["#FF8686", "#86C5FF", "#A586FF", "#FFC086", "#D3D8E0"];
+const demoList = [
+  "#FF8686",
+  "#86C5FF",
+  "#A586FF",
+  "#FFC086",
+  "#D3D8E0",
+  "#D9D9D9",
+];
 
 function WalletItem({
   fill,
@@ -323,12 +330,12 @@ const Preview = ({
     <div className={clsx("modal flex flex-col items-center", theme)}>
       <div className="title mb-[20px]">Select your wallet to login</div>
       <div className="flex flex-col gap-[15px] w-full">
-        {demoList.map((fill, idx) => (
+        {demoList.slice(0, isCustom ? undefined : -1).map((fill, idx) => (
           <WalletItem
             fill={fill}
             idx={idx + 1}
             key={idx}
-            isCustom={isCustom && idx === 4}
+            isCustom={isCustom && idx === 5}
           />
         ))}
       </div>

@@ -53,7 +53,7 @@ export function Header() {
         alt={""}
         width={1068}
         height={960}
-        className="mb-6"
+        className="mt-[-116px] mb-[-58px]"
         priority
       />
     </section>

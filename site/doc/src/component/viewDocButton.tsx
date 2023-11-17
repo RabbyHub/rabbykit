@@ -8,6 +8,7 @@ export const ViewDocButton = ({ className }: { className?: string }) => {
       rel="noreferrer"
       href={docPath}
       className={clsx(
+        "hover:shadow-button-hover",
         "w-[224px] h-[52px] bg-blue-default rounded-md justify-center items-center inline-flex text-center text-title2 text-[20px] font-[510]",
         className
       )}
