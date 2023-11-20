@@ -1,6 +1,15 @@
 {
-  "en": {
-    "display": "hidden",
-    "type": "page"
-  }
+  "-- Overview": {
+    "type": "separator",
+    "title": "Overview"
+  },
+  "introduction": "Introduction",
+  "-- Getting Started": {
+    "type": "separator",
+    "title": "Getting Started"
+  },
+  "install": "Installation",
+  "localization": "Localization",
+  "theming": "Customize",
+  "custom-login": "Custom Login Method"
 }

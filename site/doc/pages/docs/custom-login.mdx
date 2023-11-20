@@ -1,0 +1,21 @@
+## Custom Login Method
+
+您可以在内置的钱包登陆方式之外自定义添加所需的登陆方式
+
+```ts filename="app.ts"
+...
+export const rabbyKit = createModal({
+    ...
+  customButtons: [
+    {
+      name: "your login method",
+      logo: "https://debank.com/192.png",
+      onClick: () => {
+        rabbyKit.close();
+        //your login method
+      },
+    },
+  ],
+});
+...
+```

@@ -33,7 +33,12 @@ export function Header() {
   return (
     <section className="bg-title1  flex flex-col  items-center">
       <div className="w-full max-w-[960px] h-[64px] flex items-center justify-between py-3">
-        <LogoName name="Rabby Kit" />
+        <Image
+          src="/kit-logo.svg"
+          width="132"
+          height="33"
+          alt="Rabbykit logo"
+        />
         <ConnectButton />
       </div>
 
