@@ -48,6 +48,7 @@
 
 <style lang="scss">
   .button {
+    --fallback-border: 0.5px solid transparent;
     width: 206px;
     height: 56px;
     padding: 10px 20px;
@@ -56,21 +57,23 @@
     align-items: center;
     gap: 12px;
 
-    border-radius: 5px;
     cursor: pointer;
-    border-radius: 8px;
-    background: var(--r-neutral-card-1);
+    border-radius: var(--rk-primary-button-border-radius, 8px);
+    background: var(--rk-primary-button-bg, var(--r-neutral-card-1));
     box-shadow: var(--button-shadow);
-    color: var(--r-neutral-title-1);
-    font-weight: 590;
-    border: 0.5px solid transparent;
-    font-size: 16px;
+    color: var(--rk-primary-button-color, var(--r-neutral-title-1));
+    font-weight: var(--rk-primary-button-font-weight, 590);
+    border: var(--rk-primary-button-border, var(--fallback-border));
+    font-size: var(--rk-primary-button-font-size, 16px);
 
     &.lg {
       height: 64px;
       border-width: 1px;
+      border: var(--rk-primary-button-border);
+
       &:hover {
         border-width: 1px;
+        border: var(--rk-primary-button-hover-border);
       }
     }
   }
@@ -79,15 +82,14 @@
   }
 
   .button:hover {
-    border-radius: 8px;
-    border: 0.5px solid var(--r-blue-default);
-    background: var(--r-blue-light-1);
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
+    --fallback-border: 0.5px solid var(--r-blue-default);
+    color: var(--rk-primary-button-hover-color);
+    border: var(--rk-primary-button-hover-border, var(--fallback-border));
+    background: var(--rk-primary-button-hover-bg, var(--r-blue-light-1));
   }
 
   .button.qrCode {
     font-weight: 510;
-    border-radius: 8px;
     box-shadow: none;
     border: 0.5px solid var(--r-neutral-line);
   }
@@ -101,14 +103,12 @@
     font-size: 15px;
     font-weight: 510;
     box-shadow: none;
-    border-radius: 8px;
     color: var(--r-neutral-body);
     border: 1px solid var(--r-neutral-line);
     background: transparent;
   }
 
   .button.unused:hover {
-    border-radius: 8px;
     border: 1px solid var(--r-blue-default);
     background: transparent;
   }
@@ -121,7 +121,6 @@
     font-size: 14px;
     font-weight: 510;
     box-shadow: none;
-    border-radius: 8px;
     color: var(--r-neutral-body);
     border: 0.5px solid var(--r-neutral-line);
     background: transparent;
@@ -143,7 +142,6 @@
   }
 
   .button.mobile:hover {
-    border-radius: 8px;
     border: 0.5px solid var(--r-neutral-line);
     background: transparent;
   }

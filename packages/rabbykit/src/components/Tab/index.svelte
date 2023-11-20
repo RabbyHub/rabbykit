@@ -34,7 +34,7 @@
     {#if $useStore.showWalletConnect}
       <Button
         type="browser"
-        name={$t("Connect with mobile  wallet")}
+        name={$t("Connect with Mobile Wallet")}
         logo={scan}
         on:click={handleScan}
       />

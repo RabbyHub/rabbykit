@@ -22,11 +22,13 @@ import {
   RabbyKitModal,
   Theme,
   Type,
+  themeVariables,
 } from "../type";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import { EIP6963ProviderDetail, createStore as createMipdStore } from "mipd";
 import { goerli } from "viem/chains";
 import { wrapperEIP6963Wallet } from "../helpers/mipd";
+import { locale } from "svelte-i18n";
 
 type Tab = Type;
 type Page = "wallet" | "connect" | "wc-select" | "download";
@@ -36,6 +38,7 @@ interface Store<
 > {
   open: boolean;
   theme: Theme;
+  themeVariables?: themeVariables;
   language: SUPPORT_LANGUAGES;
 
   page: Page;
@@ -78,6 +81,7 @@ export const useRKStore = createStore<Store<any, any>>()(
     isMobile: false,
     chains: [mainnet, goerli],
     theme: "light",
+    themeVariables: undefined,
     status: "disconnected",
     language: "en",
     page: "wallet",
@@ -110,6 +114,13 @@ export const useRKStore = createStore<Store<any, any>>()(
       set({ customButtons });
     },
   }))
+);
+
+useRKStore.subscribe(
+  (s) => s.language,
+  (lang) => {
+    locale.set(lang);
+  }
 );
 
 export const modalOpenSubscribe = (fn: (open: boolean) => void) => {

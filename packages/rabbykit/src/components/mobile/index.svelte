@@ -19,10 +19,10 @@
 
 <style lang="scss">
   :global(.mobile-container.scroll) {
-    --mobile-h: 392px;
+    --mobile-h: 335px;
     height: var(--mobile-h) !important;
 
-    height: 392px !important;
+    height: 335px !important;
     height: calc(var(--mobile-h) + env(safe-area-inset-bottom)) !important;
   }
 

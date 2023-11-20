@@ -54,8 +54,8 @@
     "mipd": "^0.0.5",
     "qrcode": "^1.5.3",
     "react": ">=16.8",
-    "svelte": "^4.2.1",
-    "svelte-i18n": "^3.7.4",
+    "svelte": "^4.2.6",
+    "svelte-i18n": "^4.0.0",
     "zustand": "^4.4.1"
   },
   "peerDependenciesMeta": {

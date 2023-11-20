@@ -31,12 +31,20 @@ import {
 } from "./wallets/connectors";
 import { mount } from "./components/Kit";
 import "./helpers/i18n";
-import { CustomButton, Disclaimer, Hook, RabbyKitModal, Theme } from "./type";
+import {
+  CustomButton,
+  Disclaimer,
+  Hook,
+  RabbyKitModal,
+  Theme,
+  themeVariables,
+} from "./type";
 import {
   getCommonWalletConnect,
   getWalletConnectLegacyConnector,
   sharedWalletConnectConnectors,
 } from "./helpers/getWalletConnectUri";
+import { SUPPORT_LANGUAGES } from "./helpers/i18n";
 
 export const createModal = <
   TPublicClient extends PublicClient = PublicClient,
@@ -54,6 +62,8 @@ export const createModal = <
   onModalClosed,
   onModalClosedByManualOperation,
   theme = "light",
+  themeVariables,
+  language = "en",
 }: {
   chains: Chain[];
   appName: string;
@@ -63,6 +73,8 @@ export const createModal = <
   customButtons?: CustomButton[];
   showWalletConnect?: boolean;
   theme?: Theme;
+  themeVariables?: themeVariables;
+  language?: SUPPORT_LANGUAGES;
 } & Hook): RabbyKitModal => {
   watchAccount(() => syncAccount());
 
@@ -138,6 +150,9 @@ export const createModal = <
       onModalClosed,
       onModalClosedByManualOperation,
     },
+    theme,
+    themeVariables,
+    language,
   });
 
   syncMipd();
