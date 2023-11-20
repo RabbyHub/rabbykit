@@ -46,7 +46,7 @@ export function Header() {
         </span>
       </div>
 
-      <ViewDocButton className="" />
+      <ViewDocButton className="z-10" />
 
       <Image
         src={"/hero.png"}
