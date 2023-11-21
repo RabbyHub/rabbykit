@@ -13,7 +13,7 @@ env:
 
 jobs:
   build-image:
-    runs-on: [self-hosted, general]
+    runs-on: [self-hosted]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
