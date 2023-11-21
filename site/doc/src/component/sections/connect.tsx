@@ -22,7 +22,7 @@ const protocols = [
     src: "/coinbase.svg",
     width: 40,
     height: 40,
-    href: "https://docs.cloud.coinbase.com",
+    href: "https://docs.cloud.coinbase.com/wallet-sdk/docs/injected-provider-guidance",
   },
 ];
 
@@ -72,7 +72,7 @@ const mobileWallets = [
   {
     name: "Coinbase Wallet",
     src: "/coinbase.svg",
-    link: "https://www.coinbase.com/",
+    link: "https://www.coinbase.com/wallet",
   },
   {
     name: "imToken",
@@ -143,12 +143,15 @@ export const ConnectIntro = () => {
 
         <SupportedWallets
           wallets={extensionWallets}
-          title={"Extension wallet"}
+          title="Supported Extension Wallets"
         />
 
         <div className="mt-[50px]" />
 
-        <SupportedWallets wallets={mobileWallets} title={"Mobile wallet"} />
+        <SupportedWallets
+          wallets={mobileWallets}
+          title="Supported Mobile Wallets"
+        />
       </div>
     </div>
   );
@@ -156,16 +159,14 @@ export const ConnectIntro = () => {
 
 function SupportedWallets({
   wallets,
-  title,
+  title = "Supported Extension Wallets",
 }: {
   wallets: { src: string; name: string; link: string }[];
-  title: string;
+  title?: string;
 }) {
   return (
     <>
-      <div className="text-center text-title1 text-2xl  mb-[24px]">
-        Supported Wallets
-      </div>
+      <div className="text-center text-title1 text-2xl  mb-[24px]">{title}</div>
 
       <div className="w-full flex flex-wrap">
         {wallets.map(({ src, name, link }) => (
