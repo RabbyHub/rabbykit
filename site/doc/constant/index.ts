@@ -1,1 +1,1 @@
-export const docPath = "/docs/introduction";
+export const docPath = "/docs/introduction/";

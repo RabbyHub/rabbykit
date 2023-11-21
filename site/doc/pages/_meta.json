@@ -6,10 +6,7 @@
   },
   "index": {
     "title": "Home",
-    "display": "hidden",
-    "theme": {
-      "layout": "raw"
-    }
+    "display": "hidden"
   },
   "docs": {
     "type": "page",

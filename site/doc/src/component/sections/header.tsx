@@ -1,7 +1,5 @@
 import Image from "next/image";
 import * as React from "react";
-import { LogoName } from "../logo";
-import bg from "./bg.png";
 import { ConnectButton } from "../connectButton";
 import { ViewDocButton } from "../viewDocButton";
 
