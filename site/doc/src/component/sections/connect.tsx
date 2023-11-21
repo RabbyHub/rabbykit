@@ -33,9 +33,64 @@ const extensionWallets = [
     link: "https://web3.bitget.com/en",
   },
   {
+    name: "Brave Wallet",
+    src: "/wallets/brave.svg",
+    link: "https://brave.com/zh/wallet/",
+  },
+  {
     name: "Coinbase Wallet",
     src: "/coinbase.svg",
     link: "https://www.coinbase.com/wallet",
+  },
+  {
+    name: "Coin98 Wallet",
+    src: "/wallets/coin98.svg",
+    link: "https://coin98.com/wallet",
+  },
+  {
+    name: "Core",
+    src: "/wallets/core.svg",
+    link: "https://join.core.app/",
+  },
+  {
+    name: "Enkrypt Wallet",
+    src: "/wallets/enkrypt.svg",
+    link: "https://www.enkrypt.com/",
+  },
+  {
+    name: "Frame",
+    src: "/wallets/frame.svg",
+    link: "https://frame.sh/",
+  },
+  {
+    name: "OneKey",
+    src: "/wallets/onekey.svg",
+    link: "https://onekey.so/",
+  },
+  {
+    name: "Phantom",
+    src: "/wallets/phantom.svg",
+    link: "https://phantom.app/",
+  },
+  {
+    name: "Taho",
+    src: "/wallets/taho.svg",
+    link: "https://taho.xyz/",
+  },
+  {
+    name: "TokenPocket",
+    src: "/wallets/tokenPocket.svg",
+    link: "https://www.tokenpocket.pro/",
+  },
+  {
+    name: "XDEFI Wallet",
+    src: "/wallets/xdefi.svg",
+    link: "https://www.xdefi.io/",
+  },
+  {
+    name: "Zerion Wallet",
+    src: "/wallets/zerion.svg",
+    link: "https://zerion.io/",
   },
   {
     name: "MetaMask",
@@ -62,7 +117,7 @@ const extensionWallets = [
     src: "/wallets/okx.svg",
     link: "https://www.okx.com/web3",
   },
-];
+].sort((a, b) => a.name.localeCompare(b.name));
 const mobileWallets = [
   {
     name: "Bitget",
@@ -73,6 +128,26 @@ const mobileWallets = [
     name: "Coinbase Wallet",
     src: "/coinbase.svg",
     link: "https://www.coinbase.com/wallet",
+  },
+  {
+    name: "Coin98 Wallet",
+    src: "/wallets/coin98.svg",
+    link: "https://coin98.com/wallet",
+  },
+  {
+    name: "Core",
+    src: "/wallets/core.svg",
+    link: "https://join.core.app/",
+  },
+  {
+    name: "Enkrypt Wallet",
+    src: "/wallets/enkrypt.svg",
+    link: "https://www.enkrypt.com/",
+  },
+  {
+    name: "TokenPocket",
+    src: "/wallets/tokenPocket.svg",
+    link: "https://www.tokenpocket.pro/",
   },
   {
     name: "imToken",
@@ -104,7 +179,7 @@ const mobileWallets = [
     src: "/wallets/zerion.svg",
     link: "https://zerion.io/",
   },
-];
+].sort((a, b) => a.name.localeCompare(b.name));
 export const ConnectIntro = () => {
   return (
     <div className="w-full bg-white pt-[100px] pb-[135px] ">
