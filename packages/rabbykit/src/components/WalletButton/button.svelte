@@ -69,21 +69,21 @@
     &.lg {
       height: 64px;
       border-width: 1px;
-      border: var(--rk-primary-button-border);
 
       &:hover {
         border-width: 1px;
-        border: var(--rk-primary-button-hover-border);
       }
     }
   }
   .button.ready {
     width: 100%;
   }
+  .button:not(.unused) {
+    color: var(--rk-primary-button-hover-color, var(--r-neutral-title-1));
+  }
 
   .button:hover {
     --fallback-border: 0.5px solid var(--r-blue-default);
-    color: var(--rk-primary-button-hover-color);
     border: var(--rk-primary-button-hover-border, var(--fallback-border));
     background: var(--rk-primary-button-hover-bg, var(--r-blue-light-1));
   }
