@@ -35,7 +35,7 @@ const extensionWallets = [
   {
     name: "Coinbase Wallet",
     src: "/coinbase.svg",
-    link: "https://www.coinbase.com/",
+    link: "https://www.coinbase.com/wallet",
   },
   {
     name: "MetaMask",
