@@ -317,7 +317,6 @@ function WalletItem({
           align-items: center;
           padding: 10px 20px;
           color: var(--rk-primary-button-color, var(--r-neutral-title-1));
-          font-family: SF Pro;
           font-size: 16px
           font-style: normal;
           font-weight: 590;
@@ -338,7 +337,6 @@ function WalletItem({
           height: 56px;
           background: transparent;
           color: var(--r-neutral-body);
-          font-family: SF Pro;
           font-size: 15px;
           font-style: normal;
           font-weight: 510;
@@ -448,7 +446,6 @@ const Preview = ({
             margin-top: 20px;
             margin-bottom: 10px;
             color: var(--r-neutral-foot);
-            font-family: SF Pro;
             font-size: 13.209px;
             font-style: normal;
             font-weight: 400;

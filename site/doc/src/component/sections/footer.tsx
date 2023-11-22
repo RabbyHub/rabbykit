@@ -20,7 +20,7 @@ export const Footer = () => {
         <LogoName name="Rabby Wallet" />
         <div
           className={clsx(
-            "flex  text-opacity-60 text-white text-sm font-medium font-['Lato']",
+            "flex  text-opacity-60 text-white text-sm font-medium ",
             "flex-row-reverse gap-[8px]",
             "lg:flex-col lg:items-end lg:gap-[auto]"
           )}
