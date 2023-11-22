@@ -25,7 +25,7 @@ export const Footer = () => {
             "lg:flex-col lg:items-end lg:gap-[auto]"
           )}
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 whitespace-nowrap">
             <a
               className="text-white text-sm font-bold"
               href="https://github.com/RabbyHub/logo"
@@ -44,7 +44,7 @@ export const Footer = () => {
               Privacy Policy
             </a>
           </div>
-          <div className="text-[12px]">
+          <div className="text-[12px] whitespace-nowrap">
             © 2023 rabby.io All rights reserved.
           </div>
         </div>
