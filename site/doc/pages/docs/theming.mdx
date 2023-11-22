@@ -1,10 +1,8 @@
 ## Customize
 
-### 主题
+### ThemeMode
 
-当前有两个可用的主题
-
-- `light`(默认)
+- `light`(default)
 - `dark`
 
 ```ts filename="app.ts"
@@ -16,13 +14,13 @@ export const rabbyKit = createModal({
 ...
 ```
 
-### 字体
+### font
 
-通过在`themeVariables` 改变 `--rk-font-family` 来更换字体
+Change the font by changing `--rk-font-family` in the `themeVariables`.
 
-### 自定义变量
+### `themeVariables`
 
-默认 `themeVariables` 是未定义的，您可以像这样来修改 `themeVariables`：
+By default `themeVariables` is undefined, you can modify `themeVariables` like this:
 
 ```ts filename="app.ts"
 ...
@@ -38,15 +36,15 @@ export const rabbyKit = createModal({
 
 The following list shows the theme variables you can override:
 
-| Variable                            |     Description      |   Type   |
-| :---------------------------------- | :------------------: | :------: |
-| `--rk-font-family`                  |     font family      | `string` |
-| `--rk-border-radius`                |    border radius     | `string` |
-| `--rk-button-border-radius`         | button border radius | `string` |
-| `--rk-primary-button-color`         |     button color     | `string` |
-| `--rk-primary-button-border`        |  button background   | `string` |
-| `--rk-primary-button-border-radius` |  button background   | `string` |
-| `--rk-primary-button-bg`            |  button background   | `string` |
-| `--rk-primary-button-hover-color`   |     button color     | `string` |
-| `--rk-primary-button-hover-bg`      |  button background   | `string` |
-| `--rk-primary-button-hover-border`  |  button background   | `string` |
+| Variable                            |       Description       |   Type   |
+| :---------------------------------- | :---------------------: | :------: |
+| `--rk-font-family`                  |       font family       | `string` |
+| `--rk-border-radius`                |      border radius      | `string` |
+| `--rk-primary-button-font-size`     |  button text font size  | `string` |
+| `--rk-primary-button-color`         |    button text color    | `string` |
+| `--rk-primary-button-bg`            |    button background    | `string` |
+| `--rk-primary-button-border`        |      button border      | `string` |
+| `--rk-primary-button-border-radius` |  button border radius   | `string` |
+| `--rk-primary-button-hover-color`   |   button hover color    | `string` |
+| `--rk-primary-button-hover-bg`      | button hover background | `string` |
+| `--rk-primary-button-hover-border`  |   button hover border   | `string` |

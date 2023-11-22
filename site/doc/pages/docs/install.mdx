@@ -1,7 +1,5 @@
 import { Steps } from "nextra/components";
 
-## 安装
-
 <Steps>
 ### Installation
 
@@ -21,12 +19,11 @@ npm i @rabby-wallet/rabbykit @wagmi/core viem
 create a config using wagmi's createConfig and create a RabbyKit config;
 
 ```ts filename="app.ts"
-import { configureChains, createConfig, mainnet } from "@wagmi/core";
+import { configureChains, createConfig } from "@wagmi/core";
 import { mainnet, arbitrum, bsc, optimism, polygon } from "@wagmi/core/chains";
 import { publicProvider } from "@wagmi/core/providers/public";
 import { alchemyProvider } from "@wagmi/core/providers/alchemy";
 import { infuraProvider } from "@wagmi/core/providers/infura";
-
 import { createModal } from "@rabby-wallet/rabbykit";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(

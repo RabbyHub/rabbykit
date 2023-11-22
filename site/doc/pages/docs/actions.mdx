@@ -1,0 +1,52 @@
+### RabbyKit Actions
+
+```ts
+const rabbyKit = createModal({
+  chains,
+  wagmi,
+  projectId,
+  appName,
+});
+//open RabbyKit modal
+rabbyKit.open();
+
+//get open status
+rabbyKit.getOpenState();
+
+//close modal
+rabbyKit.close();
+
+rabbyKit.getOpenState();
+
+//set dark mode
+rabbyKit.setTheme("dark");
+```
+
+```ts
+type RabbyKitActions = {
+  open: (params?: { forceOpen?: boolean } & Hook) => void;
+  close: () => void;
+  subscribeModalState: (fn: (open: boolean) => void) => () => void;
+  getOpenState: () => boolean;
+
+  getTheme: () => Theme;
+  setTheme: (theme: Theme) => void;
+  setThemeVariables: (themeVariables?: ThemeVariables) => void;
+
+  getDisclaimer: () => Disclaimer | undefined;
+  setDisclaimer: (disclaimer?: Disclaimer) => void;
+
+  getCustomButtons: () => CustomButton[] | undefined;
+  setCustomButtons: (customButtons?: CustomButton[]) => void;
+
+  getLanguage: () => SUPPORT_LANGUAGES;
+  // setLanguage: (language: SUPPORT_LANGUAGES) => void;
+};
+
+type Hook = {
+  onConnect?: () => void;
+  onConnectError?: (error: Error) => void;
+  onModalClosed?: () => void;
+  onModalClosedByManualOperation?: () => void;
+};
+```
