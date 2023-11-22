@@ -15,7 +15,6 @@ const seoConfig = defineMetadata({
     images: "/og-image.png",
     url: "https://rabbykit.rabby.io",
   },
-  manifest: "/site.webmanifest",
   icons: [
     { rel: "icon", url: "/favicon.png" },
     { rel: "apple-touch-icon", url: "/favicon.png" },
