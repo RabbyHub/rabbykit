@@ -1,22 +1,10 @@
-## whether to use WalletConnect
-
-```ts filename="app.ts"
-...
-export const rabbyKit = createModal({
-    ...
-  showWalletConnect: false,
-});
-...
-```
-
 ## Custom Login Method
 
-您可以在内置的钱包登陆方式之外自定义添加所需的登陆方式
+RabbyKit provides options for customizing login methods, allowing you to set icons, text, and define the behavior upon clicking. This enables you to incorporate special login methods such as email login, which may be required by some DApps.
 
 ```ts filename="app.ts"
-...
 export const rabbyKit = createModal({
-    ...
+  ...
   customButtons: [
     {
       name: "your login method",
@@ -27,6 +15,28 @@ export const rabbyKit = createModal({
       },
     },
   ],
+});
+
+//or
+rabbyKit.setCustomButtons([
+  {
+    name: "Login with verified email",
+    logo: IconEmailLogin,
+    onClick: () => {
+      rabbyKit.close();
+      //your login method
+    },
+  },
+]);
+```
+
+## whether to use WalletConnect
+
+```ts filename="app.ts"
+...
+export const rabbyKit = createModal({
+    ...
+  showWalletConnect: false,
 });
 ...
 ```
