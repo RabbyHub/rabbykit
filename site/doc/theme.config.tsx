@@ -9,7 +9,7 @@ const config: DocsThemeConfig = {
   project: {
     link: "https://github.com/RabbyHub/rabbykit",
   },
-  docsRepositoryBase: "https://github.com/RabbyHub/rabbykit/site/doc",
+  docsRepositoryBase: "https://github.com/RabbyHub/rabbykit/tree/main/site/doc",
 
   useNextSeoProps: () => ({ titleTemplate: "%s – RabbyKit" }),
 
