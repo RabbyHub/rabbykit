@@ -1,0 +1,9 @@
+node_modules
+.next
+dist
+build
+**/dist
+**/build
+**/node_modules
+**/.next
+**/yarn.lock
