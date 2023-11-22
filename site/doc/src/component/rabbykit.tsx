@@ -22,11 +22,9 @@ export const RabbykitContext = React.createContext<
 >({} as any);
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const [mounted, setMounted] = React.useState(false);
   const [kit, setKit] = React.useState<ReturnType<typeof createModal>>();
   const initRef = React.useRef<Boolean>(false);
   React.useEffect(() => {
-    setMounted(true);
     if (!initRef.current) {
       initRef.current = true;
       const rabbyKit = createModal({
@@ -40,7 +38,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   }, []);
   return (
     <WagmiConfig config={config}>
-      {mounted && initRef && kit && (
+      {kit && (
         <RabbykitContext.Provider value={kit}>
           {children}
         </RabbykitContext.Provider>

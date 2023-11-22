@@ -3,6 +3,7 @@ import * as React from "react";
 import { ConnectButton } from "../connectButton";
 import { ViewDocButton } from "../viewDocButton";
 import clsx from "clsx";
+import { Providers } from "../rabbykit";
 
 const ClipText = () => {
   return (
@@ -41,7 +42,9 @@ export function Header() {
           className="md:w-[132px] md:h-[33px]"
           alt="Rabbykit logo"
         />
-        <ConnectButton />
+        <Providers>
+          <ConnectButton />
+        </Providers>
       </div>
 
       <div
