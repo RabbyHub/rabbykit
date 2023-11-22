@@ -4,24 +4,15 @@ const withNextra = require("nextra")({
 });
 
 module.exports = withNextra({
-  // async redirects() {
-  //   return [
-  //     {
-  //       source: "/docs",
-  //       destination: "/docs/introduction",
-  //       permanent: true,
-  //     },
-  //   ];
-  // },
-  // experimental: {
-  //   esmExternals: "loose",
-  // },
-  images: {
-    unoptimized: true,
+  async redirects() {
+    return [
+      {
+        source: "/docs",
+        destination: "/docs/introduction",
+        permanent: true,
+      },
+    ];
   },
-  swcMinify: true,
-  trailingSlash: true,
-  output: "export",
 });
 
 process.on("unhandledRejection", (error) => {

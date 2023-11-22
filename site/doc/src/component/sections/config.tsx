@@ -76,21 +76,49 @@ export const ConfigDemo = () => {
 
   return (
     <div
-      className="w-full pt-[100px] pb-[110px]"
+      className={clsx(
+        "w-full overflow-hidden",
+        "py-[60px]",
+        "lg:pt-[100px] lg:pb-[110px]"
+      )}
       style={{
         backgroundImage: `url(${bg.src})`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "100% 100%",
       }}
     >
-      <div className="text-center text-title2 text-[36px] font-[510]">
+      <div
+        className={clsx(
+          "text-center text-title2 font-[510]",
+          "text-[20px] mb-3",
+          "lg:text-[36px]"
+        )}
+      >
         Streamlined Design and Easy Configuration
       </div>
-      <div className="text-center text-title2 text-opacity-70 text-[32px]">
+      <div
+        className={clsx(
+          "text-center text-title2 text-opacity-70",
+          "text-[15px]",
+          "lg:text-[32px]"
+        )}
+      >
         Match your Dapp perfectly with minimal efforts
       </div>
-      <div className="mx-auto w-full max-w-[960px] flex justify-between mt-[88px]">
-        <div className="flex flex-col gap-[32px]">
+      <div
+        className={clsx(
+          "mx-auto w-full max-w-[960px] flex justify-between ",
+          "flex-col-reverse  items-center  relative -top-[50px]",
+          "lg:flex-row  lg:items-start lg:mt-[88px] lg:top-0"
+        )}
+      >
+        <div
+          className={clsx(
+            "flex flex-col gap-[32px]",
+            "items-center justify-center relative -top-[26px]",
+            "lg:items-start lg:justify-start lg:top-0"
+          )}
+        >
           {allConfig.map((e) => (
             <Item
               key={e.name}
@@ -154,9 +182,14 @@ const Item = ({
 
   return (
     <div>
-      <div className="text-[16px] font-[510] text-title2 mb-[9px]">{name}</div>
+      <div className="text-[16px] font-[510] text-title2 mb-[9px] text-center lg:text-left">
+        {name}
+      </div>
       <div
-        className={clsx("flex items-center relative left-[-4px]", "gap-[4px]")}
+        className={clsx(
+          "flex items-center relative left-[-4px] justify-center lg:justify-start",
+          "gap-[4px]"
+        )}
       >
         {data.map((e, idx) => {
           const isLast = idx === data.length - 1;
@@ -327,7 +360,15 @@ const Preview = ({
   isCustom?: boolean;
 }) => {
   return (
-    <div className={clsx("modal flex flex-col items-center", theme)}>
+    <div
+      className={clsx(
+        "modal flex flex-col items-center",
+        "w-[460px] h-[560px]",
+        "scale-[0.7]",
+        "lg:scale-100",
+        theme
+      )}
+    >
       <div className="title mb-[20px]">Select your wallet to login</div>
       <div className="flex flex-col gap-[15px] w-full">
         {demoList.slice(0, isCustom ? undefined : -1).map((fill, idx) => (
@@ -373,8 +414,8 @@ const Preview = ({
           }
           .modal {
             padding: 20px;
-            width: 460px;
-            height: 540px;
+            // width: 460px;
+            // height: 540px;
             overflow: hidden;
             border-radius: var(
               --rk-radius,

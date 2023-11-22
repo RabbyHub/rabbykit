@@ -2,10 +2,12 @@ import Image from "next/image";
 import * as React from "react";
 import { ConnectButton } from "../connectButton";
 import { ViewDocButton } from "../viewDocButton";
+import clsx from "clsx";
 
 const ClipText = () => {
   return (
     <span
+      className=""
       style={React.useMemo(
         () => ({
           background:
@@ -13,11 +15,6 @@ const ClipText = () => {
           backgroundClip: "text",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
-          fontFamily: "SF Pro",
-          fontSize: 60,
-          fontStyle: "normal",
-          fontWeight: 700,
-          lineHeight: "normal",
         }),
         []
       )}
@@ -30,23 +27,33 @@ const ClipText = () => {
 export function Header() {
   return (
     <section className="bg-title1  flex flex-col  items-center">
-      <div className="w-full max-w-[960px] h-[64px] flex items-center justify-between py-3">
+      <div
+        className={clsx(
+          "w-full max-w-[960px] flex items-center justify-between",
+          "pt-[60px] px-[20px] ",
+          "md:h-[64px] md:py-3"
+        )}
+      >
         <Image
           src="/kit-logo.svg"
-          width="132"
-          height="33"
+          width="110"
+          height="28"
+          className="md:w-[132px] md:h-[33px]"
           alt="Rabbykit logo"
         />
         <ConnectButton />
       </div>
 
-      <div className="w-full max-w-[1200px] text-[52px] text-center mt-12 mb-10">
-        <span className="text-white font-bold ">A </span>
+      <div
+        className={clsx(
+          "w-full max-w-[350px] text-center mt-12 mb-10",
+          "text-[28px] font-bold text-white",
+          "md:text-[52px] md:mt-12 md:mb-10 md:max-w-[1000px]"
+        )}
+      >
+        <span>A </span>
         <ClipText />
-        <span className="text-white font-bold ">
-          {" "}
-          to connect all wallets <br /> for all Dapp developers
-        </span>
+        <span> to connect all wallets for all Dapp developers</span>
       </div>
 
       <ViewDocButton className="z-10" />
@@ -56,7 +63,7 @@ export function Header() {
         alt={""}
         width={1068}
         height={960}
-        className="mt-[-116px] mb-[-58px]"
+        className={clsx("lg:mt-[-116px] lg:mb-[-58px]")}
         priority
       />
     </section>

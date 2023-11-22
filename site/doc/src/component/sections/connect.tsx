@@ -5,23 +5,17 @@ const protocols = [
   {
     name: "EIP-6963",
     src: "/eip-6963.svg",
-    width: 40,
-    height: 40,
     href: "https://eips.ethereum.org/EIPS/eip-6963",
   },
   {
     name: "Wallet Connect",
     src: "/wallet-connect.svg",
-    width: 40,
-    height: 40,
     href: "https://walletconnect.com/",
   },
 
   {
     name: "Coinbase",
     src: "/coinbase.svg",
-    width: 40,
-    height: 40,
     href: "https://docs.cloud.coinbase.com/wallet-sdk/docs/injected-provider-guidance",
   },
 ];
@@ -79,7 +73,7 @@ const extensionWallets = [
   },
   {
     name: "TokenPocket",
-    src: "/wallets/tokenPocket.svg",
+    src: "/wallets/token-pocket.svg",
     link: "https://www.tokenpocket.pro/",
   },
   {
@@ -146,7 +140,7 @@ const mobileWallets = [
   },
   {
     name: "TokenPocket",
-    src: "/wallets/tokenPocket.svg",
+    src: "/wallets/token-pocket.svg",
     link: "https://www.tokenpocket.pro/",
   },
   {
@@ -180,38 +174,85 @@ const mobileWallets = [
     link: "https://zerion.io/",
   },
 ].sort((a, b) => a.name.localeCompare(b.name));
+
 export const ConnectIntro = () => {
   return (
-    <div className="w-full bg-white pt-[100px] pb-[135px] ">
+    <div
+      className={clsx(
+        "w-full bg-white",
+        "py-[40px] ",
+        "lg:pt-[100px] lg:pb-[135px]"
+      )}
+    >
       <div className="max-w-[1120px] w-full flex flex-col items-center mx-auto">
-        <div className="text-center text-title1 text-[36px] font-[510]  mb-3">
+        <div
+          className={clsx(
+            "text-center text-title1",
+            "text-[20px] font-[510] mb-3 px-[20px]",
+            "lg:text-[36px] "
+          )}
+        >
           No more wallet conflicts in exchange for a smooth user experience
         </div>
-        <div className="text-center text-body text-[32px] font-normal mb-[40px]">
+        <div
+          className={clsx(
+            "text-center text-body font-normal ",
+            "text-[15px] mb-[24px]",
+            "lg:text-[32px] lg:mb-[40px]"
+          )}
+        >
           Compatible with all. Varied for choice.
         </div>
       </div>
 
-      <div className="max-w-[960px] w-full flex flex-col items-center mx-auto">
-        <Image src={"/connect.png"} alt={"connect"} width={960} height={440} />
-
-        <div className="text-center text-title1 text-2xl  mt-[100px] mb-[24px]">
+      <div
+        className={clsx(
+          "max-w-[960px] w-full flex flex-col items-center mx-auto",
+          "lg:px-0"
+        )}
+      >
+        <Image
+          src={"/connect.png"}
+          alt={"connect"}
+          width={960}
+          height={440}
+          className="px-[20px] lg:px-0"
+        />
+        <div
+          className={clsx(
+            "text-center text-title1",
+            "text-[15px] mt-[40px] mb-[16px] ",
+            "lg:text-2xl  lg:mt-[100px] lg:mb-[24px] "
+          )}
+        >
           Supported Protocols
         </div>
-        <div className="flex items-center gap-[18px] w-full mb-[100px]">
-          {protocols.map(({ href, src, name, width, height }, idx) => (
+
+        <div className="flex items-center gap-[18px] w-full mb-[100px] px-[20px] ">
+          {protocols.map(({ href, src, name }, idx) => (
             <a
               href={href}
               target="_blank"
               rel="noreferrer"
               className={clsx(
-                "gap-[12px]",
+                " flex-1 bg-gray-100 rounded flex-col justify-center items-center inline-flex",
                 "hover:shadow",
-                "flex-1 h-32 pt-6 pb-7 bg-gray-100 rounded flex-col justify-center items-center  inline-flex"
+                "gap-[8px] w-[112px] h-[88px]",
+                "lg:gap-[12px] lg:h-32 lg:pt-6 lg:pb-7 "
               )}
             >
-              <Image src={src} alt={name} width={width} height={height} />
-              <div className="text-center text-title1 text-lg">{name}</div>
+              <Image
+                src={src}
+                alt={name}
+                width={32}
+                height={32}
+                className={clsx("w-[32px] h-[32px]", "lg:w-[40px] lg:h-[40px]")}
+              />
+              <div
+                className={clsx("text-center", "text-[13px]", "lg:text-title1")}
+              >
+                {name}
+              </div>
             </a>
           ))}
         </div>
@@ -241,19 +282,39 @@ function SupportedWallets({
 }) {
   return (
     <>
-      <div className="text-center text-title1 text-2xl  mb-[24px]">{title}</div>
+      <div
+        className={clsx(
+          "text-center text-title1 ",
+          "text-[15px] mb-[8px]",
+          "lg:text-2xl  lg:mb-[24px]"
+        )}
+      >
+        {title}
+      </div>
 
-      <div className="w-full flex flex-wrap">
+      <div className="w-full flex flex-wrap justify-center">
         {wallets.map(({ src, name, link }) => (
           <a
             key={name}
             href={link}
             target="_blank"
             rel="noreferrer"
-            className="w-[160px] h-[120px] flex flex-col justify-center items-center gap-[12px] hover:bg-card-2 hover:rounded-md"
+            className={clsx(
+              " flex flex-col justify-center items-center  hover:bg-card-2 hover:rounded-md",
+              "w-[118px] h-[88px] gap-[8px]",
+              "lg:w-[160px] lg:h-[120px] lg:gap-[12px]"
+            )}
           >
-            <Image src={src} alt={name} width={44} height={44} />
-            <div className="text-[16px] font-[510] text-title1">{name}</div>
+            <Image
+              src={src}
+              alt={name}
+              width={32}
+              height={32}
+              className="w-[32px] h-[32px] lg:w-[44px] lg:h-[44px]"
+            />
+            <div className="text-[13px] lg:text-[16px] font-[510] text-title1">
+              {name}
+            </div>
           </a>
         ))}
       </div>
