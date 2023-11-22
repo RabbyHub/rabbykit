@@ -37,7 +37,7 @@ import {
   Hook,
   RabbyKitModal,
   Theme,
-  themeVariables,
+  ThemeVariables,
 } from "./type";
 import {
   getCommonWalletConnect,
@@ -73,7 +73,7 @@ export const createModal = <
   customButtons?: CustomButton[];
   showWalletConnect?: boolean;
   theme?: Theme;
-  themeVariables?: themeVariables;
+  themeVariables?: ThemeVariables;
   language?: SUPPORT_LANGUAGES;
 } & Hook): RabbyKitModal => {
   watchAccount(() => syncAccount());
@@ -164,9 +164,8 @@ export const createModal = <
   let init = false;
 
   return {
-    setDisclaimer: useRKStore.getState().setDisclaimer,
-    setCustomButtons: useRKStore.getState().setCustomButtons,
     subscribeModalState: modalOpenSubscribe,
+    getOpenState: () => useRKStore.getState().open,
     open: (params) => {
       if (!init) {
         init = true;
@@ -177,13 +176,22 @@ export const createModal = <
     close: () => {
       useRKStore.setState({ open: false });
     },
+
+    getTheme: () => useRKStore.getState().theme,
     setTheme: (theme: Theme) => {
       useRKStore.getState().setTheme(theme);
     },
+    setThemeVariables: (themeVariables?: ThemeVariables) =>
+      useRKStore.setState({ themeVariables }),
 
-    getTheme: () => useRKStore.getState().theme,
     getCustomButtons: () => useRKStore.getState().customButtons,
+    setCustomButtons: useRKStore.getState().setCustomButtons,
+
     getDisclaimer: () => useRKStore.getState().disclaimer,
-    getOpenState: () => useRKStore.getState().open,
+    setDisclaimer: useRKStore.getState().setDisclaimer,
+
+    getLanguage: () => useRKStore.getState().language,
+    setLanguage: (language: SUPPORT_LANGUAGES) =>
+      useRKStore.setState({ language }),
   };
 };

@@ -22,7 +22,7 @@ import {
   RabbyKitModal,
   Theme,
   Type,
-  themeVariables,
+  ThemeVariables,
 } from "../type";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import { EIP6963ProviderDetail, createStore as createMipdStore } from "mipd";
@@ -38,7 +38,7 @@ interface Store<
 > {
   open: boolean;
   theme: Theme;
-  themeVariables?: themeVariables;
+  themeVariables?: ThemeVariables;
   language: SUPPORT_LANGUAGES;
 
   page: Page;
