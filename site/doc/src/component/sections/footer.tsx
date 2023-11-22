@@ -25,7 +25,7 @@ export const Footer = () => {
             "lg:flex-col lg:items-end lg:gap-[auto]"
           )}
         >
-          <div className="flex items-center gap-2 whitespace-nowrap">
+          <div className="flex items-center gap-[2px] lg:gap-2 whitespace-nowrap">
             <a
               className="text-white text-sm font-bold"
               href="https://github.com/RabbyHub/logo"
