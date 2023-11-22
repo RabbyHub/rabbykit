@@ -1,26 +1,16 @@
 {
-  "Browser Wallet": "Browser Wallet",
-  "Mobile Wallet": "Mobile Wallet",
-  "not founded wallet": "Browser Wallet",
-
   "The following wallets are not installed or in conflict with others": "The following wallets are not installed or in conflict with others",
   "No wallet found. The following wallets are not installed or in conflict with others": "No wallet found. The following wallets are not installed or in conflict with others",
-  "Scan with mobile wallets to connect": "Scan with mobile wallets to connect",
 
   "Requesting Connection": "Requesting Connection",
   "Connect with": "Connect with {name}",
   "connecting description": "Check {name} to confirm connect.",
 
   "Connection Successful": "Connection Successful",
-
   "Request Cancelled": "Request Canceled",
   "You canceled the request": "You canceled the request.",
 
-  "mobile wallet": "mobile wallet",
-
   "Scan with your Mobile wallet": "Scan with your mobile wallet",
-  "Copy URL": "Copy URL",
-  "Connect with mobile wallet": "Connect with mobile wallet",
 
   "How to use": "How to use {name}?",
   "Install the Extension": "Install the Extension",
