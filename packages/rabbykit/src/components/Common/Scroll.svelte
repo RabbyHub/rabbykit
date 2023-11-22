@@ -8,16 +8,6 @@
   let scrollTop: number;
 </script>
 
-{#if title}
-  <div
-    class="title"
-    class:mobile={$svelteStore.isMobile}
-    class:borderB={scrollTop > 0}
-  >
-    {title}
-  </div>
-{/if}
-
 <div
   class={`scroll ${className}`}
   class:mobile={$svelteStore.isMobile}
@@ -26,6 +16,15 @@
     scrollTop = box.scrollTop;
   }}
 >
+  {#if title}
+    <div
+      class="title"
+      class:mobile={$svelteStore.isMobile}
+      class:borderB={scrollTop > 0}
+    >
+      {title}
+    </div>
+  {/if}
   <slot />
 </div>
 
@@ -61,6 +60,7 @@
     font-weight: 510;
     border-bottom: 0.5px solid transparent;
     z-index: var(--z-index-scroll);
+    background: var(--rk-modal-bg, var(--r-neutral-bg-2));
 
     &.borderB {
       border-bottom: 0.5px solid var(--r-neutral-line);
@@ -69,6 +69,7 @@
       margin: 0;
       padding: 0;
       padding-top: 18px;
+      background: var(--rk-modal-bg, var(--r-neutral-bg-1));
     }
   }
 </style>
