@@ -4,12 +4,14 @@
   import Modal from "../Modal/index.svelte";
   import Tab from "../Tab/index.svelte";
   import Mobile from "../mobile/index.svelte";
+  import InMobileApp from "../mobile/InWalletBrowser.svelte";
+
+  import Card from "../Modal/Card.svelte";
 
   import Connecting from "../Connect/connect.svelte";
   import Scan from "../Scan/index.svelte";
   import Install from "../Install/index.svelte";
-  import Icon from "../CommonIcon/Icon.svelte";
-  import { isMobile } from "../../helpers/browser";
+  import WalletConnectList from "../WalletConnectList/index.svelte";
 
   function back() {
     useRKStore.setState({
@@ -17,64 +19,62 @@
       currentWallet: undefined,
     });
   }
-  let isMobileEnv = isMobile();
+  function backWcList() {
+    useRKStore.setState({
+      page: "wc-select",
+      currentWallet: undefined,
+    });
+  }
 
+  $: isMobileEnv = $svelteStore.isMobile;
+  $: detectWindowEthereum = !!window?.ethereum;
   $: open = $svelteStore.open;
   $: currentWallet = $svelteStore.currentWallet;
-  $: showSubPage =
-    ["download", "connect"].includes($svelteStore.page) && !!currentWallet;
+  $: isQrCodePage =
+    $svelteStore.page === "wc-select" ||
+    ($svelteStore.page === "connect" &&
+      !!$svelteStore.currentWallet &&
+      $svelteStore.type === "qrCode");
+  $: showOtherSubPage = ["connect", "download"].includes($svelteStore.page);
 </script>
 
 <Provider>
   {#if open}
     <Modal>
       {#if isMobileEnv}
-        <Mobile />
+        {#if detectWindowEthereum}
+          <InMobileApp />
+        {:else}
+          <Mobile />
+        {/if}
       {:else}
         <Tab />
-        <div class="sub-page" class:show={showSubPage}>
-          <div class="back">
-            <Icon name="back" on:click={back} />
-          </div>
+
+        <Card show={isQrCodePage} {back}>
+          <WalletConnectList />
+        </Card>
+
+        <Card
+          show={$svelteStore.page === "connect" &&
+            !!currentWallet &&
+            $svelteStore.type === "qrCode"}
+          back={backWcList}
+        >
+          {#if !!currentWallet}
+            <Scan wallet={currentWallet} />
+          {/if}
+        </Card>
+
+        <Card show={showOtherSubPage && !isQrCodePage} {back}>
           {#if $svelteStore.page === "connect" && !!currentWallet}
             {#if $svelteStore.type === "browser"}
               <Connecting wallet={currentWallet} />
-            {:else}
-              <Scan wallet={currentWallet} />
             {/if}
           {:else if $svelteStore.page === "download" && !!currentWallet}
             <Install wallet={currentWallet} />
           {/if}
-        </div>
+        </Card>
       {/if}
     </Modal>
   {/if}
 </Provider>
-
-<style lang="scss">
-  .sub-page {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    background-color: #fff;
-    transform: translateX(100%);
-    transition: transform 0.3s;
-    padding: 20px;
-    background: var(--r-neutral-bg-2);
-    .back {
-      position: absolute;
-      transform: translateX(100%);
-      top: 14px;
-      left: 20px;
-    }
-
-    &.show {
-      transform: translateX(0);
-      .back {
-        transform: translateX(0);
-      }
-    }
-  }
-</style>

@@ -26,15 +26,25 @@ import {
   xdefiWallet,
   zerionWallet,
   tahoWallet,
+  imTokenWallet,
   // safeWallet,
 } from "./wallets/connectors";
 import { mount } from "./components/Kit";
 import "./helpers/i18n";
-import { CustomButton, Disclaimer, Hook, RabbyKitModal, Theme } from "./type";
+import {
+  CustomButton,
+  Disclaimer,
+  Hook,
+  RabbyKitModal,
+  Theme,
+  ThemeVariables,
+} from "./type";
 import {
   getCommonWalletConnect,
+  getWalletConnectLegacyConnector,
   sharedWalletConnectConnectors,
 } from "./helpers/getWalletConnectUri";
+import { SUPPORT_LANGUAGES } from "./helpers/i18n";
 
 export const createModal = <
   TPublicClient extends PublicClient = PublicClient,
@@ -51,6 +61,9 @@ export const createModal = <
   onConnectError,
   onModalClosed,
   onModalClosedByManualOperation,
+  theme = "light",
+  themeVariables,
+  language = "en",
 }: {
   chains: Chain[];
   appName: string;
@@ -59,6 +72,9 @@ export const createModal = <
   disclaimer?: Disclaimer;
   customButtons?: CustomButton[];
   showWalletConnect?: boolean;
+  theme?: Theme;
+  themeVariables?: ThemeVariables;
+  language?: SUPPORT_LANGUAGES;
 } & Hook): RabbyKitModal => {
   watchAccount(() => syncAccount());
 
@@ -81,6 +97,7 @@ export const createModal = <
     xdefiWallet({ chains }),
     zerionWallet({ chains, projectId }),
     tahoWallet({ chains }),
+    imTokenWallet({ chains, projectId }),
     // safeWallet({
     //   chains,
     //   allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/],
@@ -116,6 +133,7 @@ export const createModal = <
   wagmi.setConnectors([
     ...(wagmi?.connectors || []),
     getCommonWalletConnect({ chains, projectId }),
+    getWalletConnectLegacyConnector({ chains, projectId }),
     ...allConnectors,
   ]);
 
@@ -132,6 +150,9 @@ export const createModal = <
       onModalClosed,
       onModalClosedByManualOperation,
     },
+    theme,
+    themeVariables,
+    language,
   });
 
   syncMipd();
@@ -143,9 +164,8 @@ export const createModal = <
   let init = false;
 
   return {
-    setDisclaimer: useRKStore.getState().setDisclaimer,
-    setCustomButtons: useRKStore.getState().setCustomButtons,
     subscribeModalState: modalOpenSubscribe,
+    getOpenState: () => useRKStore.getState().open,
     open: (params) => {
       if (!init) {
         init = true;
@@ -156,13 +176,22 @@ export const createModal = <
     close: () => {
       useRKStore.setState({ open: false });
     },
+
+    getTheme: () => useRKStore.getState().theme,
     setTheme: (theme: Theme) => {
       useRKStore.getState().setTheme(theme);
     },
+    setThemeVariables: (themeVariables?: ThemeVariables) =>
+      useRKStore.setState({ themeVariables }),
 
-    getTheme: () => useRKStore.getState().theme,
     getCustomButtons: () => useRKStore.getState().customButtons,
+    setCustomButtons: useRKStore.getState().setCustomButtons,
+
     getDisclaimer: () => useRKStore.getState().disclaimer,
-    getOpenState: () => useRKStore.getState().open,
+    setDisclaimer: useRKStore.getState().setDisclaimer,
+
+    getLanguage: () => useRKStore.getState().language,
+    setLanguage: (language: SUPPORT_LANGUAGES) =>
+      useRKStore.setState({ language }),
   };
 };

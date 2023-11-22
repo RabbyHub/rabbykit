@@ -15,20 +15,30 @@ import {
 import { WalletResult } from "../wallets/type";
 import { SUPPORT_LANGUAGES } from "../helpers";
 import zustandToSvelte from "../helpers/zustandToSvelte";
-import { CustomButton, Disclaimer, Hook, RabbyKitModal, Theme } from "../type";
+import {
+  CustomButton,
+  Disclaimer,
+  Hook,
+  RabbyKitModal,
+  Theme,
+  Type,
+  ThemeVariables,
+} from "../type";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import { EIP6963ProviderDetail, createStore as createMipdStore } from "mipd";
 import { goerli } from "viem/chains";
 import { wrapperEIP6963Wallet } from "../helpers/mipd";
+import { locale } from "svelte-i18n";
 
-type Tab = "browser" | "mobile";
-type Page = "wallet" | "connect" | "download";
+type Tab = Type;
+type Page = "wallet" | "connect" | "wc-select" | "download";
 interface Store<
   TPublicClient extends PublicClient = PublicClient,
   TWebSocketPublicClient extends WebSocketPublicClient = WebSocketPublicClient
 > {
   open: boolean;
   theme: Theme;
+  themeVariables?: ThemeVariables;
   language: SUPPORT_LANGUAGES;
 
   page: Page;
@@ -44,7 +54,6 @@ interface Store<
   chainId?: number;
 
   wallets?: WalletResult[];
-  uri?: string;
   walletConnectConnector?: WalletConnectConnector;
 
   mipd: readonly EIP6963ProviderDetail[];
@@ -63,12 +72,16 @@ interface Store<
 
   setDisclaimer: RabbyKitModal["setDisclaimer"];
   setCustomButtons: RabbyKitModal["setCustomButtons"];
+
+  isMobile: boolean;
 }
 
 export const useRKStore = createStore<Store<any, any>>()(
   subscribeWithSelector((set, get) => ({
+    isMobile: false,
     chains: [mainnet, goerli],
     theme: "light",
+    themeVariables: undefined,
     status: "disconnected",
     language: "en",
     page: "wallet",
@@ -103,6 +116,13 @@ export const useRKStore = createStore<Store<any, any>>()(
   }))
 );
 
+useRKStore.subscribe(
+  (s) => s.language,
+  (lang) => {
+    locale.set(lang);
+  }
+);
+
 export const modalOpenSubscribe = (fn: (open: boolean) => void) => {
   const unsubscribe = useRKStore.subscribe((s) => s.open, fn);
   return unsubscribe;
@@ -120,7 +140,7 @@ export function syncAccount() {
   }
 
   if (isDisconnected) {
-    useRKStore.setState({ uri: undefined });
+    // useRKStore.setState({ uri: undefined });
   }
   useRKStore.setState({ status: status });
 }

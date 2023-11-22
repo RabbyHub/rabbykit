@@ -1,11 +1,18 @@
 <script lang="ts">
   import store from "./../store/context";
+
+  $: themeVariables = $store?.themeVariables
+    ? Object.entries($store?.themeVariables)
+        .map(([k, v]) => `${k}:${v};`)
+        .join("")
+    : "";
 </script>
 
 <div
   data-rabbykit="0.0.01"
   class:dark={$store.theme === "dark"}
   class:system={$store.theme === "system"}
+  style={themeVariables}
 >
   <slot />
 </div>
@@ -100,8 +107,10 @@
   }
 
   [data-rabbykit] {
+    --z-index-scroll: 1;
+    --z-index-page: 2;
     @extend .light;
-    font-family: var(--rk-font);
+    font-family: var(--rk-font-family, var(--rk-font));
 
     &.dark {
       @extend .dark;
@@ -434,7 +443,7 @@ Add the correct display in Chrome and Safari.
       display: list-item;
     }
     button {
-      font-family: var(--rk-font);
+      font-family: var(--rk-font-family, var(--rk-font));
       background: transparent;
       box-shadow: none;
       border: 0;

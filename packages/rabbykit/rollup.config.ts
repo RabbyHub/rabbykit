@@ -19,7 +19,6 @@ const external = [
   ...Object.keys(dependencies),
   ...Object.keys(peerDependencies),
 ];
-// .filter((e) => e !== "svelte");
 
 const input = ["./src/index.ts", "./src/index.react.tsx"];
 export default defineConfig([

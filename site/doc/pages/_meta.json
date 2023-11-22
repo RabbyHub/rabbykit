@@ -1,0 +1,16 @@
+{
+  "*": {
+    "theme": {
+      "breadcrumb": false
+    }
+  },
+  "index": {
+    "title": "Home",
+    "display": "hidden"
+  },
+  "docs": {
+    "type": "page",
+    "title": "Documents",
+    "display": "hidden"
+  }
+}

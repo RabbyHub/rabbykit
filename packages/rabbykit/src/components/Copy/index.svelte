@@ -1,12 +1,15 @@
 <script lang="ts">
   import Icon from "../CommonIcon/Icon.svelte";
 
+  export let disable = false;
   export let copyTip: string = "Copy Url";
   export let CopiedTip: string = "Copied";
   export let copyText: string;
 
   let copied = false;
   async function copy() {
+    if (disable) return;
+
     try {
       await navigator.clipboard.writeText(copyText);
       copied = true;
@@ -22,6 +25,7 @@
 <div
   class:copy
   class:copied
+  class:disable
   role="button"
   tabindex="0"
   on:click={copy}
@@ -48,6 +52,9 @@
     font-style: normal;
     font-weight: 510;
     line-height: normal;
+    &.disable {
+      cursor: not-allowed;
+    }
   }
 
   .copied {

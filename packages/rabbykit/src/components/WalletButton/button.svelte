@@ -1,9 +1,10 @@
 <script lang="ts">
+  import { Type } from "../../type";
   import Image from "../Image/index.svelte";
   import clsx from "clsx";
 
-  export let type: "browser" | "mobile" | "unused";
-  export let size: "lg" | "normal" = "lg";
+  export let type: Type;
+  export let size: "lg" | "normal" | "sm" = "lg";
   export let name: string;
   export let logo: string;
 </script>
@@ -11,8 +12,10 @@
 <button
   on:click
   class={clsx("button", $$props.class)}
+  class:sm={size === "sm"}
   class:lg={size === "lg"}
   class:ready={type === "browser"}
+  class:qrCode={type === "qrCode"}
   class:mobile={type === "mobile"}
   class:unused={type === "unused"}
   {...$$restProps}
@@ -45,6 +48,7 @@
 
 <style lang="scss">
   .button {
+    --fallback-border: 0.5px solid transparent;
     width: 206px;
     height: 56px;
     padding: 10px 20px;
@@ -53,19 +57,19 @@
     align-items: center;
     gap: 12px;
 
-    border-radius: 5px;
     cursor: pointer;
-    border-radius: 8px;
-    background: var(--r-neutral-card-1);
+    border-radius: var(--rk-primary-button-border-radius, 8px);
+    background: var(--rk-primary-button-bg, var(--r-neutral-card-1));
     box-shadow: var(--button-shadow);
-    color: var(--r-neutral-title-1);
-    font-weight: 590;
-    border: 0.5px solid transparent;
-    font-size: 16px;
+    color: var(--rk-primary-button-color, var(--r-neutral-title-1));
+    font-weight: var(--rk-primary-button-font-weight, 590);
+    border: var(--rk-primary-button-border, var(--fallback-border));
+    font-size: var(--rk-primary-button-font-size, 16px);
 
     &.lg {
       height: 64px;
       border-width: 1px;
+
       &:hover {
         border-width: 1px;
       }
@@ -74,22 +78,23 @@
   .button.ready {
     width: 100%;
   }
-
-  .button:hover {
-    border-radius: 8px;
-    border: 0.5px solid var(--r-blue-default);
-    background: var(--r-blue-light-1);
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
+  .button:not(.unused) {
+    color: var(--rk-primary-button-hover-color, var(--r-neutral-title-1));
   }
 
-  .button.mobile {
+  .button:hover {
+    --fallback-border: 0.5px solid var(--r-blue-default);
+    border: var(--rk-primary-button-hover-border, var(--fallback-border));
+    background: var(--rk-primary-button-hover-bg, var(--r-blue-light-1));
+  }
+
+  .button.qrCode {
     font-weight: 510;
-    border-radius: 8px;
     box-shadow: none;
     border: 0.5px solid var(--r-neutral-line);
   }
 
-  .button.mobile:hover {
+  .button.qrCode:hover {
     border: 0.5px solid var(--r-blue-default);
     box-shadow: none;
   }
@@ -98,15 +103,46 @@
     font-size: 15px;
     font-weight: 510;
     box-shadow: none;
-    border-radius: 8px;
     color: var(--r-neutral-body);
     border: 1px solid var(--r-neutral-line);
     background: transparent;
   }
 
   .button.unused:hover {
-    border-radius: 8px;
     border: 1px solid var(--r-blue-default);
+    background: transparent;
+  }
+
+  .button.mobile {
+    padding: 12px 0;
+    padding-left: 16px;
+    width: 100%;
+    height: 48px;
+    font-size: 14px;
+    font-weight: 510;
+    box-shadow: none;
+    color: var(--r-neutral-body);
+    border: 0.5px solid var(--r-neutral-line);
+    background: transparent;
+
+    .logo {
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      /* fix ios borderRadius */
+      & > :global(svg) {
+        min-width: 48px;
+        width: 48px;
+        height: 48px;
+        transform: scale(0.5);
+      }
+    }
+  }
+
+  .button.mobile:hover {
+    border: 0.5px solid var(--r-neutral-line);
     background: transparent;
   }
 

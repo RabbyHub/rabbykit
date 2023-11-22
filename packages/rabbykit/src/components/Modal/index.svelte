@@ -16,7 +16,13 @@
   const html = document.documentElement;
 
   let htmlStyleCache: Record<string, string> = {};
+  function resize() {
+    useRKStore.setState({ isMobile: isMobile() });
+  }
+
   onMount(() => {
+    resize();
+    window.addEventListener("resize", resize);
     htmlStyleCache.position = html.style.position;
     htmlStyleCache.overflow = html.style.overflow;
 
@@ -25,6 +31,8 @@
   });
 
   onDestroy(() => {
+    window.removeEventListener("resize", resize);
+
     html.style.position = htmlStyleCache.position;
     if (htmlStyleCache.overflow) {
       html.style.overflow = htmlStyleCache.overflow;
@@ -36,7 +44,6 @@
       currentWallet: undefined,
     });
   });
-  let isMobileEnv = isMobile();
 
   function outroend() {
     if (isManualOperation) {
@@ -53,6 +60,8 @@
       openHooks: [],
     });
   }
+
+  $: isMobileEnv = !!$useStore.isMobile;
 </script>
 
 <div class="modal" transition:fade={{ duration: 100 }} on:outroend={outroend}>
@@ -83,6 +92,9 @@
   }
 
   .modal-content {
+    --fallback-modal-border-radius: 16px;
+    --fallback-modal-box-shadow: 0px 24px 80px 0px rgba(0, 0, 0, 0.2);
+
     width: 460px;
     height: 540px;
     padding: 20px;
@@ -91,12 +103,15 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border-radius: 16px;
-    background: var(--r-neutral-bg-2);
-    box-shadow: 0px 24px 80px 0px rgba(0, 0, 0, 0.2);
+    border-radius: var(--rk-border-radius, var(--fallback-modal-border-radius));
+    background: var(--rk-modal-bg, var(--r-neutral-bg-2));
+    box-shadow: var(--rk-modal-box-shadow, var(--fallback-modal-box-shadow));
     overflow: hidden;
 
     &.mobile {
+      --fallback-modal-box-shadow: 0px -8px 8px 0px rgba(0, 0, 0, 0.08);
+
+      padding: 0;
       width: 100vw;
       max-width: 100vw;
       height: auto;
@@ -104,9 +119,18 @@
       left: 0;
       bottom: 0;
       transform: translateZ(0);
-      background: var(--r-neutral-bg-1);
-      box-shadow: 0px -8px 8px 0px rgba(0, 0, 0, 0.08);
-      border-radius: 16px 16px 0px 0px;
+      background: var(--rk-modal-bg, var(--r-neutral-bg-1));
+      box-shadow: var(--rk-modal-box-shadow, var(--fallback-modal-box-shadow));
+      border-radius: var(
+          --rk-border-radius,
+          var(--fallback-modal-border-radius)
+        )
+        var(--rk-border-radius, var(--fallback-modal-border-radius)) 0px 0px;
+
+      .close {
+        top: 13px;
+        right: 6px;
+      }
     }
   }
 
@@ -121,14 +145,16 @@
   }
 
   .modal-overlay {
+    --fallback-overlay-bg: rgba(0, 0, 0, 0.6);
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background: var(--rk-overlay-bg, var(--fallback-overlay-bg));
     &.mobile {
-      background-color: rgba(0, 0, 0, 0.4);
+      --fallback-overlay-bg: rgba(0, 0, 0, 0.4);
+      background: var(--rk-overlay-bg, var(--fallback-overlay-bg));
     }
   }
 </style>

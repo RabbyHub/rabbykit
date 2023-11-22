@@ -1,0 +1,16 @@
+{
+  "-- Overview": {
+    "type": "separator",
+    "title": "Overview"
+  },
+  "introduction": "Introduction",
+  "-- Getting Started": {
+    "type": "separator",
+    "title": "Getting Started"
+  },
+  "install": "Installation",
+  "actions": "Actions",
+  "theming": "Customize",
+  "custom-login": "Custom Login Method",
+  "localization": { "title": "Localization", "display": "hidden" }
+}

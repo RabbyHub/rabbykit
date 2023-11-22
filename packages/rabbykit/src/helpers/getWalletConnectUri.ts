@@ -2,6 +2,28 @@ import type { Connector } from "@wagmi/core/connectors";
 import { isAndroid, isMobile } from "./browser";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import { dequal } from "dequal";
+import { WalletConnectLegacyConnector } from "wagmi/connectors/walletConnectLegacy";
+
+export let commonLegacyWalletConnect: WalletConnectLegacyConnector | undefined;
+export const getWalletConnectLegacyConnector = (params: {
+  projectId: string;
+  chains: WalletConnectConnector["chains"];
+  options?: Omit<WalletConnectConnector["options"], "projectId">;
+}) => {
+  if (!commonLegacyWalletConnect) {
+    return new WalletConnectLegacyConnector({
+      chains: params.chains,
+      options: {
+        //@ts-ignore
+        projectId: params.projectId,
+        bridge: "https://derelay.rabby.io",
+        qrcode: false,
+        ...params.options,
+      },
+    });
+  }
+  return commonLegacyWalletConnect;
+};
 
 export let commonWalletConnect: WalletConnectConnector | undefined;
 export const getCommonWalletConnect = (params: {
@@ -25,7 +47,7 @@ export const getCommonWalletConnect = (params: {
 const allParams: any[] = [];
 export const sharedWalletConnectConnectors = new Map<
   Object,
-  WalletConnectConnector
+  WalletConnectConnector | WalletConnectLegacyConnector
 >();
 
 export const getWalletConnectConnector = (params: {
@@ -47,9 +69,29 @@ export async function getWalletConnectUri(
   connector: Connector
 ): Promise<string> {
   const provider = await connector.getProvider();
-  return new Promise<string>((resolve) =>
-    provider.once("display_uri", resolve)
-  );
+
+  return new Promise<string>((resolve, reject) => {
+    if (connector instanceof WalletConnectLegacyConnector) {
+      let id: NodeJS.Timer;
+      let retry = 0;
+      id = setInterval(() => {
+        if (retry >= 30) {
+          clearInterval(id);
+          return reject();
+        }
+        if (provider.connector.handshakeTopic) {
+          clearInterval(id);
+          return resolve(provider.connector.uri);
+        }
+        retry++;
+      }, 100);
+      return;
+    }
+    provider.once("display_uri", resolve);
+    setTimeout(() => {
+      return reject();
+    }, 3000);
+  });
 }
 
 export async function getMobileUri({

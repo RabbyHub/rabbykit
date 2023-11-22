@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html {
+      font-family:-apple-system, BlinkMacSystemFont, "Helvetica Neue", Roboto,
+      "PingFang SC", "Microsoft Yahei", sans-serif;
+    }
+  }

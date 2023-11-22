@@ -8,7 +8,8 @@ import { WalletResult } from "../../type";
 import { getWalletProvider } from "../../../helpers/wallet";
 import {
   getMobileUri,
-  getWalletConnectConnector,
+  // getWalletConnectConnector,
+  getWalletConnectLegacyConnector,
   getWalletConnectUri,
 } from "../../../helpers/getWalletConnectUri";
 import logo from "./logo.svg";
@@ -27,13 +28,18 @@ export const rainbowWallet = ({
   const rainbowWalletProvider = getWalletProvider("isRainbow");
   const isRainbowInjected = !!rainbowWalletProvider;
 
-  const walletConnector = getWalletConnectConnector({
+  // const walletConnector = getWalletConnectConnector({
+  //   chains,
+  //   options: {
+  //     projectId,
+  //     showQrModal: false,
+  //     ...options?.walletConnectOptions,
+  //   },
+  // });
+
+  const walletConnector = getWalletConnectLegacyConnector({
     chains,
-    options: {
-      projectId,
-      showQrModal: false,
-      ...options?.walletConnectOptions,
-    },
+    projectId,
   });
 
   return {

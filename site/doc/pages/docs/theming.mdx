@@ -1,0 +1,50 @@
+## Customize
+
+### ThemeMode
+
+- `light`(default)
+- `dark`
+
+```ts filename="app.ts"
+...
+export const rabbyKit = createModal({
+  ...
+  theme: "dark",
+});
+...
+```
+
+### font
+
+Change the font by changing `--rk-font-family` in the `themeVariables`.
+
+### `themeVariables`
+
+By default `themeVariables` is undefined, you can modify `themeVariables` like this:
+
+```ts filename="app.ts"
+...
+export const rabbyKit = createModal({
+  ...
+  theme: "dark",
+  themeVariables:{
+    "--rk-border-radius":"16px"
+  }
+});
+...
+```
+
+The following list shows the theme variables you can override:
+
+| Variable                            |       Description       |   Type   |
+| :---------------------------------- | :---------------------: | :------: |
+| `--rk-font-family`                  |       font family       | `string` |
+| `--rk-border-radius`                |      border radius      | `string` |
+| `--rk-primary-button-font-size`     |  button text font size  | `string` |
+| `--rk-primary-button-color`         |    button text color    | `string` |
+| `--rk-primary-button-bg`            |    button background    | `string` |
+| `--rk-primary-button-border`        |      button border      | `string` |
+| `--rk-primary-button-border-radius` |  button border radius   | `string` |
+| `--rk-primary-button-hover-color`   |   button hover color    | `string` |
+| `--rk-primary-button-hover-bg`      | button hover background | `string` |
+| `--rk-primary-button-hover-border`  |   button hover border   | `string` |
