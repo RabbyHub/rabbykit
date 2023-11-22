@@ -11,11 +11,6 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: "https://github.com/RabbyHub/rabbykit/site/doc",
 
-  // i18n: [
-  //   { locale: "en-US", text: "English" },
-  //   { locale: "zh-CN", text: "中文" },
-  // ],
-
   useNextSeoProps: () => ({ titleTemplate: "%s – RabbyKit" }),
 
   head: () => {
@@ -27,6 +22,7 @@ const config: DocsThemeConfig = {
         {seoConfig.icons.map((icon, index) => (
           <link key={index} rel={icon.rel} href={icon.url} />
         ))}
+        <link rel="icon" href="/favicon.png" />
         <meta httpEquiv="Content-Language" content="en" />
         <meta
           name="description"
@@ -58,7 +54,7 @@ const config: DocsThemeConfig = {
     );
   },
   footer: {
-    text: "RabbyKit",
+    component: null,
   },
 };
 
