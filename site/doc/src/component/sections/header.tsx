@@ -32,7 +32,7 @@ export function Header() {
         className={clsx(
           "w-full max-w-[960px] flex items-center justify-between",
           "pt-[60px] px-[20px] ",
-          "md:h-[64px] md:py-3"
+          "md:h-[64px] md:py-3 md:mt-[20px]"
         )}
       >
         <Image
