@@ -12,5 +12,5 @@
   "actions": "Actions",
   "theming": "Customize",
   "custom-login": "Custom Login Method",
-  "localization": { "title": "Localization", "display": "hidden" }
+  "localization": "Localization"
 }
