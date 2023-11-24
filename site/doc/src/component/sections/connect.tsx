@@ -112,6 +112,7 @@ const extensionWallets = [
     link: "https://www.okx.com/web3",
   },
 ].sort((a, b) => a.name.localeCompare(b.name));
+
 const mobileWallets = [
   {
     name: "Bitget",
@@ -132,11 +133,6 @@ const mobileWallets = [
     name: "Core",
     src: "/wallets/core.svg",
     link: "https://join.core.app/",
-  },
-  {
-    name: "Enkrypt Wallet",
-    src: "/wallets/enkrypt.svg",
-    link: "https://www.enkrypt.com/",
   },
   {
     name: "TokenPocket",
@@ -249,7 +245,11 @@ export const ConnectIntro = () => {
                 className={clsx("w-[32px] h-[32px]", "lg:w-[40px] lg:h-[40px]")}
               />
               <div
-                className={clsx("text-center", "text-[13px]", "lg:text-title1")}
+                className={clsx(
+                  "text-center text-title1",
+                  "text-[13px]",
+                  "lg:text-[18px]"
+                )}
               >
                 {name}
               </div>
