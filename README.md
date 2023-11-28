@@ -24,7 +24,7 @@ pnpm add @rabby-wallet/rabbykit @wagmi/core viem
 
 ## Documentation
 
-For full documentation, visit [rabbykit.rabby.io.com](https://rabbykit.rabby.io).
+For full documentation, visit [rabbykit.rabby.io](https://rabbykit.rabby.io).
 
 ## Examples
 
