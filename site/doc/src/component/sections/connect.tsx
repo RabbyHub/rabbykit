@@ -197,7 +197,7 @@ export const ConnectIntro = () => {
             "lg:text-[32px] lg:mb-[40px]"
           )}
         >
-          Compatible with all. Varied for choice.
+          Compatible with all. Varied for choice
         </div>
       </div>
 

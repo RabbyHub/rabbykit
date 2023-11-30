@@ -37,7 +37,7 @@ export const ConnectScenario = () => {
             "lg:text-[32px] lg:mb-[44px]"
           )}
         >
-          Provide users with a better experience connecting wallets.
+          Provide users with a better experience connecting wallets
         </div>
 
         <div
