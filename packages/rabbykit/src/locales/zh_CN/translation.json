@@ -1,31 +1,33 @@
 {
   "The following wallets are not installed or in conflict with others": "以下钱包未安装或与其他钱包冲突",
-  "No wallet found. The following wallets are not installed or in conflict with others": "尚未发现任何钱包。以下钱包未安装或与其他钱包冲突",
+  "No wallet found. The following wallets are not installed or in conflict with others": "未找到钱包。以下钱包未安装或与其他钱包冲突",
 
-  "Requesting Connection": "Requesting Connection",
-  "Connect with": "Connect with {name}",
-  "connecting description": "Open the {name} browser extension to connect your wallet.",
+  "Requesting Connection": "请求连接",
+  "Connect with": "连接至 {name}",
+  "connecting description": "检查 {name} 以确认连接。",
 
-  "Connection Successful": "Connection Successful",
+  "Connection Successful": "连接成功",
+  "Request Cancelled": "请求已取消",
+  "You canceled the request": "您已取消请求。",
 
-  "Request Cancelled": "Request Canceled",
-  "You canceled the request": "You canceled the request.",
+  "Scan with your Mobile wallet": "使用您的移动钱包扫描",
 
-  "Scan with your Mobile wallet": "Scan with your mobile wallet",
+  "How to use": "如何使用 {name}？",
+  "Install the Extension": "安装扩展程序",
+  "If you haven't installed": "1. 如果您还未安装 {name}",
+  "downloaded by clicking the button below": "点击下方按钮下载 {name}",
+  "If you already have installed": "2. 如果您已安装 {name}",
+  "Make sure your wallet is enabled and disable other plugin wallets": "确保启用 {name} 扩展，并禁用其他浏览器扩展钱包",
 
-  "How to use": "How to use {name}?",
-  "Install the Extension": "Install the Extension",
-  "If you haven't installed": "1. 如果你还没有安装 {name}",
-  "downloaded by clicking the button below": "可以点击下方按钮下载 {name}.",
-  "If you already have installed": "2.如果你已经安装了 {name}",
-  "Make sure your wallet is enabled and disable other plugin wallets": "请确保你的钱包已启用并禁用其他插件钱包",
+  "Powered by RabbyKit": "由 RabbyKit 提供支持",
 
-  "Powered by RabbyKit": "Powered by RabbyKit",
+  "Connect Wallet": "连接钱包",
+  "Unable to Connect Wallet": "无法连接钱包",
+  "Connect x": "连接至 {name}",
+  "Copy Dapp URL": "复制 Dapp 网址",
+  "unsupported mobile env": "当前网络环境无法连接到钱包。请使用您的计算机或移动钱包以获取完整功能。",
+  "disclaimer": "连接您的钱包即表示您同意<a href={termsOfServiceUrl} target=\"_blank\">服务条款</a>和<a href={privacyPolicyUrl} target=\"_blank\">隐私政策</a>。",
 
-  "Connect Wallet": "Connect Wallet",
-  "Unable to Connect Wallet": "Unable to Connect Wallet",
-  "Connect x": "Connect {name}",
-  "Copy Dapp URL": "Copy Dapp URL",
-  "unsupported mobile env": "当前网页环境Dapp无法连接钱包，你可以在电脑或手机钱包中打开并体验完整功能",
-  "disclaimer": "By connecting your wallet you agree to the <a href={termsOfServiceUrl} target=\"_blank\">Terms of Service</a> and <a href={privacyPolicyUrl} target=\"_blank\">Privacy Policy</a>"
+  "Select your Mobile Wallet": "选择您的移动钱包",
+  "Select your wallet to login": "选择您的钱包进行登录"
 }
