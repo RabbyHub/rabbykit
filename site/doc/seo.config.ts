@@ -12,7 +12,7 @@ const seoConfig = defineMetadata({
   description:
     "RabbyKit - A Real Web3 Way to connect all wallets for all Dapp developers",
   openGraph: {
-    images: "/og-image.png",
+    images: "/logo-twitter.png",
     url: "https://rabbykit.rabby.io",
   },
   icons: [

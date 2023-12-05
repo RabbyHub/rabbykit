@@ -38,10 +38,7 @@ const config: DocsThemeConfig = {
         />
         <meta name="og:image" content={seoConfig.openGraph.images} />
         <meta name="og:url" content={seoConfig.openGraph.url} />
-        <meta
-          name="twitter:image"
-          content="https://rabby.io/assets/logos/logo_twitter.png"
-        />
+        <meta name="twitter:image" content="/logo_twitter.png" />
         <meta
           name="twitter:description"
           content="The game-changing wallet for Ethereum and all EVM chains"

@@ -48,6 +48,14 @@ export default defineConfig([
               },
             },
           },
+          {
+            name: "cleanupNumericValues",
+            params: {
+              overrides: {
+                floatPrecision: 6,
+              },
+            },
+          },
           "removeDimensions",
           {
             name: "addAttributesToSVGElement",

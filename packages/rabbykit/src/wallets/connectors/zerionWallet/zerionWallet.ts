@@ -11,6 +11,7 @@ import {
   getWalletConnectUri,
 } from "../../../helpers/getWalletConnectUri";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
+import { getWalletProvider } from "../../../helpers/wallet";
 
 export interface ZerionWalletOptions {
   projectId: string;
@@ -25,10 +26,11 @@ export const zerionWallet = ({
   ...options
 }: ZerionWalletOptions & InjectedConnectorOptions): WalletResult => {
   const isZerionInjected =
-    typeof window !== "undefined" &&
-    ((typeof window.ethereum !== "undefined" && window.ethereum.isZerion) ||
-      // @ts-expect-error
-      typeof window.zerionWallet !== "undefined");
+    (typeof window !== "undefined" &&
+      ((typeof window.ethereum !== "undefined" && window.ethereum.isZerion) ||
+        // @ts-expect-error
+        typeof window.zerionWallet !== "undefined")) ||
+    getWalletProvider("isZerion");
 
   const walletConnector = getWalletConnectConnector({
     chains,
@@ -43,7 +45,7 @@ export const zerionWallet = ({
     id: "zerion",
     name: "Zerion",
     logo,
-    installed: isZerionInjected,
+    installed: !!isZerionInjected,
     downloadUrls: {
       android:
         "https://play.google.com/store/apps/details?id=io.zerion.android",
@@ -58,7 +60,9 @@ export const zerionWallet = ({
           getProvider: () =>
             typeof window !== "undefined"
               ? // @ts-expect-error
-                window.zerionWallet || window.ethereum
+                window.zerionWallet ||
+                getWalletProvider("isZerion") ||
+                window.ethereum
               : undefined,
           ...options,
         },

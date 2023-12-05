@@ -51,7 +51,7 @@
   .title {
     position: sticky;
     top: 0;
-    margin: 0 -20px;
+    margin-left: -20px;
     padding: 0 20px;
     padding-bottom: 16px;
     color: var(--r-neutral-title-1);

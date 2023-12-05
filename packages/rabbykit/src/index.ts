@@ -27,7 +27,6 @@ import {
   zerionWallet,
   tahoWallet,
   imTokenWallet,
-  // safeWallet,
 } from "./wallets/connectors";
 import { mount } from "./components/Kit";
 import "./helpers/i18n";
@@ -98,11 +97,7 @@ export const createModal = <
     zerionWallet({ chains, projectId }),
     tahoWallet({ chains }),
     imTokenWallet({ chains, projectId }),
-    // safeWallet({
-    //   chains,
-    //   allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/],
-    //   debug: false,
-    // }),
+    otherInjectedWallet({ chains }),
   ]
     .filter((e) => {
       if (e.id === "brave" && !e.installed) {
@@ -118,17 +113,6 @@ export const createModal = <
     .forEach((e) => {
       e.connector.browser && allConnectors.push(e.connector.browser);
     });
-
-  const other = otherInjectedWallet({ chains });
-
-  if (
-    other.installed &&
-    other.connector.browser?.ready &&
-    other.connector.browser?.name &&
-    !wallets.some((e) => other.connector.browser?.name.includes(e.name))
-  ) {
-    wallets.unshift(other);
-  }
 
   wagmi.setConnectors([
     ...(wagmi?.connectors || []),
