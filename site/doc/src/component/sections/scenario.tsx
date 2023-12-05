@@ -44,7 +44,7 @@ export const ConnectScenario = () => {
           className={clsx(
             "bg-gray-300 rounded-md justify-start items-start inline-flex cursor-pointer",
             "p-[2px] mb-[32px] w-full ",
-            "lg:p-1  lg:gap-2.5  lg:mb-[40px] "
+            "lg:p-1  lg:gap-2.5  lg:mb-[40px] lg:w-auto "
           )}
         >
           {list.map((e, index) => (
