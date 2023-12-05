@@ -1,5 +1,12 @@
 # doc
 
+## 1.0.3
+
+### Patch Changes
+
+- Updated dependencies [f90c88c]
+  - @rabby-wallet/rabbykit@0.0.3
+
 ## 1.0.2
 
 ### Patch Changes
