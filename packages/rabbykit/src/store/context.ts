@@ -147,24 +147,30 @@ export function syncAccount() {
 
 export const syncMipd = () => {
   const syncState = (eip6963Wallets: readonly EIP6963ProviderDetail[]) => {
+    const duplicates: string[] = [];
     const allEIP6963Wallets = eip6963Wallets
       .filter((p) => {
-        if (
-          (useRKStore.getState().wallets || []).some(
-            (r) => r.connector.browser?.ready && r.name === p.info.name
-          )
-        ) {
-          return false;
-        }
+        (useRKStore.getState().wallets || []).some((r) => {
+          const isSame =
+            r.name === p.info.name ||
+            (r.name.startsWith(p.info.name) &&
+              p.info.rdns.split(".").slice(-1).includes(r.id));
+
+          if (isSame) {
+            duplicates.push(r.name);
+          }
+          return isSame;
+        });
         return true;
       })
       .map((e) => wrapperEIP6963Wallet(e, useRKStore.getState().chains));
 
     useRKStore.setState((s) => ({
       mipd: detectedEIP6963wallets,
-      wallets: [...(s.wallets || []), ...allEIP6963Wallets].sort((a, b) =>
-        a.name.localeCompare(b.name)
-      ),
+      wallets: [
+        ...(s.wallets || []).filter((e) => !duplicates.includes(e.name)),
+        ...allEIP6963Wallets,
+      ].sort((a, b) => a.name.localeCompare(b.name)),
     }));
 
     const { wagmi, wallets } = useRKStore.getState();

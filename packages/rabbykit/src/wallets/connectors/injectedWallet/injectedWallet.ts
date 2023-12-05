@@ -10,6 +10,8 @@ import logo from "./logo.svg";
 interface otherInjectedWalletOptions {
   chains?: Chain[];
 }
+
+export const otherInjectedWalletId = "rabbykit_other_injected_wallet";
 export const otherInjectedWallet = ({
   chains,
   ...options
@@ -18,7 +20,7 @@ export const otherInjectedWallet = ({
     typeof window !== "undefined" && typeof window.ethereum !== "undefined";
 
   return {
-    id: "injected",
+    id: otherInjectedWalletId,
     name: "Other Wallet",
     logo,
     installed: isInjected,

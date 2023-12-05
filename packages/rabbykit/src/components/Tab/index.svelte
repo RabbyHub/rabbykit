@@ -6,17 +6,30 @@
   import { isSupportBrowser } from "../../helpers/wallet";
   import Button from "../WalletButton/button.svelte";
   import scan from "./scan.svg";
+  import { otherInjectedWalletId } from "../../wallets/connectors/injectedWallet/injectedWallet";
 
   const browserList = $useStore.wallets || [];
 
   const readyBrowserList = browserList.filter(
-    (w) => w.installed && !!w.connector.browser?.ready
+    (w) =>
+      w.installed &&
+      !!w.connector.browser?.ready &&
+      w.id !== otherInjectedWalletId
   );
 
   const unusedBrowserList = browserList
     .filter((w) => !w.installed || !w.connector.browser?.ready)
     .filter((w) => isSupportBrowser(w))
     .filter((e) => !$useStore.mipd.some((p) => p.info.name === e.name));
+
+  const other = browserList.find((e) => e.id === otherInjectedWalletId);
+  const showOtherWallet = !!(
+    other &&
+    other.installed &&
+    other.connector.browser?.ready &&
+    other.connector.browser?.name &&
+    !browserList.some((e) => other.connector.browser?.name.includes(e.name))
+  );
 
   const handleScan = () => {
     useRKStore.setState({
@@ -30,6 +43,10 @@
     {#each readyBrowserList as wallet}
       <WalletButton {wallet} type="browser" />
     {/each}
+
+    {#if other && showOtherWallet}
+      <WalletButton wallet={other} type="browser" />
+    {/if}
 
     {#if $useStore.showWalletConnect}
       <Button
