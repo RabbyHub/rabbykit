@@ -1,5 +1,11 @@
 # doc
 
+## 1.0.4
+
+### Patch Changes
+
+- 1e36ad3: fixed wagmi install version
+
 ## 1.0.3
 
 ### Patch Changes
