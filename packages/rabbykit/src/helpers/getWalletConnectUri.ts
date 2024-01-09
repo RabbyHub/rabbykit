@@ -2,7 +2,7 @@ import type { Connector } from "@wagmi/core/connectors";
 import { isAndroid, isMobile } from "./browser";
 import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import { dequal } from "dequal";
-import { WalletConnectLegacyConnector } from "wagmi/connectors/walletConnectLegacy";
+import { WalletConnectLegacyConnector } from "@wagmi/core/connectors/walletConnectLegacy";
 
 export let commonLegacyWalletConnect: WalletConnectLegacyConnector | undefined;
 export const getWalletConnectLegacyConnector = (params: {
