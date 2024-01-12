@@ -7,19 +7,19 @@ RabbyKit offers a true web3 solution to help connect your Dapp with wallets, eff
 #### npm
 
 ```sh
-npm i @rabby-wallet/rabbykit @wagmi/core@v1 viem@v1
+npm i @rabby-wallet/rabbykit @wagmi/core@1 viem@1
 ```
 
 #### yarn
 
 ```sh
-yarn add @rabby-wallet/rabbykit @wagmi/core@v1 viem@v1
+yarn add @rabby-wallet/rabbykit @wagmi/core@1 viem@1
 ```
 
 #### pnpm
 
 ```sh
-pnpm add @rabby-wallet/rabbykit @wagmi/core@v1 viem@v1
+pnpm add @rabby-wallet/rabbykit @wagmi/core@1 viem@1
 ```
 
 ## Documentation
