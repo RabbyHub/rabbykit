@@ -5,6 +5,7 @@
   import Icon from "../CommonIcon/Icon.svelte";
   import { fade } from "svelte/transition";
   import { isMobile } from "../../helpers/browser";
+  import { lockScroll } from "../../helpers";
 
   let isManualOperation = false;
 
@@ -13,9 +14,8 @@
     isManualOperation = true;
   }
 
-  const html = document.documentElement;
+  let { lock, unlock } = lockScroll();
 
-  let htmlStyleCache: Record<string, string> = {};
   function resize() {
     useRKStore.setState({ isMobile: isMobile() });
   }
@@ -23,22 +23,13 @@
   onMount(() => {
     resize();
     window.addEventListener("resize", resize);
-    htmlStyleCache.position = html.style.position;
-    htmlStyleCache.overflow = html.style.overflow;
-
-    html.style.position = "sticky";
-    html.style.overflow = "hidden";
+    lock();
   });
 
   onDestroy(() => {
     window.removeEventListener("resize", resize);
+    unlock();
 
-    html.style.position = htmlStyleCache.position;
-    if (htmlStyleCache.overflow) {
-      html.style.overflow = htmlStyleCache.overflow;
-    } else {
-      html.style.removeProperty("overflow");
-    }
     useRKStore.setState({
       page: "wallet",
       currentWallet: undefined,
