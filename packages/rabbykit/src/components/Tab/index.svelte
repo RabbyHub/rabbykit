@@ -5,7 +5,6 @@
   import useStore, { useRKStore } from "../../store/context";
   import { isSupportBrowser } from "../../helpers/wallet";
   import Button from "../WalletButton/button.svelte";
-  import PoweredBy from "../PoweredBy/index.svelte";
   import scan from "./scan.svg";
   import { otherInjectedWalletId } from "../../wallets/connectors/injectedWallet/injectedWallet";
 
