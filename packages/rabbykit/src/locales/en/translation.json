@@ -5,6 +5,7 @@
   "Requesting Connection": "Requesting Connection",
   "Connect with": "Connect with {name}",
   "connecting description": "Check {name} to confirm connect.",
+  "Connect your wallet": "Connect your wallet",
   "Connect your wallet with": "Connect your wallet with {name}",
 
   "connect tip": "Connecting your wallet is like “logging in” to Web3. Select your wallet from the options to get started.",

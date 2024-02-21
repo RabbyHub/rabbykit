@@ -5,7 +5,6 @@
   import useStore, { useRKStore } from "../../store/context";
   import { isSupportBrowser } from "../../helpers/wallet";
   import Button from "../WalletButton/button.svelte";
-  import PoweredBy from "../PoweredBy/index.svelte";
   import scan from "./scan.svg";
   import { otherInjectedWalletId } from "../../wallets/connectors/injectedWallet/injectedWallet";
 
@@ -110,9 +109,6 @@
         />
       {/each}
     </div>
-    <div class="rk-tip">
-      <PoweredBy />
-    </div>
   </Scroll>
 </div>
 
@@ -120,8 +116,8 @@
   .container {
     height: 100%;
     & :global(.scroll-title) {
-      margin-left: 0;
-      padding-left: 0;
+      margin-left: -20px;
+      padding-left: 20px;
       text-align: left;
     }
   }
@@ -131,7 +127,7 @@
     flex-direction: column;
     padding-right: 20px;
     & > :global(button) {
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
     & > :global(button:last-child) {
       margin-bottom: 20px;
@@ -143,7 +139,7 @@
     flex-direction: column;
     padding-right: 20px;
     & > :global(button) {
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
     & > :global(button:last-child) {
       margin-bottom: 20px;
@@ -157,10 +153,5 @@
     font-weight: 400;
     line-height: normal;
     margin-bottom: 12px;
-  }
-
-  .rk-tip {
-    margin-bottom: 20px;
-    padding-right: 20px;
   }
 </style>

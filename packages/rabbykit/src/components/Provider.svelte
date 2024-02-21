@@ -109,6 +109,7 @@
   [data-rabbykit] {
     --z-index-scroll: 1;
     --z-index-page: 2;
+    line-height: normal;
     @extend .light;
     font-family: var(--rk-font-family, var(--rk-font));
 

@@ -5,23 +5,33 @@
 
   import svelteStore from "../../store/context";
   import logo from "../../wallets/connectors/rabbyWallet/logo.svg";
+  import clsx from "clsx";
 </script>
 
 <div class="content">
-  <div class="app-logo">
-    <Image
-      src={$svelteStore.appLogo || logo}
-      alt={$svelteStore.appName + " logo"}
-    />
-  </div>
+  {#if $svelteStore.appLogo}
+    <div class="app-logo">
+      <Image
+        src={$svelteStore.appLogo || logo}
+        alt={$svelteStore.appName + " logo"}
+      />
+    </div>
+  {/if}
 
-  <div class="title">
-    {$t("Connect your wallet with", {
-      values: {
-        name: $svelteStore.appName,
-      },
-    })}
-  </div>
+  {#if $svelteStore.appName}
+    <div class={clsx("title", !$svelteStore.appLogo && "no-logo")}>
+      {$t("Connect your wallet with", {
+        values: {
+          name: $svelteStore.appName,
+        },
+      })}
+    </div>
+  {:else}
+    <div class="title">
+      {$t("Connect your wallet")}
+    </div>
+  {/if}
+
   <div class="desc">
     {$t("connect tip")}
   </div>
@@ -35,7 +45,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    padding-top: 130px;
     align-items: center;
     position: relative;
     .app-logo {
@@ -55,6 +65,9 @@
       line-height: normal;
       margin-top: 44px;
       margin-bottom: 15px;
+      &.no-logo {
+        margin-top: 90px;
+      }
     }
 
     .desc {

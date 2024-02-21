@@ -133,13 +133,13 @@
       text-align: center;
       font-size: 18px;
       font-weight: 510;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     section {
       width: 100%;
       padding: 32px 40px;
-      border-radius: 4px;
+      border-radius: var(--rk-primary-button-border-radius, 8px);
       border: 0.5px solid var(--r-neutral-line);
       background: var(--r-neutral-card-1);
       &:not(:last-child) {

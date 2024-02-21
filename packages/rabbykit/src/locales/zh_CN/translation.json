@@ -5,6 +5,7 @@
   "Requesting Connection": "请求连接",
   "Connect with": "连接至 {name}",
   "connecting description": "检查 {name} 以确认连接。",
+  "Connect your wallet": "Connect your wallet",
   "Connect your wallet with": "Connect your wallet with {name}",
 
   "connect tip": "Connecting your wallet is like “logging in” to Web3. Select your wallet from the options to get started.",
