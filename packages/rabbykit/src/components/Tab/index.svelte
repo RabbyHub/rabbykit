@@ -88,7 +88,7 @@
             active={activeId === b.logo}
             on:click={() => {
               activeId = b.logo;
-              b.onClick;
+              b.onClick();
             }}
           />
         {/each}
