@@ -3,12 +3,16 @@
 
   export let show: boolean;
   export let back: () => void;
+  export let showBack = false;
+  export let animation = true;
 </script>
 
-<div class="sub-page" class:show>
-  <div class="back">
-    <Icon name="back" on:click={back} />
-  </div>
+<div class="sub-page" class:show class:animation>
+  {#if showBack}
+    <div class="back">
+      <Icon name="back" on:click={back} />
+    </div>
+  {/if}
   {#if show}
     <slot />
   {/if}
@@ -17,13 +21,12 @@
 <style lang="scss">
   .sub-page {
     position: absolute;
-    width: 100%;
+    width: 480px;
     height: 100%;
-    left: 0;
+    right: 0;
     top: 0;
     background-color: #fff;
     transform: translateX(100%);
-    transition: transform 0.3s;
     padding: 20px;
     padding-bottom: 0;
     background: var(--r-neutral-bg-2);
@@ -42,5 +45,8 @@
         transform: translateX(0);
       }
     }
+  }
+  .animation {
+    transition: transform 0.3s;
   }
 </style>

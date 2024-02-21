@@ -7,6 +7,8 @@
   export let size: "lg" | "normal" | "sm" = "lg";
   export let name: string;
   export let logo: string;
+  export let showRightArrow: boolean = false;
+  export let active = false;
 </script>
 
 <button
@@ -18,6 +20,7 @@
   class:qrCode={type === "qrCode"}
   class:mobile={type === "mobile"}
   class:unused={type === "unused"}
+  class:active
   {...$$restProps}
 >
   <div class="logo">
@@ -26,7 +29,7 @@
 
   <span>{name}</span>
 
-  {#if type === "browser"}
+  {#if showRightArrow}
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -49,7 +52,8 @@
 <style lang="scss">
   .button {
     --fallback-border: 0.5px solid transparent;
-    width: 206px;
+    /* width: 206px; */
+    width: 100%;
     height: 56px;
     padding: 10px 20px;
     padding-right: 0;
@@ -144,6 +148,13 @@
   .button.mobile:hover {
     border: 0.5px solid var(--r-neutral-line);
     background: transparent;
+  }
+
+  .button.active,
+  .button.active:hover {
+    border-color: transparent;
+    background-color: var(--r-blue-default);
+    color: var(--r-neutral-title2, #fff);
   }
 
   .logo {

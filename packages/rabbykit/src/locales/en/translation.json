@@ -1,10 +1,13 @@
 {
-  "The following wallets are not installed or in conflict with others": "The following wallets are not installed or in conflict with others",
+  "The following wallets are not installed or in conflict with others": "The following wallets are not available",
   "No wallet found. The following wallets are not installed or in conflict with others": "No wallet found. The following wallets are not installed or in conflict with others",
 
   "Requesting Connection": "Requesting Connection",
   "Connect with": "Connect with {name}",
   "connecting description": "Check {name} to confirm connect.",
+  "Connect your wallet with": "Connect your wallet with {name}",
+
+  "connect tip": "Connecting your wallet is like “logging in” to Web3. Select your wallet from the options to get started.",
 
   "Connection Successful": "Connection Successful",
   "Request Cancelled": "Request Canceled",

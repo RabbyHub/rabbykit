@@ -35,6 +35,9 @@ interface Store<
   TPublicClient extends PublicClient = PublicClient,
   TWebSocketPublicClient extends WebSocketPublicClient = WebSocketPublicClient
 > {
+  appName: string;
+  appLogo?: string;
+
   open: boolean;
   theme: Theme;
   themeVariables?: ThemeVariables;
@@ -77,6 +80,7 @@ interface Store<
 
 export const useRKStore = createStore<Store<any, any>>()(
   subscribeWithSelector((set, get) => ({
+    appName: "RabbyKit",
     isMobile: false,
     chains: [mainnet, goerli],
     theme: "light",

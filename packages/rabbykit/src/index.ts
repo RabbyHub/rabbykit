@@ -51,6 +51,7 @@ export const createModal = <
 >({
   chains,
   appName,
+  appLogo,
   projectId,
   wagmi,
   disclaimer,
@@ -64,6 +65,7 @@ export const createModal = <
   themeVariables,
   language = "en",
 }: {
+  appLogo?: string;
   chains: Chain[];
   appName: string;
   projectId: string;
@@ -122,6 +124,8 @@ export const createModal = <
   ]);
 
   useRKStore.setState({
+    appLogo,
+    appName,
     wagmi,
     wallets,
     chains,
