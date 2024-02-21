@@ -105,52 +105,53 @@ export const ConfigDemo = () => {
       >
         Match your Dapp perfectly with minimal efforts
       </div>
-      <div
-        className={clsx(
-          "mx-auto w-full max-w-[960px] flex justify-between ",
-          "flex-col-reverse  items-center  relative -top-[50px]",
-          "lg:flex-row  lg:items-start lg:mt-[88px] lg:top-0"
-        )}
-      >
+      <div className="overflow-hidden w-full">
         <div
           className={clsx(
-            "flex flex-col gap-[32px]",
-            "items-center justify-center relative -top-[26px]",
-            "lg:items-start lg:justify-start lg:top-0"
+            "mx-auto w-full max-w-[960px] flex justify-between ",
+            "flex-col-reverse  items-center  relative -top-[50px]",
+            "lg:flex-row  lg:items-start lg:mt-[88px] lg:top-0"
           )}
         >
-          {allConfig.map((e) => (
-            <Item
-              key={e.name}
-              {...e}
-              onUpdate={(v) => {
-                if (e.type === "theme") {
-                  setTheme(v);
-                } else if (e.field) {
-                  setCss((preCss) => ({ ...preCss, [e.field]: v }));
-                }
-              }}
-            />
-          ))}
-
-          <a
-            href={docPath}
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              fontSize: "13px",
-              fontStyle: "normal",
-              fontWeight: 400,
-              lineHeight: "normal",
-              textDecorationLine: "underline",
-            }}
-            className="text-white text-opacity-60"
+          <div
+            className={clsx(
+              "flex flex-col gap-[32px]",
+              "items-center justify-center relative -top-[26px]",
+              "lg:items-start lg:justify-start lg:top-0"
+            )}
           >
-            Learn more
-          </a>
-        </div>
+            {allConfig.map((e) => (
+              <Item
+                key={e.name}
+                {...e}
+                onUpdate={(v) => {
+                  if (e.type === "theme") {
+                    setTheme(v);
+                  } else if (e.field) {
+                    setCss((preCss) => ({ ...preCss, [e.field]: v }));
+                  }
+                }}
+              />
+            ))}
 
-        <Preview theme={theme} cssVar={cssVar} isCustom={isCustom} />
+            <a
+              href={docPath}
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                fontSize: "13px",
+                fontStyle: "normal",
+                fontWeight: 400,
+                lineHeight: "normal",
+                textDecorationLine: "underline",
+              }}
+              className="text-white text-opacity-60"
+            >
+              Learn more
+            </a>
+          </div>
+          <Preview theme={theme} cssVar={cssVar} isCustom={isCustom} />d
+        </div>
       </div>
     </div>
   );
@@ -260,7 +261,7 @@ const demoList = [
   "#A586FF",
   "#FFC086",
   "#D3D8E0",
-  "#D9D9D9",
+  // "#D9D9D9",
 ];
 
 function WalletItem({
@@ -333,7 +334,6 @@ function WalletItem({
         }
 
         .item.sub {
-          width: 204px;
           height: 56px;
           background: transparent;
           color: var(--r-neutral-body);
@@ -358,101 +358,121 @@ const Preview = ({
   isCustom?: boolean;
 }) => {
   return (
-    <div
-      className={clsx(
-        "modal flex flex-col items-center",
-        "w-[460px] h-[560px]",
-        "scale-[0.7]",
-        "lg:scale-100",
-        theme
-      )}
-    >
-      <div className="title mb-[20px]">Select your wallet to login</div>
-      <div className="flex flex-col gap-[15px] w-full">
-        {demoList.slice(0, isCustom ? undefined : -1).map((fill, idx) => (
-          <WalletItem
-            fill={fill}
-            idx={idx + 1}
-            key={idx}
-            isCustom={isCustom && idx === 5}
-          />
-        ))}
+    <div className="max-w-[100vw] lg:ml-[80px]">
+      <div
+        className={clsx(
+          "modal flex flex-col items-center",
+          "w-[780px] h-[540px]",
+          "scale-[0.7]",
+          "lg:scale-100",
+          theme
+        )}
+      >
+        <div className="flex w-full h-full">
+          <div className="w-[300px] px-[20px] border-r border-r-[#D3D8E0] p-[20px]">
+            <div className="title mb-[20px]">Select your wallet to login</div>
+            <div className="flex flex-col gap-[10px] w-full">
+              {demoList.slice(0, isCustom ? undefined : -1).map((fill, idx) => (
+                <WalletItem
+                  fill={fill}
+                  idx={idx + 1}
+                  key={idx}
+                  isCustom={isCustom && idx === 4}
+                />
+              ))}
+            </div>
+
+            <div className="second">
+              The following wallets are not available
+            </div>
+            <div className="flex justify-between w-full flex-wrap gap-[10px]">
+              {Array.from({ length: 2 }, () => 1).map((_, idx) => (
+                <WalletItem
+                  fill={"#D9D9D9"}
+                  idx={4 + idx + 1}
+                  isSecond
+                  key={idx}
+                />
+              ))}
+            </div>
+          </div>
+          <div className="flex-1 flex flex-col items-center relative">
+            <div className="w-[84px] h-[84px] bg-[#D3D8E0] rounded-[8px] mt-[130px]" />
+            <div className="w-[337px] h-[26px] bg-[#D3D8E0] rounded-[8px] mt-[44px] mb-[15px]" />
+            <div className="w-[383px] h-[44px] bg-[#D3D8E0] rounded-[8px]" />
+
+            <div className="text-[12px] text-[#6a7587] text-center mt-auto mb-[25px]">
+              powered by RabbyKit
+            </div>
+          </div>
+        </div>
+
+        <style jsx>
+          {`
+            .modal {
+              --fallback-modal-border-radius: 12px;
+              --r-neutral-body: #3e495e;
+              --r-neutral-bg-2: #f2f4f7;
+              --r-neutral-title-1: #192945;
+              --r-neutral-foot: #6a7587;
+              --r-neutral-card-1: #fff;
+              --r-neutral-line: #d3d8e0;
+              --r-blue-light-1: rgba(238, 241, 255, 1);
+              ${cssVar}
+            }
+            .modal.dark {
+              --r-neutral-body: #d3d8e0;
+              --r-neutral-bg-2: #3d4251;
+              --r-neutral-title-1: #f7fafc;
+              --r-neutral-foot: #babec5;
+              --r-neutral-card-1: rgba(255, 255, 255, 0.06);
+              --r-neutral-line: rgba(255, 255, 255, 0.1);
+              --r-blue-light-1: rgba(112, 132, 255, 0.1);
+            }
+            .modal {
+              // padding: 20px;
+              // width: 460px;
+              // height: 540px;
+              overflow: hidden;
+              border-radius: var(
+                --rk-radius,
+                var(--fallback-modal-border-radius)
+              );
+              border: 2.048px solid rgba(255, 255, 255, 0.1);
+              background: var(--rk-modal-bg, var(--r-neutral-bg-2));
+              position: relative;
+            }
+
+            .modal:before {
+              position: absolute;
+              content: "";
+              width: 100%;
+              height: 100%;
+              left: 0;
+              top: 0;
+            }
+            .title {
+              color: var(--r-neutral-title-1);
+              text-align: left;
+              font-size: 18px;
+              font-style: normal;
+              font-weight: 510;
+              line-height: normal;
+            }
+
+            .second {
+              width: 100%;
+              margin-top: 20px;
+              margin-bottom: 10px;
+              color: var(--r-neutral-foot);
+              font-size: 13.209px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: normal;
+            }
+          `}
+        </style>
       </div>
-
-      <div className="second">
-        The following wallets are not installed or in conflict with others
-      </div>
-      <div className="flex justify-between w-full max-w-[454px] flex-wrap gap-[8px]">
-        {Array.from({ length: 2 }, () => 1).map((_, idx) => (
-          <WalletItem fill={"#D9D9D9"} idx={5 + idx + 1} isSecond key={idx} />
-        ))}
-      </div>
-
-      <style jsx>
-        {`
-          .modal {
-            --fallback-modal-border-radius: 12px;
-            --r-neutral-body: #3e495e;
-            --r-neutral-bg-2: #f2f4f7;
-            --r-neutral-title-1: #192945;
-            --r-neutral-foot: #6a7587;
-            --r-neutral-card-1: #fff;
-            --r-neutral-line: #d3d8e0;
-            --r-blue-light-1: rgba(238, 241, 255, 1);
-            ${cssVar}
-          }
-          .modal.dark {
-            --r-neutral-body: #d3d8e0;
-            --r-neutral-bg-2: #3d4251;
-            --r-neutral-title-1: #f7fafc;
-            --r-neutral-foot: #babec5;
-            --r-neutral-card-1: rgba(255, 255, 255, 0.06);
-            --r-neutral-line: rgba(255, 255, 255, 0.1);
-            --r-blue-light-1: rgba(112, 132, 255, 0.1);
-          }
-          .modal {
-            padding: 20px;
-            // width: 460px;
-            // height: 540px;
-            overflow: hidden;
-            border-radius: var(
-              --rk-radius,
-              var(--fallback-modal-border-radius)
-            );
-            border: 2.048px solid rgba(255, 255, 255, 0.1);
-            background: var(--rk-modal-bg, var(--r-neutral-bg-2));
-            position: relative;
-          }
-
-          .modal:before {
-            position: absolute;
-            content: "";
-            width: 100%;
-            height: 100%;
-            left: 0;
-            top: 0;
-          }
-          .title {
-            color: var(--r-neutral-title-1);
-            text-align: center;
-            font-size: 18px;
-            font-style: normal;
-            font-weight: 510;
-            line-height: normal;
-          }
-
-          .second {
-            width: 100%;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            color: var(--r-neutral-foot);
-            font-size: 13.209px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: normal;
-          }
-        `}
-      </style>
     </div>
   );
 };
