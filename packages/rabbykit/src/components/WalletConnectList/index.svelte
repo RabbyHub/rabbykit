@@ -27,6 +27,10 @@
 
     & > :global(button) {
       width: 212px !important;
+      & > :global(.logo) {
+        width: 28px;
+        height: 28px;
+      }
     }
 
     & > :global(button:nth-of-type(2n)) {

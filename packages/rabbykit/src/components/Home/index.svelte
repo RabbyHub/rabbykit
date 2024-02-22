@@ -66,7 +66,7 @@
       margin-top: 44px;
       margin-bottom: 15px;
       &.no-logo {
-        margin-top: 90px;
+        margin-top: 74px;
       }
     }
 
@@ -77,7 +77,7 @@
       font-size: 15px;
       font-style: normal;
       font-weight: 400;
-      line-height: 22px; /* 146.667% */
+      line-height: 22px;
       max-width: 400px;
     }
 
