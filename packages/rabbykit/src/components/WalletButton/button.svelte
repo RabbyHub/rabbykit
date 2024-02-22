@@ -161,7 +161,7 @@
     width: 32px;
     height: 32px;
     object-fit: contain;
-    border-radius: 4px;
+    border-radius: 100%;
     overflow: hidden;
   }
 
