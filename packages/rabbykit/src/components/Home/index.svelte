@@ -79,6 +79,7 @@
       font-weight: 400;
       line-height: 22px;
       max-width: 400px;
+      white-space: pre;
     }
 
     .powerBy {
