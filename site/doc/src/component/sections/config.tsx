@@ -289,24 +289,7 @@ function WalletItem({
       <div className={clsx(isSecond ? "ml-[13px]" : "ml-[15px]")}>
         {isCustom ? `Customized Button` : `Wallet ${idx}`}
       </div>
-      {!isSecond && (
-        <svg
-          className="ml-auto"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-        >
-          <path
-            d="M7.7006 3.22656L16.814 12.3399L7.7006 21.4533"
-            stroke="var(--r-neutral-foot)"
-            strokeWidth="1.92345"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      )}
+
       <style jsx>{`
         .item {
           width: 100%;
@@ -369,7 +352,7 @@ const Preview = ({
         )}
       >
         <div className="flex w-full h-full">
-          <div className="w-[300px] px-[20px] border-r border-r-[#D3D8E0] p-[20px]">
+          <div className="w-[300px] px-[20px] border-r border-r-[var(--r-neutral-line)] p-[20px]">
             <div className="title mb-[20px]">Select your wallet to login</div>
             <div className="flex flex-col gap-[10px] w-full">
               {demoList.slice(0, isCustom ? undefined : -1).map((fill, idx) => (
@@ -397,9 +380,9 @@ const Preview = ({
             </div>
           </div>
           <div className="flex-1 flex flex-col items-center relative">
-            <div className="w-[84px] h-[84px] bg-[#D3D8E0] rounded-[8px] mt-[130px]" />
-            <div className="w-[337px] h-[26px] bg-[#D3D8E0] rounded-[8px] mt-[44px] mb-[15px]" />
-            <div className="w-[383px] h-[44px] bg-[#D3D8E0] rounded-[8px]" />
+            <div className="w-[84px] h-[84px] bg-opacity-60 bg-[#D3D8E0] rounded-[8px] mt-[130px]" />
+            <div className="w-[337px] h-[26px] bg-opacity-60 bg-[#D3D8E0] rounded-[8px] mt-[44px] mb-[15px]" />
+            <div className="w-[383px] h-[44px] bg-opacity-60 bg-[#D3D8E0] rounded-[8px]" />
 
             <div className="text-[12px] text-[#6a7587] text-center mt-auto mb-[25px]">
               powered by RabbyKit

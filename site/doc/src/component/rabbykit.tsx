@@ -32,6 +32,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         wagmi: config,
         projectId: "58a22d2bc1c793fc31c117ad9ceba8d9",
         appName: "RabbyKit",
+        appLogo: "/logo-blue.svg",
       });
       setKit(rabbyKit);
     }
