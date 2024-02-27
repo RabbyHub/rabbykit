@@ -22,6 +22,12 @@ yarn add @rabby-wallet/rabbykit @wagmi/core@1 viem@1
 pnpm add @rabby-wallet/rabbykit @wagmi/core@1 viem@1
 ```
 
+#### bun
+
+```sh
+bun add @rabby-wallet/rabbykit @wagmi/core@1 viem@1
+```
+
 ## Documentation
 
 For full documentation, visit [rabbykit.rabby.io](https://rabbykit.rabby.io).
