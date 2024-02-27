@@ -27,6 +27,7 @@ import {
   zerionWallet,
   tahoWallet,
   imTokenWallet,
+  magicEdenWallet,
 } from "./wallets/connectors";
 import { mount } from "./components/Kit";
 import "./helpers/i18n";
@@ -99,6 +100,7 @@ export const createModal = <
     zerionWallet({ chains, projectId }),
     tahoWallet({ chains }),
     imTokenWallet({ chains, projectId }),
+    magicEdenWallet({ chains }),
     otherInjectedWallet({ chains }),
   ]
     .filter((e) => {
