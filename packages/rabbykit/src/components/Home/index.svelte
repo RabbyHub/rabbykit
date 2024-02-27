@@ -58,7 +58,6 @@
     .title {
       color: var(--r-neutral-title-1, #192945);
       text-align: center;
-      font-family: "SF Pro";
       font-size: 22px;
       font-style: normal;
       font-weight: 590;
@@ -73,7 +72,6 @@
     .desc {
       color: var(--r-neutral-body, #3e495e);
       text-align: center;
-      font-family: "SF Pro";
       font-size: 15px;
       font-style: normal;
       font-weight: 400;
