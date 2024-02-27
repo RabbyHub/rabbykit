@@ -292,7 +292,7 @@ function SupportedWallets({
         {title}
       </div>
 
-      <div className="w-full flex flex-wrap justify-center">
+      <div className="w-full flex flex-wrap">
         {wallets.map(({ src, name, link }) => (
           <a
             key={name}

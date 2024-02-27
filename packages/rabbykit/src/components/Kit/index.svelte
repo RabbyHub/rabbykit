@@ -7,6 +7,7 @@
   import InMobileApp from "../mobile/InWalletBrowser.svelte";
 
   import Card from "../Modal/Card.svelte";
+  import Home from "../Home/index.svelte";
 
   import Connecting from "../Connect/connect.svelte";
   import Scan from "../Scan/index.svelte";
@@ -48,33 +49,69 @@
           <Mobile />
         {/if}
       {:else}
-        <Tab />
+        <div class="body">
+          <div class="sidebar">
+            <Tab />
+          </div>
 
-        <Card show={isQrCodePage} {back}>
-          <WalletConnectList />
-        </Card>
+          <Home />
 
-        <Card
-          show={$svelteStore.page === "connect" &&
-            !!currentWallet &&
-            $svelteStore.type === "qrCode"}
-          back={backWcList}
-        >
-          {#if !!currentWallet}
-            <Scan wallet={currentWallet} />
-          {/if}
-        </Card>
+          <Card show={isQrCodePage} {back} animation={false}>
+            <WalletConnectList />
+          </Card>
 
-        <Card show={showOtherSubPage && !isQrCodePage} {back}>
-          {#if $svelteStore.page === "connect" && !!currentWallet}
-            {#if $svelteStore.type === "browser"}
-              <Connecting wallet={currentWallet} />
+          <Card
+            show={$svelteStore.page === "connect" &&
+              !!currentWallet &&
+              $svelteStore.type === "qrCode"}
+            back={backWcList}
+            showBack
+          >
+            {#if !!currentWallet}
+              <Scan wallet={currentWallet} />
             {/if}
-          {:else if $svelteStore.page === "download" && !!currentWallet}
-            <Install wallet={currentWallet} />
-          {/if}
-        </Card>
+          </Card>
+
+          <Card show={showOtherSubPage && !isQrCodePage} {back}>
+            {#if $svelteStore.page === "connect" && !!currentWallet}
+              {#if $svelteStore.type === "browser"}
+                {#key currentWallet.id}
+                  <Connecting wallet={currentWallet} />
+                {/key}
+              {/if}
+            {:else if $svelteStore.page === "download" && !!currentWallet}
+              {#key currentWallet.id}
+                <Install wallet={currentWallet} />
+              {/key}
+            {/if}
+          </Card>
+        </div>
       {/if}
     </Modal>
   {/if}
 </Provider>
+
+<style lang="scss">
+  .body {
+    display: flex;
+    height: 100%;
+  }
+  .sidebar {
+    width: 300px;
+    height: 100%;
+    position: relative;
+    padding: 20px;
+    padding-bottom: 0;
+
+    &::after {
+      position: absolute;
+      content: "";
+      height: 100%;
+      width: 0;
+      border-right: 0.5px solid var(--r-neutral-line, #d3d8e0);
+      top: 0;
+      right: 0;
+      z-index: 10;
+    }
+  }
+</style>

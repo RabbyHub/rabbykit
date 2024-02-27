@@ -60,12 +60,8 @@
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div class="modal-overlay" class:mobile={isMobileEnv} on:click={close} />
   <div class="modal-content" class:mobile={isMobileEnv}>
-    <div class="icon" class:close={$useStore.page === "wallet"}>
-      {#if $useStore.page === "wallet"}
-        <Icon name="close" on:click={close} />
-      {:else}
-        <!-- <Icon name="back" on:click={back} /> -->
-      {/if}
+    <div class="icon" class:close>
+      <Icon name="close" on:click={close} />
     </div>
     <slot />
   </div>
@@ -86,9 +82,9 @@
     --fallback-modal-border-radius: 16px;
     --fallback-modal-box-shadow: 0px 24px 80px 0px rgba(0, 0, 0, 0.2);
 
-    width: 460px;
+    width: 780px;
     height: 540px;
-    padding: 20px;
+    /* padding: 20px; */
     padding-bottom: 0;
     position: absolute;
     top: 50%;
@@ -129,7 +125,7 @@
     position: absolute;
     top: 20px;
     right: 20px;
-    z-index: 2;
+    z-index: 20;
   }
   .close {
     top: 16px;

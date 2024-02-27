@@ -1,7 +1,7 @@
 import { EIP6963ProviderDetail, createStore as createMipdStore } from "mipd";
-import { useRKStore } from ".";
 import { wrapperEIP6963Wallet } from "../helpers/mipd";
 import { WalletResult } from "../wallets/type";
+import { useRKStore } from "./context";
 
 export const syncMipd = () => {
   const syncState = (eip6963Wallets: readonly EIP6963ProviderDetail[]) => {

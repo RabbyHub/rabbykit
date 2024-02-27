@@ -8,11 +8,13 @@
   export let wallet: WalletResult;
   export let type: Type;
   export let size: "lg" | "normal" | "sm" = "lg";
+  export let active = false;
 
   let { browser } = wallet.connector;
   let isReady = !!browser?.ready;
 
   const handleConnect = async () => {
+    $$props.click?.();
     if (browser && isReady && type === "browser") {
       useRKStore.setState({
         page: "connect",
@@ -86,4 +88,4 @@
     type === "mobile" ? wallet.mobileName || wallet.name : wallet.name || "";
 </script>
 
-<Button {type} {name} {logo} {size} on:click={handleConnect} />
+<Button {type} {name} {logo} {size} {active} on:click={handleConnect} />

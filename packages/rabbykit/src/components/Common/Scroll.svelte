@@ -2,6 +2,7 @@
   import svelteStore from "../../store/context";
 
   export let title: string;
+  export let titleClass = "";
   export let className = "";
 
   let box: HTMLDivElement;
@@ -18,7 +19,7 @@
 >
   {#if title}
     <div
-      class="title"
+      class={`title ${titleClass}`}
       class:mobile={$svelteStore.isMobile}
       class:borderB={scrollTop > 0}
     >

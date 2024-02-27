@@ -66,7 +66,7 @@ export function Header() {
         alt={""}
         width={1068}
         height={960}
-        className={clsx("lg:mt-[-116px] lg:mb-[-58px]")}
+        className={clsx("lg:mt-[-56px]")}
         priority
       />
     </section>

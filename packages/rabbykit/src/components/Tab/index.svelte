@@ -8,6 +8,8 @@
   import scan from "./scan.svg";
   import { otherInjectedWalletId } from "../../wallets/connectors/injectedWallet/injectedWallet";
 
+  let activeId = "";
+
   const browserList = $useStore.wallets || [];
 
   const readyBrowserList = browserList.filter(
@@ -38,59 +40,94 @@
   };
 </script>
 
-<Scroll title={$t("Select your wallet to login")}>
-  <div class="ready-wallet-container">
-    {#each readyBrowserList as wallet}
-      <WalletButton {wallet} type="browser" />
-    {/each}
-
-    {#if other && showOtherWallet}
-      <WalletButton wallet={other} type="browser" />
-    {/if}
-
-    {#if $useStore.showWalletConnect}
-      <Button
-        type="browser"
-        name={$t("Connect with Mobile Wallet")}
-        logo={scan}
-        on:click={handleScan}
-      />
-    {/if}
-
-    {#if $useStore.customButtons && $useStore.customButtons.length > 0}
-      {#each $useStore.customButtons as b}
-        <Button
+<div class="container">
+  <Scroll title={$t("Select your wallet to login")} titleClass={"scroll-title"}>
+    <div class="ready-wallet-container">
+      {#each readyBrowserList as wallet}
+        <WalletButton
+          {wallet}
           type="browser"
-          name={b.name}
-          logo={b.logo}
-          on:click={b.onClick}
+          active={activeId === wallet.id}
+          click={() => {
+            activeId = wallet.id;
+          }}
         />
       {/each}
-    {/if}
-  </div>
-  <div class="sub-title">
-    {$t("The following wallets are not installed or in conflict with others")}
-  </div>
-  <div class="wallet-container">
-    {#each unusedBrowserList as wallet}
-      <WalletButton {wallet} type="unused" size="normal" />
-    {/each}
-  </div>
 
-  <div class="rk-tip">
-    <a href="https://rabbykit.rabby.io" target="_blank" rel="noreferrer"
-      >{$t("Powered by RabbyKit")}</a
-    >
-  </div>
-</Scroll>
+      {#if other && showOtherWallet}
+        <WalletButton
+          wallet={other}
+          type="browser"
+          active={activeId === other.id}
+          click={() => {
+            activeId = other.id;
+          }}
+        />
+      {/if}
+
+      {#if $useStore.showWalletConnect}
+        <Button
+          type="browser"
+          name={$t("Mobile Wallet")}
+          logo={scan}
+          on:click={() => {
+            activeId = $t("Mobile Wallet");
+            handleScan();
+          }}
+          active={activeId === $t("Mobile Wallet")}
+        />
+      {/if}
+
+      {#if $useStore.customButtons && $useStore.customButtons.length > 0}
+        {#each $useStore.customButtons as b}
+          <Button
+            type="browser"
+            name={b.name}
+            logo={b.logo}
+            active={activeId === b.logo}
+            on:click={() => {
+              activeId = b.logo;
+              b.onClick?.();
+            }}
+          />
+        {/each}
+      {/if}
+    </div>
+    <div class="sub-title">
+      {$t("The following wallets are not installed or in conflict with others")}
+    </div>
+    <div class="wallet-container">
+      {#each unusedBrowserList as wallet}
+        <WalletButton
+          {wallet}
+          type="unused"
+          size="normal"
+          active={activeId === wallet.id}
+          click={() => {
+            activeId = wallet.id;
+          }}
+        />
+      {/each}
+    </div>
+  </Scroll>
+</div>
 
 <style lang="scss">
+  .container {
+    height: 100%;
+    & :global(.scroll-title) {
+      margin-left: -20px;
+      padding-left: 20px;
+      text-align: left;
+    }
+  }
+
   .ready-wallet-container {
     display: flex;
     flex-direction: column;
     padding-right: 20px;
     & > :global(button) {
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     & > :global(button:last-child) {
       margin-bottom: 20px;
@@ -99,13 +136,13 @@
 
   .wallet-container {
     display: flex;
-    flex-wrap: wrap;
-
-    & > :global(button:nth-of-type(2n)) {
-      margin-left: 8px;
+    flex-direction: column;
+    padding-right: 20px;
+    & > :global(button) {
+      margin-bottom: 10px;
     }
-    & > :global(button:nth-of-type(n + 3)) {
-      margin-top: 8px;
+    & > :global(button:last-child) {
+      margin-bottom: 20px;
     }
   }
 
@@ -116,22 +153,5 @@
     font-weight: 400;
     line-height: normal;
     margin-bottom: 12px;
-  }
-  .rk-tip {
-    display: block;
-    margin-top: 26px;
-    margin-bottom: 20px;
-    padding-right: 20px;
-    text-align: center;
-    font-size: 12px;
-    color: var(--r-neutral-foot);
-
-    & > a {
-      color: var(--r-neutral-foot);
-      text-decoration: none;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
   }
 </style>
