@@ -27,7 +27,7 @@
     <Image src={logo} alt={name} />
   </div>
 
-  <span>{name}</span>
+  <span class="button-label">{name}</span>
 
   {#if showRightArrow}
     <svg
@@ -163,6 +163,12 @@
     object-fit: contain;
     border-radius: 100%;
     overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .button-label {
+    flex-shrink: 1;
+    text-align: left;
   }
 
   .logo > :global(*) {
