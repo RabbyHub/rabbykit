@@ -47,7 +47,7 @@ export function isMetaMask(ethereum?: (typeof window)["ethereum"]): boolean {
   if (ethereum.isBitski) return false;
   if (ethereum.isBifrost) return false;
   if (ethereum.isBackpack) return false;
-
+  if (ethereum.isMagicEden) return false;
   return true;
 }
 
@@ -111,6 +111,7 @@ type InjectedProviderFlags = {
   isXDEFI?: true;
   isZeal?: true;
   isZerion?: true;
+  isMagicEden?: true;
 };
 export const getWalletProvider = (
   flag: keyof InjectedProviderFlags
