@@ -1,29 +1,19 @@
 import { WalletResult } from "../../type";
-import {
-  Chain,
-  InjectedConnector,
-  InjectedConnectorOptions,
-} from "@wagmi/core";
 import logo from "./logo.svg";
+import { injected, type WalletConnectParameters } from "@wagmi/connectors";
 
-export interface BraveWalletOptions {
-  chains: Chain[];
-}
-
-export const braveWallet = ({
-  chains,
-  ...options
-}: BraveWalletOptions & InjectedConnectorOptions): WalletResult => ({
+export const braveWallet = (): WalletResult => ({
   id: "brave",
   name: "Brave Wallet",
+  rdns: "com.brave.wallet",
   logo,
   installed:
     typeof window !== "undefined" && window.ethereum?.isBraveWallet === true,
   downloadUrls: {},
   connector: {
-    browser: new InjectedConnector({
-      chains,
-      options,
-    }),
+    browser: () =>
+      injected({
+        target: "braveWallet",
+      }),
   },
 });

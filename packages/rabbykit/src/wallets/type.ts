@@ -1,32 +1,37 @@
 import {
-  Config,
-  Connector,
-  PublicClient,
-  WebSocketPublicClient,
+  type CreateConnectorFn,
+  type Config,
+  type Connector,
 } from "@wagmi/core";
 
-export interface ConfigOptions<
-  TPublicClient extends PublicClient = PublicClient,
-  TWebSocketPublicClient extends WebSocketPublicClient = WebSocketPublicClient
-> {
-  config: Config<TPublicClient, TWebSocketPublicClient>;
+// TODO: complete type
+export interface ConfigOptions<> {
+  config: Config;
 }
 
-interface RabbyKitConnector<C extends Connector = Connector> {
-  browser?: C;
+interface RabbyKitConnector {
+  browser?: () =>
+    | CreateConnectorFn<
+        unknown,
+        Record<string, unknown>,
+        Record<string, unknown>
+      >
+    | Connector;
+
   mobile?: {
-    getUri?: () => Promise<string>;
-    connector?: C;
+    getUri?: (connector: Connector) => Promise<string>;
+    connector?: () => CreateConnectorFn | Connector;
   };
   qrCode?: {
-    getUri?: () => Promise<string>;
-    connector?: C;
+    getUri?: (connector: Connector) => Promise<string>;
+    connector?: () => CreateConnectorFn | Connector;
   };
 }
 
-export type WalletResult<C extends Connector = Connector> = {
+export type WalletResult = {
   id: string;
   name: string;
+  rdns?: string;
   mobileName?: string;
   logo: string;
   installed?: boolean;
@@ -38,6 +43,6 @@ export type WalletResult<C extends Connector = Connector> = {
     ios?: string;
     safari?: string;
   };
-  connector: RabbyKitConnector<C>;
+  connector: RabbyKitConnector;
   mobileUA?: (ua: string) => boolean;
 };

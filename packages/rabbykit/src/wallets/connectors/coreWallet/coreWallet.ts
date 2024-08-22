@@ -1,28 +1,16 @@
-import { Chain, InjectedConnector, WindowProvider } from "@wagmi/core";
-import type { InjectedConnectorOptions } from "@wagmi/core/connectors/injected";
 import { WalletResult } from "../../type";
-import {
-  getMobileUri,
-  getWalletConnectConnector,
-  getWalletConnectUri,
-} from "../../../helpers/getWalletConnectUri";
+import { getWalletConnectConnector } from "../../../helpers/getWalletConnectUri";
 import logo from "./logo.svg";
-import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
+import { injected, type WalletConnectParameters } from "@wagmi/connectors";
 
 declare global {
   interface Window {
-    evmproviders?: Record<string, WindowProvider>;
-    avalanche?: WindowProvider;
+    evmproviders?: Record<string, Window["ethereum"]>;
+    avalanche?: Window["ethereum"];
   }
 }
 
-export interface CoreWalletOptions {
-  projectId: string;
-  chains: Chain[];
-  walletConnectOptions?: Omit<WalletConnectConnector["options"], "projectId">;
-}
-
-function getCoreWalletInjectedProvider(): WindowProvider | undefined {
+function getCoreWalletInjectedProvider(): Window["ethereum"] | undefined {
   const injectedProviderExist =
     typeof window !== "undefined" && typeof window.ethereum !== "undefined";
 
@@ -52,24 +40,21 @@ function getCoreWalletInjectedProvider(): WindowProvider | undefined {
 }
 
 export const coreWallet = ({
-  chains,
   projectId,
   ...options
-}: CoreWalletOptions & InjectedConnectorOptions): WalletResult => {
+}: WalletConnectParameters): WalletResult => {
   const isCoreInjected = Boolean(getCoreWalletInjectedProvider());
 
   const walletConnector = getWalletConnectConnector({
-    chains,
-    options: {
-      projectId,
-      showQrModal: false,
-      ...options?.walletConnectOptions,
-    },
+    projectId,
+    showQrModal: false,
+    ...options,
   });
 
   return {
     id: "core",
     name: "Core",
+    rdns: "app.core.extension",
     installed: isCoreInjected,
     logo,
     downloadUrls: {
@@ -79,23 +64,21 @@ export const coreWallet = ({
         "https://chrome.google.com/webstore/detail/core-crypto-wallet-nft-ex/agoakfejjabomempkjlepdflaleeobhb",
     },
     connector: {
-      browser: new InjectedConnector({
-        chains,
-        options: {
-          getProvider: getCoreWalletInjectedProvider,
-          ...options,
-        },
-      }),
+      browser: isCoreInjected
+        ? () =>
+            injected({
+              target: () => ({
+                id: "core",
+                name: "Core",
+                provider: getCoreWalletInjectedProvider() || window.ethereum,
+              }),
+            })
+        : undefined,
       qrCode: {
-        getUri: () => getWalletConnectUri(walletConnector),
-        connector: walletConnector,
+        connector: () => walletConnector,
       },
       mobile: {
-        getUri: () =>
-          getMobileUri({
-            connector: walletConnector,
-          }),
-        connector: walletConnector,
+        connector: () => walletConnector,
       },
     },
   };

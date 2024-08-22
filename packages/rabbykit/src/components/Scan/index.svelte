@@ -7,6 +7,7 @@
   import { WalletResult } from "../../wallets/type";
   import svelteStore, { rabbykitConnect } from "../../store/context";
   import { disconnect, getAccount } from "@wagmi/core";
+  import { getWalletConnectUri } from "../../helpers/getWalletConnectUri";
 
   export let wallet: WalletResult;
   export let size: number = 280;
@@ -16,9 +17,9 @@
   let shouldWaitDisconnect = false;
 
   async function handleConnect() {
-    if (getAccount()?.isConnected) {
+    if (getAccount($svelteStore.wagmi!)?.isConnected) {
       shouldWaitDisconnect = true;
-      await disconnect();
+      await disconnect($svelteStore.wagmi!);
       shouldWaitDisconnect = false;
     }
     const connector =
@@ -26,7 +27,7 @@
 
     if (connector) {
       rabbykitConnect({
-        connector: connector,
+        connector: connector(),
       });
 
       await getUri();
@@ -36,7 +37,20 @@
   async function getUri() {
     try {
       loading = true;
-      const code = await wallet.connector.qrCode?.getUri?.();
+      let code;
+      const connectors = $svelteStore.wagmi?.connectors || [];
+      const walletConnect = connectors.find((w) =>
+        wallet.id === "coinbase"
+          ? w.type === "coinbaseWallet"
+          : w.type === "walletConnect"
+      );
+      if (walletConnect) {
+        code = wallet?.connector?.qrCode?.getUri
+          ? await wallet.connector.qrCode.getUri(walletConnect)
+          : await getWalletConnectUri(walletConnect);
+      } else {
+        throw new Error("walletConnect not found");
+      }
       if (code) {
         uri = code;
         loading = false;
@@ -68,8 +82,9 @@
       wallet.connector?.qrCode?.connector || wallet.connector?.browser;
     if (connector) {
       refreshLoading = true;
-      rabbykitConnect({ connector });
+      rabbykitConnect({ connector: connector() });
       await getUri();
+      refreshLoading = false;
     }
   }
 

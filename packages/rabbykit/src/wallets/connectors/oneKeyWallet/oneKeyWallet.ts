@@ -1,10 +1,7 @@
-import { Chain, InjectedConnector } from "@wagmi/core";
 import { WalletResult } from "../../type";
+import { getWalletConnectConnector } from "../../../helpers/getWalletConnectUri";
 import logo from "./logo.svg";
-
-export interface OnekeyWalletOptions {
-  chains: Chain[];
-}
+import { injected, type WalletConnectParameters } from "@wagmi/connectors";
 
 declare global {
   interface Window {
@@ -12,13 +9,14 @@ declare global {
   }
 }
 
-export const oneKeyWallet = ({ chains }: OnekeyWalletOptions): WalletResult => {
+export const oneKeyWallet = (): WalletResult => {
   const provider = typeof window !== "undefined" && window["$onekey"]?.ethereum;
   const isOnekeyInjected = Boolean(provider);
 
   return {
     id: "onekey",
     name: "OneKey",
+    rdns: "so.onekey.app.wallet",
     logo,
     installed: isOnekeyInjected,
     downloadUrls: {
@@ -30,12 +28,16 @@ export const oneKeyWallet = ({ chains }: OnekeyWalletOptions): WalletResult => {
       ios: "https://apps.apple.com/us/app/onekey-open-source-wallet/id1609559473",
     },
     connector: {
-      browser: new InjectedConnector({
-        chains,
-        options: {
-          getProvider: () => provider,
-        },
-      }),
+      browser: isOnekeyInjected
+        ? () =>
+            injected({
+              target: () => ({
+                id: "onekey",
+                name: "OneKey",
+                provider,
+              }),
+            })
+        : undefined,
     },
   };
 };

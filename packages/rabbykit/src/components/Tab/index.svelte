@@ -7,30 +7,65 @@
   import Button from "../WalletButton/button.svelte";
   import scan from "./scan.svg";
   import { otherInjectedWalletId } from "../../wallets/connectors/injectedWallet/injectedWallet";
+  import { Connector } from "wagmi";
+  import { WalletResult } from "../../wallets/type";
 
   let activeId = "";
 
   const browserList = $useStore.wallets || [];
 
-  const readyBrowserList = browserList.filter(
-    (w) =>
-      w.installed &&
-      !!w.connector.browser?.ready &&
-      w.id !== otherInjectedWalletId
+  let readyBrowserList = browserList.filter(
+    (w) => w.installed && w.id !== otherInjectedWalletId
+  );
+
+  const isEIP6963Connector = (c: Connector) => {
+    return (
+      c.icon?.replace(/\n/g, "").startsWith("data:image") && c.name && c.uid
+    );
+  };
+
+  const eip6963Connectors = (useRKStore.getState().wagmi?.connectors || [])
+    .filter((c) => isEIP6963Connector(c))
+    .map((e) => {
+      const builtInWalletInfo = readyBrowserList.find(
+        (item) => item.rdns === e.id
+      );
+
+      return {
+        id: e.uid,
+        name: e.name,
+        ...(builtInWalletInfo || {}),
+        logo: e.icon,
+        rdns: e.id,
+        installed: true,
+        connector: {
+          browser: () => e,
+        },
+      } as WalletResult;
+    });
+
+  readyBrowserList = readyBrowserList.filter(
+    (e) => !eip6963Connectors.some((c) => c.rdns === e.rdns)
+  );
+
+  readyBrowserList = [...readyBrowserList, ...eip6963Connectors].sort((a, b) =>
+    a.name.localeCompare(b.name)
   );
 
   const unusedBrowserList = browserList
-    .filter((w) => !w.installed || !w.connector.browser?.ready)
+    .filter((w) => !w.installed)
     .filter((w) => isSupportBrowser(w))
-    .filter((e) => !$useStore.mipd.some((p) => p.info.name === e.name));
+    .filter(
+      (e) =>
+        !readyBrowserList.some((p) => p.name === e.name || p.rdns === e.rdns)
+    )
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   const other = browserList.find((e) => e.id === otherInjectedWalletId);
   const showOtherWallet = !!(
     other &&
     other.installed &&
-    other.connector.browser?.ready &&
-    other.connector.browser?.name &&
-    !browserList.some((e) => other.connector.browser?.name.includes(e.name))
+    readyBrowserList.length < 1
   );
 
   const handleScan = () => {
@@ -38,6 +73,7 @@
       page: "wc-select",
     });
   };
+
 </script>
 
 <div class="container">

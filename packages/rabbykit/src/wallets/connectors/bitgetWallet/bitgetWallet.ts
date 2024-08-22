@@ -1,25 +1,15 @@
-import { Chain, InjectedConnector } from "@wagmi/core";
-import type { InjectedConnectorOptions } from "@wagmi/core/connectors/injected";
-import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import { WalletResult } from "../../type";
 import {
-  getMobileUri,
   getWalletConnectConnector,
-  getWalletConnectUri,
+  getMobileUri,
 } from "../../../helpers/getWalletConnectUri";
 import logo from "./logo.svg";
-export interface BitKeepWalletOptions {
-  projectId: string;
-  chains: Chain[];
-  walletConnectOptions?: Omit<WalletConnectConnector["options"], "projectId">;
-}
+import { injected, type WalletConnectParameters } from "@wagmi/connectors";
 
 export const bitgetWallet = ({
-  chains,
   projectId,
-  walletConnectOptions,
   ...options
-}: BitKeepWalletOptions & InjectedConnectorOptions): WalletResult => {
+}: WalletConnectParameters): WalletResult => {
   const isBitKeepInjected =
     typeof window !== "undefined" &&
     // @ts-expect-error
@@ -32,17 +22,15 @@ export const bitgetWallet = ({
   const shouldUseWalletConnect = !isBitKeepInjected;
 
   const walletConnector = getWalletConnectConnector({
-    chains,
-    options: {
-      projectId,
-      showQrModal: false,
-      ...walletConnectOptions,
-    },
+    projectId,
+    showQrModal: false,
+    ...options,
   });
 
   return {
     id: "bitget",
     name: "Bitget Wallet",
+    rdns: "com.bitget.web3",
     logo,
     installed: !shouldUseWalletConnect ? isBitKeepInjected : undefined,
     downloadUrls: {
@@ -53,26 +41,26 @@ export const bitgetWallet = ({
     },
 
     connector: {
-      browser: new InjectedConnector({
-        chains,
-        options: {
-          // @ts-expect-error
-          getProvider: () => window?.bitkeep?.ethereum,
-          ...options,
-        },
-      }),
+      browser: () =>
+        injected({
+          target: () => ({
+            id: "bitget",
+            name: "Bitget Wallet",
+            // @ts-expect-error
+            provider: window?.bitkeep?.ethereum,
+          }),
+        }),
 
       qrCode: {
-        getUri: () => getWalletConnectUri(walletConnector),
-        connector: walletConnector,
+        connector: () => walletConnector,
       },
       mobile: {
-        getUri: () =>
+        getUri: (connector) =>
           getMobileUri({
-            connector: walletConnector,
+            connector,
             iosUri: (uri) => `bitkeep://wc?uri=${encodeURIComponent(uri)}`,
           }),
-        connector: walletConnector,
+        connector: () => walletConnector,
       },
     },
   };

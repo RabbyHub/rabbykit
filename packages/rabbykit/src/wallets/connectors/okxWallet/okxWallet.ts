@@ -1,25 +1,15 @@
-import { Chain, InjectedConnector } from "@wagmi/core";
-import type { InjectedConnectorOptions } from "@wagmi/core/connectors/injected";
-import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import { WalletResult } from "../../type";
-import logo from "./logo.svg";
 import {
-  getMobileUri,
   getWalletConnectConnector,
-  getWalletConnectUri,
+  getMobileUri,
 } from "../../../helpers/getWalletConnectUri";
-
-export interface OKXWalletOptions {
-  projectId: string;
-  chains: Chain[];
-  walletConnectOptions?: Omit<WalletConnectConnector["options"], "projectId">;
-}
+import logo from "./logo.svg";
+import { injected, type WalletConnectParameters } from "@wagmi/connectors";
 
 export const okxWallet = ({
-  chains,
   projectId,
   ...options
-}: OKXWalletOptions & InjectedConnectorOptions): WalletResult => {
+}: WalletConnectParameters): WalletResult => {
   // `isOkxWallet` or `isOKExWallet` needs to be added to the wagmi `Ethereum` object
   const isOKXInjected =
     typeof window !== "undefined" &&
@@ -27,17 +17,15 @@ export const okxWallet = ({
     typeof window.okxwallet !== "undefined";
 
   const walletConnector = getWalletConnectConnector({
-    chains,
-    options: {
-      projectId,
-      showQrModal: false,
-      ...options?.walletConnectOptions,
-    },
+    projectId,
+    showQrModal: false,
+    ...options,
   });
 
   return {
     id: "okx",
     name: "OKX Wallet",
+    rdns: "com.okex.wallet",
     logo,
     installed: isOKXInjected,
     downloadUrls: {
@@ -50,25 +38,27 @@ export const okxWallet = ({
       firefox: "https://addons.mozilla.org/firefox/addon/okexwallet/",
     },
     connector: {
-      browser: new InjectedConnector({
-        chains,
-        options: {
-          // @ts-expect-error
-          getProvider: () => window.okxwallet,
-          ...options,
-        },
-      }),
+      browser: isOKXInjected
+        ? () =>
+            injected({
+              target: () => ({
+                id: "okx",
+                name: "OKX Wallet",
+                // @ts-expect-error
+                provider: window.okxwallet,
+              }),
+            })
+        : undefined,
       qrCode: {
-        getUri: () => getWalletConnectUri(walletConnector),
-        connector: walletConnector,
+        connector: () => walletConnector,
       },
       mobile: {
-        getUri: () =>
+        getUri: (connector) =>
           getMobileUri({
-            connector: walletConnector,
+            connector,
             iosUri: (uri) => `okex://main/wc?uri=${encodeURIComponent(uri)}`,
           }),
-        connector: walletConnector,
+        connector: () => walletConnector,
       },
     },
   };

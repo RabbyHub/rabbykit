@@ -1,25 +1,21 @@
-import type { InjectedConnectorOptions } from "@wagmi/core/connectors/injected";
-import { WalletResult } from "../../type";
-import { Chain, InjectedConnector } from "@wagmi/core";
+import { type WalletResult } from "../../type";
 import logo from "./logo.svg";
+import { injected } from "@wagmi/connectors";
 
-export interface PhantomWalletOptions {
-  chains: Chain[];
-}
-
-export const phantomWallet = ({
-  chains,
-  ...options
-}: PhantomWalletOptions & InjectedConnectorOptions): WalletResult => {
+export const phantomWallet = (): WalletResult => {
   const getProvider = () =>
     typeof window !== "undefined"
       ? ((window as any).phantom as any)?.ethereum
       : undefined;
+
+  const provider = getProvider();
+  const installed = !!provider;
   return {
     id: "phantom",
     name: "Phantom",
+    rdns: "app.phantom",
     logo,
-    installed: !!getProvider(),
+    installed: !!provider,
     downloadUrls: {
       android: "https://play.google.com/store/apps/details?id=app.phantom",
       ios: "https://apps.apple.com/app/phantom-solana-wallet/1598432977",
@@ -28,10 +24,7 @@ export const phantomWallet = ({
       firefox: "https://addons.mozilla.org/firefox/addon/phantom-app/",
     },
     connector: {
-      browser: new InjectedConnector({
-        chains,
-        options: { getProvider, ...options },
-      }),
+      browser: installed ? () => injected({ target: "phantom" }) : undefined,
     },
   };
 };

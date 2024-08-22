@@ -4,6 +4,7 @@
   import { rabbykitConnect, useRKStore } from "../../store/context";
   import Button from "./button.svelte";
   import { Type } from "../../type";
+  import { getMobileUri } from "../../helpers/getWalletConnectUri";
 
   export let wallet: WalletResult;
   export let type: Type;
@@ -11,7 +12,7 @@
   export let active = false;
 
   let { browser } = wallet.connector;
-  let isReady = !!browser?.ready;
+  let isReady = true;
 
   const handleConnect = async () => {
     $$props.click?.();
@@ -36,18 +37,30 @@
     }
 
     if (type === "mobile") {
-      if (
-        wallet.connector?.mobile?.getUri &&
-        wallet.connector?.mobile.connector
-      ) {
+      if (wallet.connector?.mobile?.connector) {
         try {
           rabbykitConnect({
-            connector: wallet.connector?.mobile.connector,
+            connector: wallet.connector?.mobile.connector(),
           }).then(() => {
             $svelteStore.closeModal();
           });
 
-          const mobileUri = await wallet.connector?.mobile?.getUri();
+          const connectors = $svelteStore.wagmi?.connectors || [];
+          const walletConnect = connectors.find((w) =>
+            wallet.id === "coinbase"
+              ? w.type === "coinbaseWallet"
+              : w.type === "walletConnect"
+          );
+
+          let mobileUri;
+          if (walletConnect) {
+            mobileUri = wallet.connector.mobile?.getUri
+              ? await wallet.connector.mobile.getUri(walletConnect)
+              : await getMobileUri({ connector: walletConnect });
+          } else {
+            throw new Error("walletConnect not found");
+          }
+
           if (mobileUri) {
             if (mobileUri.startsWith("http")) {
               // Workaround for https://github.com/rainbow-me/rainbowkit/issues/524.

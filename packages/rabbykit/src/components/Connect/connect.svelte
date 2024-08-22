@@ -13,19 +13,22 @@
   let logo = wallet.logo;
 
   let retry = () => {
-    if (wallet.connector.browser && wallet.connector.browser?.ready)
-      rabbykitConnect({ connector: wallet.connector.browser });
+    if (wallet?.connector?.browser)
+      rabbykitConnect({ connector: wallet.connector.browser() });
   };
 
   let status: "loading" | "success" | "failed" = "loading";
 
   async function handleConnect() {
-    if (getAccount()?.isConnected) {
-      await disconnect();
+    if (!$svelteStore.wagmi) {
+      return;
+    }
+    if (getAccount($svelteStore.wagmi)?.isConnected) {
+      await disconnect($svelteStore.wagmi);
     }
     const { browser } = wallet.connector;
     if (browser) {
-      rabbykitConnect({ connector: browser });
+      rabbykitConnect({ connector: browser() });
     } else {
       throw new Error("no available connector");
     }

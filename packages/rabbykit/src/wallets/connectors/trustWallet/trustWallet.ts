@@ -1,27 +1,16 @@
 import {
-  Chain,
-  InjectedConnector,
-  InjectedConnectorOptions,
-} from "@wagmi/core";
-import {
   getMobileUri,
   getWalletConnectConnector,
   getWalletConnectUri,
 } from "../../../helpers/getWalletConnectUri";
 import { WalletResult } from "../../type";
 import logo from "./logo.svg";
-import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
+import { injected, type WalletConnectParameters } from "@wagmi/connectors";
 
 declare global {
   interface Window {
     trustwallet: Window["ethereum"];
   }
-}
-
-export interface TrustWalletOptions {
-  projectId: string;
-  chains: Chain[];
-  walletConnectOptions?: Omit<WalletConnectConnector["options"], "projectId">;
 }
 
 function getTrustWalletInjectedProvider(): Window["ethereum"] {
@@ -65,27 +54,23 @@ function getTrustWalletInjectedProvider(): Window["ethereum"] {
 }
 
 export const trustWallet = ({
-  chains,
   projectId,
-  walletConnectOptions,
   ...options
-}: TrustWalletOptions & InjectedConnectorOptions): WalletResult => {
-  const isTrustWalletInjected = Boolean(getTrustWalletInjectedProvider());
+}: WalletConnectParameters): WalletResult => {
+  const installed = Boolean(getTrustWalletInjectedProvider());
 
   const walletConnector = getWalletConnectConnector({
-    chains,
-    options: {
-      projectId,
-      showQrModal: false,
-      ...walletConnectOptions,
-    },
+    projectId,
+    showQrModal: false,
+    ...options,
   });
 
   return {
     id: "trust",
     name: "Trust Wallet",
+    rdns: "com.trustwallet.app",
     logo,
-    installed: isTrustWalletInjected,
+    installed,
     downloadUrls: {
       android:
         "https://play.google.com/store/apps/details?id=com.wallet.crypto.trustapp",
@@ -94,22 +79,27 @@ export const trustWallet = ({
         "https://chrome.google.com/webstore/detail/trust-wallet/egjidjbpglichdcondbcbdnbeeppgdph",
     },
     connector: {
-      browser: new InjectedConnector({
-        chains,
-        options: { getProvider: getTrustWalletInjectedProvider, ...options },
-      }),
+      browser: installed
+        ? () =>
+            injected({
+              target: () => ({
+                id: "trust",
+                name: "Trust Wallet",
+                provider: getTrustWalletInjectedProvider(),
+              }),
+            })
+        : undefined,
       qrCode: {
-        getUri: () => getWalletConnectUri(walletConnector),
-        connector: walletConnector,
+        connector: () => walletConnector,
       },
       mobile: {
-        getUri: () =>
+        getUri: (connector) =>
           getMobileUri({
-            connector: walletConnector,
+            connector,
             iosUri: (uri) => `trust://wc?uri=${encodeURIComponent(uri)}`,
             androidUri: (uri) => `trust://wc?uri=${encodeURIComponent(uri)}`,
           }),
-        connector: walletConnector,
+        connector: () => walletConnector,
       },
     },
   };

@@ -2,15 +2,11 @@ import { createStore } from "zustand/vanilla";
 import { subscribeWithSelector } from "zustand/middleware";
 
 import {
-  PublicClient,
-  WebSocketPublicClient,
   Config,
   getAccount,
-  getNetwork,
-  Chain,
-  mainnet,
   connect,
-  ConnectArgs,
+  Connector,
+  ConnectParameters,
 } from "@wagmi/core";
 import { WalletResult } from "../wallets/type";
 import { SUPPORT_LANGUAGES } from "../helpers";
@@ -24,48 +20,51 @@ import {
   Type,
   ThemeVariables,
 } from "../type";
-import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
-import { EIP6963ProviderDetail } from "mipd";
-import { goerli } from "viem/chains";
 import { locale } from "svelte-i18n";
+import { Chain, Transport } from "viem";
 
 type Tab = Type;
 type Page = "wallet" | "connect" | "wc-select" | "download";
 interface Store<
-  TPublicClient extends PublicClient = PublicClient,
-  TWebSocketPublicClient extends WebSocketPublicClient = WebSocketPublicClient
+  chains extends readonly [Chain, ...Chain[]] = readonly [Chain, ...Chain[]],
+  transports extends Record<chains[number]["id"], Transport> = Record<
+    chains[number]["id"],
+    Transport
+  >
 > {
+  // app meta info
   appName: string;
   appLogo?: string;
 
   open: boolean;
+
+  // theme
   theme: Theme;
   themeVariables?: ThemeVariables;
   language: SUPPORT_LANGUAGES;
 
+  // internal page state
   page: Page;
   activeTab: Tab;
   currentWallet?: WalletResult;
   type?: Tab;
+  isMobile: boolean;
 
-  chains: Chain[];
-  wagmi?: Config<TPublicClient, TWebSocketPublicClient>;
+  wagmi?: Config<chains, transports>;
   status: "connecting" | "reconnecting" | "connected" | "disconnected";
   isConnected?: boolean;
   address?: string;
   chainId?: number;
+  showWalletConnect: boolean;
 
   wallets?: WalletResult[];
-  walletConnectConnector?: WalletConnectConnector;
-
-  mipd: readonly EIP6963ProviderDetail[];
+  walletConnectConnector?: Connector;
 
   configHook?: Hook;
   openHooks?: Hook[];
 
   customButtons?: CustomButton[];
   disclaimer?: Disclaimer;
-  showWalletConnect: boolean;
 
   setTab: (activeTab: Tab) => void;
   openModal: RabbyKitModal["open"];
@@ -74,15 +73,12 @@ interface Store<
 
   setDisclaimer: RabbyKitModal["setDisclaimer"];
   setCustomButtons: RabbyKitModal["setCustomButtons"];
-
-  isMobile: boolean;
 }
 
 export const useRKStore = createStore<Store<any, any>>()(
   subscribeWithSelector((set, get) => ({
     appName: "RabbyKit",
     isMobile: false,
-    chains: [mainnet, goerli],
     theme: "light",
     themeVariables: undefined,
     status: "disconnected",
@@ -91,12 +87,14 @@ export const useRKStore = createStore<Store<any, any>>()(
     activeTab: "browser",
     open: false,
     showWalletConnect: true,
-    mipd: [],
     openModal: (params) => {
       const { forceOpen, ...hooks } = params || {};
-      if (forceOpen || !getAccount().isConnected) {
-        const previousOpenHooks = get().openHooks || [];
-        set({ open: true, openHooks: [...previousOpenHooks, hooks] });
+      const wagmiConfig = get().wagmi;
+      if (wagmiConfig) {
+        if (forceOpen || !getAccount(wagmiConfig).isConnected) {
+          const previousOpenHooks = get().openHooks || [];
+          set({ open: true, openHooks: [...previousOpenHooks, hooks] });
+        }
       }
     },
     closeModal: () => {
@@ -132,9 +130,11 @@ export const modalOpenSubscribe = (fn: (open: boolean) => void) => {
 };
 
 export function syncAccount() {
-  const accountInfo = getAccount();
+  const wagmiConfig = useRKStore.getState().wagmi;
+  if (!wagmiConfig) return;
+  const accountInfo = getAccount(wagmiConfig);
   const { address, isConnected, isDisconnected, status } = accountInfo;
-  const { chain } = getNetwork();
+  const chain = accountInfo.chain;
 
   if (isConnected && address && chain) {
     useRKStore.setState({ isConnected, address, chainId: chain.id });
@@ -148,8 +148,9 @@ export function syncAccount() {
   useRKStore.setState({ status: status });
 }
 
-export const rabbykitConnect = (prams: ConnectArgs) => {
-  return connect(prams)
+export const rabbykitConnect = (prams: ConnectParameters) => {
+  const wagmiConfig = useRKStore.getState().wagmi;
+  return connect(wagmiConfig!, prams)
     .then(() => {
       const { configHook, openHooks } = useRKStore.getState();
       openHooks?.forEach((o) => o.onConnect?.());

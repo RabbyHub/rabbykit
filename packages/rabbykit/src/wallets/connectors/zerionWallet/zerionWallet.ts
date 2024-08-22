@@ -1,30 +1,18 @@
 import {
-  Chain,
-  InjectedConnector,
-  InjectedConnectorOptions,
-} from "@wagmi/core";
-import { WalletResult } from "../../type";
-import logo from "./logo.svg";
-import {
   getMobileUri,
   getWalletConnectConnector,
   getWalletConnectUri,
 } from "../../../helpers/getWalletConnectUri";
-import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import { getWalletProvider } from "../../../helpers/wallet";
 
-export interface ZerionWalletOptions {
-  projectId: string;
-  chains: Chain[];
-  walletConnectOptions?: Omit<WalletConnectConnector["options"], "projectId">;
-}
+import { WalletResult } from "../../type";
+import logo from "./logo.svg";
+import { injected, type WalletConnectParameters } from "@wagmi/connectors";
 
 export const zerionWallet = ({
-  chains,
   projectId,
-  walletConnectOptions,
   ...options
-}: ZerionWalletOptions & InjectedConnectorOptions): WalletResult => {
+}: WalletConnectParameters): WalletResult => {
   const isZerionInjected =
     (typeof window !== "undefined" &&
       ((typeof window.ethereum !== "undefined" && window.ethereum.isZerion) ||
@@ -33,17 +21,15 @@ export const zerionWallet = ({
     getWalletProvider("isZerion");
 
   const walletConnector = getWalletConnectConnector({
-    chains,
-    options: {
-      projectId,
-      showQrModal: false,
-      ...walletConnectOptions,
-    },
+    projectId,
+    showQrModal: false,
+    ...options,
   });
 
   return {
     id: "zerion",
     name: "Zerion",
+    rdns: "io.zerion.wallet",
     logo,
     installed: !!isZerionInjected,
     downloadUrls: {
@@ -54,30 +40,32 @@ export const zerionWallet = ({
         "https://chrome.google.com/webstore/detail/klghhnkeealcohjjanjjdaeeggmfmlpl",
     },
     connector: {
-      browser: new InjectedConnector({
-        chains,
-        options: {
-          getProvider: () =>
-            typeof window !== "undefined"
-              ? // @ts-expect-error
-                window.zerionWallet ||
-                getWalletProvider("isZerion") ||
-                window.ethereum
-              : undefined,
-          ...options,
-        },
-      }),
+      browser: !!isZerionInjected
+        ? () =>
+            injected({
+              target: () => ({
+                id: "zerion",
+                name: "Zerion",
+                provider: () =>
+                  typeof window !== "undefined"
+                    ? // @ts-expect-error
+                      window.zerionWallet ||
+                      getWalletProvider("isZerion") ||
+                      window.ethereum
+                    : undefined,
+              }),
+            })
+        : undefined,
       qrCode: {
-        getUri: () => getWalletConnectUri(walletConnector),
-        connector: walletConnector,
+        connector: () => walletConnector,
       },
       mobile: {
-        getUri: () =>
+        getUri: (connector) =>
           getMobileUri({
-            connector: walletConnector,
+            connector,
             iosUri: (uri) => `zerion://wc?uri=${encodeURIComponent(uri)}`,
           }),
-        connector: walletConnector,
+        connector: () => walletConnector,
       },
     },
   };

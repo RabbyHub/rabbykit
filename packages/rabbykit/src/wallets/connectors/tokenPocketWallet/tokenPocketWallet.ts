@@ -1,43 +1,31 @@
-import { Chain, InjectedConnector } from "@wagmi/core";
-import type { InjectedConnectorOptions } from "@wagmi/core/connectors/injected";
-import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import { WalletResult } from "../../type";
 import {
   getMobileUri,
   getWalletConnectConnector,
-  getWalletConnectUri,
 } from "../../../helpers/getWalletConnectUri";
 import logo from "./logo.svg";
+import { injected, type WalletConnectParameters } from "@wagmi/connectors";
 import { getWalletProvider } from "../../../helpers/wallet";
 
-export interface TokenPocketWalletOptions {
-  projectId: string;
-  chains: Chain[];
-  walletConnectOptions?: Omit<WalletConnectConnector["options"], "projectId">;
-}
-
 export const tokenPocketWallet = ({
-  chains,
   projectId,
   ...options
-}: TokenPocketWalletOptions & InjectedConnectorOptions): WalletResult => {
+}: WalletConnectParameters): WalletResult => {
   const provider = getWalletProvider("isTokenPocket");
-  const isTokenPocketInjected = !!provider;
+  const installed = !!provider;
 
   const walletConnector = getWalletConnectConnector({
-    chains,
-    options: {
-      projectId,
-      showQrModal: false,
-      ...options.walletConnectOptions,
-    },
+    projectId,
+    showQrModal: false,
+    ...options,
   });
 
   return {
     id: "tokenPocket",
     name: "TokenPocket",
+    rdns: "pro.tokenpocket",
     logo,
-    installed: isTokenPocketInjected,
+    installed,
     downloadUrls: {
       chrome:
         "https://chrome.google.com/webstore/detail/tokenpocket/mfgccjchihfkkindfppnaooecgfneiii",
@@ -46,26 +34,29 @@ export const tokenPocketWallet = ({
       ios: "https://apps.apple.com/us/app/tp-global-wallet/id6444625622",
     },
     connector: {
-      browser: new InjectedConnector({
-        chains,
-        options: {
-          getProvider: () => provider,
-          ...options,
-        },
-      }),
+      browser: installed
+        ? () =>
+            injected({
+              // @ts-expect-error
+              target: () => ({
+                id: "tokenPocket",
+                name: "TokenPocket",
+                provider,
+              }),
+            })
+        : undefined,
       qrCode: {
-        getUri: () => getWalletConnectUri(walletConnector),
-        connector: walletConnector,
+        connector: () => walletConnector,
       },
       mobile: {
-        getUri: () =>
+        getUri: (connector) =>
           getMobileUri({
-            connector: walletConnector,
+            connector,
             iosUri: (uri) => `tpoutside://wc?uri=${encodeURIComponent(uri)}`,
             androidUri: (uri) =>
               `tpoutside://wc?uri=${encodeURIComponent(uri)}`,
           }),
-        connector: walletConnector,
+        connector: () => walletConnector,
       },
     },
   };

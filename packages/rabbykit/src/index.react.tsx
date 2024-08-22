@@ -1,24 +1,14 @@
 "use client";
-import { Chain, useConfig } from "wagmi";
 import { createModal } from "./index";
 import React, { useEffect, useRef, useState } from "react";
 import { useRKStore } from "./store";
+import { useConfig } from "wagmi";
 
 const Context: React.Context<ReturnType<typeof createModal> | undefined> =
   React.createContext<ReturnType<typeof createModal> | undefined>(undefined);
 
-export const RabbyKitProvider = ({
-  children,
-  projectId,
-  appName,
-  chains,
-}: React.PropsWithChildren<{
-  projectId: string;
-  appName: string;
-  chains: Chain[];
-}>) => {
+export const RabbyKitProvider = ({ children }: React.PropsWithChildren<{}>) => {
   const wagmiConfig = useConfig();
-
   if (React.useContext(Context)) {
     throw new Error(
       "Multiple, nested usages of RabbyKitProvider detected. Please use only one."
@@ -35,10 +25,7 @@ export const RabbyKitProvider = ({
   const rabbykitRef = useRef<ReturnType<typeof createModal>>();
   if (!rabbykitRef.current && wagmiConfig) {
     rabbykitRef.current = createModal({
-      chains,
       wagmi: wagmiConfig,
-      projectId,
-      appName,
     });
     setValue(rabbykitRef.current);
   }

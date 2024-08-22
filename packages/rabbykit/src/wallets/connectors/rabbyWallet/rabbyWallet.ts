@@ -1,39 +1,33 @@
-import {
-  Chain,
-  InjectedConnector,
-  InjectedConnectorOptions,
-} from "@wagmi/core";
-import logo from "./logo.svg";
 import { WalletResult } from "../../type";
-import { getWalletProvider, isRabby } from "../../../helpers/wallet";
+import logo from "./logo.svg";
+import { injected } from "@wagmi/connectors";
+import { getWalletProvider } from "../../../helpers/wallet";
 
-export interface RabbyWalletOptions {
-  chains: Chain[];
-}
-export const rabbyWallet = ({
-  chains,
-  ...options
-}: RabbyWalletOptions & InjectedConnectorOptions): WalletResult => {
+export const rabbyWallet = (): WalletResult => {
   const provider = getWalletProvider("isRabby");
-  const isInstalled = !!provider;
+  const installed = !!provider;
 
   return {
     id: "rabby",
     name: "Rabby Wallet",
+    rdns: "io.rabby",
     logo,
     downloadUrls: {
       chrome:
         "https://chrome.google.com/webstore/detail/rabby-wallet/acmacodkjbdgmoleebolmdjonilkdbch",
     },
-    installed: isInstalled,
+    installed,
     connector: {
-      browser: new InjectedConnector({
-        chains,
-        options: {
-          getProvider: () => provider,
-          ...options,
-        },
-      }),
+      browser: installed
+        ? () =>
+            injected({
+              target: () => ({
+                id: "rabby",
+                name: "Rabby Wallet",
+                provider,
+              }),
+            })
+        : undefined,
     },
   };
 };
