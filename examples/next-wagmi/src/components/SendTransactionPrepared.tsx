@@ -1,41 +1,53 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { parseEther, stringify } from 'viem'
+import { useState } from "react";
+import { parseEther, stringify } from "viem";
 import {
-  usePrepareSendTransaction,
+  // useSimulateContract,
   useSendTransaction,
-  useWaitForTransaction,
-} from 'wagmi'
+  useWaitForTransactionReceipt,
+} from "wagmi";
 
-import { useDebounce } from '../hooks/useDebounce'
+import { useDebounce } from "../hooks/useDebounce";
 
 export function SendTransactionPrepared() {
-  const [to, setTo] = useState('')
-  const debouncedTo = useDebounce(to)
+  const [to, setTo] = useState("");
+  const debouncedTo = useDebounce(to);
 
-  const [value, setValue] = useState('')
-  const debouncedValue = useDebounce(value)
+  const [value, setValue] = useState("");
+  const debouncedValue = useDebounce(value);
 
-  const { config } = usePrepareSendTransaction({
-    to: debouncedTo,
-    value: debouncedValue ? parseEther(value as `${number}`) : undefined,
-    enabled: Boolean(debouncedTo && debouncedValue),
-  })
-  const { data, error, isLoading, isError, sendTransaction } =
-    useSendTransaction(config)
+  // const { data: config } = useSimulateContract({
+  //   to: debouncedTo as any,
+  //   value: (debouncedValue
+  //     ? parseEther(value as `${number}`)
+  //     : undefined) as any,
+  //   enabled: Boolean(debouncedTo && debouncedValue),
+  // });
+  const {
+    data,
+    error,
+    isPending: isLoading,
+    isError,
+    sendTransaction,
+  } = useSendTransaction();
   const {
     data: receipt,
     isLoading: isPending,
     isSuccess,
-  } = useWaitForTransaction({ hash: data?.hash })
+  } = useWaitForTransactionReceipt({ hash: data });
 
   return (
     <>
       <form
         onSubmit={(e) => {
-          e.preventDefault()
-          sendTransaction?.()
+          e.preventDefault();
+          sendTransaction?.({
+            to: debouncedTo as any,
+            value: (debouncedValue
+              ? parseEther(value as `${number}`)
+              : parseEther("0")) as any,
+          });
         }}
       >
         <input
@@ -58,7 +70,7 @@ export function SendTransactionPrepared() {
       {isPending && <div>Transaction pending...</div>}
       {isSuccess && (
         <>
-          <div>Transaction Hash: {data?.hash}</div>
+          <div>Transaction Hash: {data}</div>
           <div>
             Transaction Receipt: <pre>{stringify(receipt, null, 2)}</pre>
           </div>
@@ -66,5 +78,5 @@ export function SendTransactionPrepared() {
       )}
       {isError && <div>Error: {error?.message}</div>}
     </>
-  )
+  );
 }

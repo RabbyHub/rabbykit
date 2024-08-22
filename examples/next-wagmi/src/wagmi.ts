@@ -1,45 +1,25 @@
-import { configureChains, createConfig } from "wagmi";
+import { getDefaultConfig } from "@rabby-wallet/rabbykit";
+import { createClient } from "viem";
+import { createConfig, http } from "wagmi";
 import { goerli, mainnet } from "wagmi/chains";
-import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
-import { InjectedConnector } from "wagmi/connectors/injected";
-import { MetaMaskConnector } from "wagmi/connectors/metaMask";
-import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
-
-import { publicProvider } from "wagmi/providers/public";
 
 const walletConnectProjectId = "58a22d2bc1c793fc31c117ad9ceba8d9";
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [mainnet, ...(process.env.NODE_ENV === "development" ? [goerli] : [])],
-  [publicProvider()]
-);
-
-export const supportChains = chains;
-
-export const config = createConfig({
-  autoConnect: true,
-  // connectors: [
-  //   new MetaMaskConnector({ chains }),
-  //   new CoinbaseWalletConnector({
-  //     chains,
-  //     options: {
-  //       appName: "wagmi",
-  //     },
-  //   }),
-  //   new WalletConnectConnector({
-  //     chains,
-  //     options: {
-  //       projectId: walletConnectProjectId,
-  //     },
-  //   }),
-  //   new InjectedConnector({
-  //     chains,
-  //     options: {
-  //       name: "Injected",
-  //       shimDisconnect: true,
-  //     },
-  //   }),
-  // ],
-  publicClient,
-  webSocketPublicClient,
+const chains = [
+  mainnet,
+  ...(process.env.NODE_ENV === "development" ? [goerli] : []),
+];
+const configParams = getDefaultConfig({
+  projectId: walletConnectProjectId,
+  appName: "RabbyKit next wagmi",
+  // @ts-expect-error
+  chains,
+  // @ts-expect-error
+  client({ chain }) {
+    // @ts-expect-error
+    return createClient({ chain, transport: http() });
+  },
 });
+
+// @ts-expect-error
+export const config = createConfig(configParams);

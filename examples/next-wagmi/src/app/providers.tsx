@@ -1,31 +1,23 @@
 "use client";
 
 import * as React from "react";
-import { WagmiConfig } from "wagmi";
-// import { createModal } from "@rabby-wallet/rabbykit";
+import { WagmiProvider } from "wagmi";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { config } from "../wagmi";
 
-// export let rabbyKit = () => {
-//   let kit: ReturnType<typeof createModal> | undefined;
-
-//   return (p: Parameters<typeof createModal>) => {
-//     if (!kit) {
-//       kit = createModal(...p);
-//     }
-//     return kit;
-//   };
-// };
+const queryClient = new QueryClient();
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = React.useState(false);
   React.useEffect(() => {
     setMounted(true);
-    // createModal({
-    //   wagmi: config,
-    //   appName: "test",
-    //   projectId: "58a22d2bc1c793fc31c117ad9ceba8d9",
-    // });
   }, []);
-  return <WagmiConfig config={config}>{mounted && children}</WagmiConfig>;
+  return (
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        {mounted && children}
+      </QueryClientProvider>
+    </WagmiProvider>
+  );
 }
