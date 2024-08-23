@@ -11,7 +11,8 @@ export const metaMaskWallet = ({
   projectId,
   ...options
 }: WalletConnectParameters): WalletResult => {
-  const isMetaMaskInjected = isMetaMask(window?.ethereum);
+  const isMetaMaskInjected =
+    typeof window !== "undefined" && isMetaMask(window?.ethereum);
 
   const walletConnector = getWalletConnectConnector({
     projectId,

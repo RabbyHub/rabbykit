@@ -21,5 +21,4 @@ const configParams = getDefaultConfig({
   },
 });
 
-// @ts-expect-error
 export const config = createConfig(configParams);

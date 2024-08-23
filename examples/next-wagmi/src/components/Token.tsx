@@ -1,13 +1,14 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { type Address, useToken } from 'wagmi'
+import { useState } from "react";
+import { useToken } from "wagmi";
+import { type Address } from "viem";
 
 export function Token() {
   const [address, setAddress] = useState<Address>(
-    '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984',
-  )
-  const { data, error, isError, isLoading, refetch } = useToken({ address })
+    "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984"
+  );
+  const { data, error, isError, isLoading, refetch } = useToken({ address });
 
   return (
     <>
@@ -28,5 +29,5 @@ export function Token() {
       {isLoading && <div>Fetching token...</div>}
       {isError && <div>Error: {error?.message}</div>}
     </>
-  )
+  );
 }

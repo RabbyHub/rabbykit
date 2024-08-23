@@ -70,7 +70,7 @@ export const coreWallet = ({
               target: () => ({
                 id: "core",
                 name: "Core",
-                provider: getCoreWalletInjectedProvider() || window.ethereum,
+                provider: getCoreWalletInjectedProvider(),
               }),
             })
         : undefined,

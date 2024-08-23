@@ -4,12 +4,10 @@ import { BaseError } from "viem";
 import { useAccount, useConfig, useConnect, useDisconnect } from "wagmi";
 import { useEffect, useRef } from "react";
 import { createModal } from "@rabby-wallet/rabbykit";
-import { supportChains } from "../wagmi";
 
 export function Connect() {
   const { connector, isConnected } = useAccount();
-  const { connect, connectors, error, isLoading, pendingConnector } =
-    useConnect();
+  const { error } = useConnect();
   const { disconnect } = useDisconnect();
 
   const rabbyKitRef = useRef<ReturnType<typeof createModal>>();
@@ -19,10 +17,7 @@ export function Connect() {
     if (!rabbyKitRef.current) {
       rabbyKitRef.current = createModal({
         showWalletConnect: true,
-        chains: supportChains,
-        wagmi: config,
-        appName: "test",
-        projectId: "58a22d2bc1c793fc31c117ad9ceba8d9",
+        wagmi: config as any,
         customButtons: [],
       });
     }
