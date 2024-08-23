@@ -13,9 +13,6 @@
     {#each walletConnectList as wallet}
       <WalletButton {wallet} type="qrCode" />
     {/each}
-    {#each walletConnectList as wallet}
-      <WalletButton {wallet} type="qrCode" />
-    {/each}
   </div>
 </Scroll>
 
