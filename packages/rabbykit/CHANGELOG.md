@@ -1,6 +1,14 @@
 # @rabby-wallet/rabbykit
 
-## 0.0.4
+## 0.0.6
+
+### Patch Changes
+
+- 2141cf1: Repeatedly rendering mobile listings
+- 2f796e3: chore: update trust logo
+- 04f1c87: style: align tab's label.
+
+## 0.0.5
 
 ### Patch Changes
 
