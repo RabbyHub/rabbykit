@@ -1,5 +1,12 @@
 # @rabby-wallet/rabbykit
 
+## 0.1.0-beta.1
+
+### Patch Changes
+
+- 33846c0: 0.1.0-beta.1
+- support wagmi v2
+
 ## 0.1.0-beta.0
 
 ### Minor Changes
