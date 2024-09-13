@@ -23,31 +23,31 @@ import {
   otherInjectedWallet,
   coinbaseWallet,
 } from "./connectors";
-import { Transport, Chain } from "viem";
+import { Chain, Transport } from "viem";
 
-type DefaultConfigProps<
-  chains extends readonly [Chain, ...Chain[]] = readonly [Chain, ...Chain[]],
-  transports extends Record<chains[number]["id"], Transport> = Record<
-    chains[number]["id"],
-    Transport
-  >
-> = {
-  projectId: string;
-  appName?: string;
-  appUrl?: string;
-  appDesc?: string;
-  appLogo?: string;
-} & CreateConfigParameters<chains, transports>;
+// type DefaultConfigProps<
+//   const chains extends readonly [Chain, ...Chain[]],
+//   transports extends Record<chains[number]["id"], Transport>
+// > = {
+//   projectId: string;
+//   appName?: string;
+//   appUrl?: string;
+//   appDesc?: string;
+//   appLogo?: string;
+// } & CreateConfigParameters<chains, transports>;
 
-export const getDefaultConfig = <
-  chains extends readonly [Chain, ...Chain[]] = readonly [Chain, ...Chain[]],
-  transports extends Record<chains[number]["id"], Transport> = Record<
-    chains[number]["id"],
-    Transport
-  >
+export function getDefaultConfig<
+  const chains extends readonly [Chain, ...Chain[]],
+  transports extends Record<chains[number]["id"], Transport>
 >(
-  config: DefaultConfigProps<chains, transports>
-) => {
+  config: {
+    projectId: string;
+    appName?: string;
+    appUrl?: string;
+    appDesc?: string;
+    appLogo?: string;
+  } & Partial<CreateConfigParameters<chains, transports>>
+) {
   const { appName, appUrl, appDesc, appLogo, projectId, ...others } = config;
 
   const hasAllMetadata = Boolean(appName && appUrl && appDesc && appLogo);
@@ -107,4 +107,4 @@ export const getDefaultConfig = <
     ...others,
     connectors: allConnectors,
   } as CreateConfigParameters<chains, transports>;
-};
+}

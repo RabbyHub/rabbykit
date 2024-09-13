@@ -7,14 +7,11 @@ import { createClient } from "viem";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export const config = createConfig(
-  // @ts-expect-error
   getDefaultConfig({
     projectId: "58a22d2bc1c793fc31c117ad9ceba8d9",
     appName: "RabbyKit",
     appLogo: "/logo-blue.svg",
-    // @ts-expect-error
     chains: [mainnet],
-    // @ts-expect-error
     client({ chain }) {
       // @ts-expect-error
       return createClient({ chain, transport: http() });
@@ -35,7 +32,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
     if (!initRef.current) {
       initRef.current = true;
       const rabbyKit = createModal({
-        // @ts-expect-error
         wagmi: config,
       });
       setKit(rabbyKit);
