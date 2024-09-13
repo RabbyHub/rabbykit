@@ -1,5 +1,11 @@
 # @rabby-wallet/rabbykit
 
+## 0.1.0-beta.2
+
+### Patch Changes
+
+- 1b30a79: fix getDefaultConfig type
+
 ## 0.1.0-beta.1
 
 ### Patch Changes
