@@ -5,7 +5,9 @@
 
   import svelteStore from "../../store/context";
   const walletConnectList =
-    $svelteStore.wallets?.filter((e) => !!e.connector.qrCode?.connector) || [];
+    $svelteStore.wallets
+      ?.filter((e) => !!e.connector.qrCode?.connector)
+      .sort((a, b) => a.name.localeCompare(b.name)) || [];
 </script>
 
 <Scroll title={$t("Select your Mobile Wallet")}>

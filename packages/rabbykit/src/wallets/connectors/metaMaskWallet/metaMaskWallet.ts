@@ -1,50 +1,30 @@
-import { Chain } from "@wagmi/core";
-import {
-  MetaMaskConnector,
-  type MetaMaskConnectorOptions,
-} from "@wagmi/core/connectors/metaMask";
+import { injected, type WalletConnectParameters } from "@wagmi/connectors";
 import { WalletResult } from "../../type";
-import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import {
-  getMobileUri,
   getWalletConnectConnector,
-  getWalletConnectLegacyConnector,
-  getWalletConnectUri,
+  getMobileUri,
 } from "../../../helpers/getWalletConnectUri";
 import { isMetaMask } from "../../../helpers/wallet";
 import logo from "./logo.svg";
 
-export interface MetaMaskWalletOptions {
-  projectId: string;
-  chains: Chain[];
-  walletConnectOptions?: Omit<WalletConnectConnector["options"], "projectId">;
-}
-
 export const metaMaskWallet = ({
-  chains,
   projectId,
   ...options
-}: MetaMaskWalletOptions & MetaMaskConnectorOptions): WalletResult => {
-  const isMetaMaskInjected = isMetaMask(window?.ethereum);
+}: WalletConnectParameters): WalletResult => {
+  const isMetaMaskInjected =
+    typeof window !== "undefined" && isMetaMask(window?.ethereum);
 
-  // const walletConnector = getWalletConnectConnector({
-  //   chains,
-  //   options: {
-  //     projectId,
-  //     showQrModal: false,
-  //     ...options?.walletConnectOptions,
-  //   },
-  // });
-
-  const walletConnector = getWalletConnectLegacyConnector({
-    chains,
+  const walletConnector = getWalletConnectConnector({
     projectId,
+    showQrModal: false,
+    ...options,
   });
 
   return {
     id: "metaMask",
     name: "MetaMask",
     mobileName: "MetaMask",
+    rdns: "io.metamask",
     logo,
     installed: isMetaMaskInjected,
     downloadUrls: {
@@ -56,25 +36,19 @@ export const metaMaskWallet = ({
       firefox: "https://addons.mozilla.org/firefox/addon/ether-metamask",
     },
     connector: {
-      browser: new MetaMaskConnector({
-        chains,
-        options: {
-          shimDisconnect: true,
-          UNSTABLE_shimOnConnectSelectAccount: true,
-          ...options,
-        },
-      }),
+      browser: isMetaMaskInjected
+        ? () => injected({ target: "metaMask" })
+        : undefined,
       qrCode: {
-        getUri: () => getWalletConnectUri(walletConnector),
-        connector: walletConnector,
+        connector: () => walletConnector,
       },
       mobile: {
-        getUri: () =>
+        getUri: (connector) =>
           getMobileUri({
-            connector: walletConnector,
+            connector,
             iosUri: (uri) => `metamask://wc?uri=${encodeURIComponent(uri)}`,
           }),
-        connector: walletConnector,
+        connector: () => walletConnector,
       },
     },
   };

@@ -1,6 +1,6 @@
 {
   "name": "@rabby-wallet/rabbykit",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -44,9 +44,9 @@
   "keywords": [],
   "license": "ISC",
   "peerDependencies": {
-    "@wagmi/core": ">=1",
-    "viem": ">=1",
-    "wagmi": ">=1"
+    "@wagmi/core": "2.x",
+    "viem": "2.x",
+    "wagmi": "2.x"
   },
   "dependencies": {
     "clsx": "^2.0.0",
@@ -81,7 +81,6 @@
     "@types/node": "^17.0.31",
     "@types/qrcode": "^1.5.2",
     "@types/react": "^18.0.9",
-    "@wagmi/core": "^1.4.2",
     "rollup": "^3.29.2",
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-dts": "^6.0.2",
@@ -92,7 +91,6 @@
     "rollup-plugin-typescript2": "^0.35.0",
     "rollup-swc-preserve-directives": "^0.5.0",
     "sass": "^1.69.0",
-    "svelte-preprocess": "^5.0.4",
-    "wagmi": "^1.4.2"
+    "svelte-preprocess": "^5.0.4"
   }
 }

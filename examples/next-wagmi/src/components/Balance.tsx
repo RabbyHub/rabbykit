@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import type { Address } from 'wagmi'
-import { useAccount, useBalance } from 'wagmi'
+import { useState } from "react";
+import { useAccount, useBalance } from "wagmi";
+import type { Address } from "viem";
 
 export function Balance() {
   return (
@@ -15,35 +15,34 @@ export function Balance() {
         <FindBalance />
       </div>
     </>
-  )
+  );
 }
 
 export function AccountBalance() {
-  const { address } = useAccount()
+  const { address } = useAccount();
   const { data, refetch } = useBalance({
     address,
-    watch: true,
-  })
+  });
 
   return (
     <div>
       {data?.formatted}
       <button onClick={() => refetch()}>refetch</button>
     </div>
-  )
+  );
 }
 
 export function FindBalance() {
-  const [address, setAddress] = useState('')
+  const [address, setAddress] = useState("");
   const { data, isLoading, refetch } = useBalance({
     address: address as Address,
-  })
+  });
 
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState("");
 
   return (
     <div>
-      Find balance:{' '}
+      Find balance:{" "}
       <input
         onChange={(e) => setValue(e.target.value)}
         placeholder="wallet address"
@@ -52,9 +51,9 @@ export function FindBalance() {
       <button
         onClick={() => (value === address ? refetch() : setAddress(value))}
       >
-        {isLoading ? 'fetching...' : 'fetch'}
+        {isLoading ? "fetching..." : "fetch"}
       </button>
       <div>{data?.formatted}</div>
     </div>
-  )
+  );
 }

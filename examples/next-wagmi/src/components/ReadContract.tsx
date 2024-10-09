@@ -1,10 +1,11 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { BaseError } from 'viem'
-import { type Address, useContractRead } from 'wagmi'
+import { useState } from "react";
+import { BaseError } from "viem";
+import { useContractRead } from "wagmi";
+import type { Address } from "viem";
 
-import { wagmiContractConfig } from './contracts'
+import { wagmiContractConfig } from "./contracts";
 
 export function ReadContract() {
   return (
@@ -15,14 +16,14 @@ export function ReadContract() {
         <TotalSupply />
       </div>
     </div>
-  )
+  );
 }
 
 function TotalSupply() {
   const { data, isRefetching, refetch } = useContractRead({
     ...wagmiContractConfig,
-    functionName: 'totalSupply',
-  })
+    functionName: "totalSupply",
+  });
 
   return (
     <div>
@@ -32,24 +33,24 @@ function TotalSupply() {
         onClick={() => refetch()}
         style={{ marginLeft: 4 }}
       >
-        {isRefetching ? 'loading...' : 'refetch'}
+        {isRefetching ? "loading..." : "refetch"}
       </button>
     </div>
-  )
+  );
 }
 
 function BalanceOf() {
   const [address, setAddress] = useState<Address>(
-    '0xa5cc3c03994DB5b0d9A5eEdD10CabaB0813678AC',
-  )
+    "0xa5cc3c03994DB5b0d9A5eEdD10CabaB0813678AC"
+  );
   const { data, error, isLoading, isSuccess } = useContractRead({
     ...wagmiContractConfig,
-    functionName: 'balanceOf',
+    functionName: "balanceOf",
     args: [address],
-    enabled: Boolean(address),
-  })
+    // enabled: Boolean(address),
+  });
 
-  const [value, setValue] = useState<string>(address)
+  const [value, setValue] = useState<string>(address);
 
   return (
     <div>
@@ -61,9 +62,9 @@ function BalanceOf() {
         value={value}
       />
       <button onClick={() => setAddress(value as Address)}>
-        {isLoading ? 'fetching...' : 'fetch'}
+        {isLoading ? "fetching..." : "fetch"}
       </button>
       {error && <div>{(error as BaseError).shortMessage}</div>}
     </div>
-  )
+  );
 }

@@ -1,5 +1,35 @@
 # @rabby-wallet/rabbykit
 
+## 0.1.0
+
+### Minor Changes
+
+- 6f708f7: support wagmi v2
+
+### Patch Changes
+
+- 33846c0: beta.1
+- 1b30a79: fix getDefaultConfig type
+
+## 0.1.0-beta.2
+
+### Patch Changes
+
+- 1b30a79: fix getDefaultConfig type
+
+## 0.1.0-beta.1
+
+### Patch Changes
+
+- 33846c0: 0.1.0-beta.1
+- support wagmi v2
+
+## 0.1.0-beta.0
+
+### Minor Changes
+
+- support wagmi v2
+
 ## 0.0.6
 
 ### Patch Changes

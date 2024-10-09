@@ -1,10 +1,6 @@
-import {
-  InjectedConnector,
-  type Chain,
-  type InjectedConnectorOptions,
-} from "@wagmi/core";
 import { WalletResult } from "../../type";
 import logo from "./logo.svg";
+import { injected } from "@wagmi/connectors";
 
 declare global {
   interface Window {
@@ -16,14 +12,7 @@ declare global {
   }
 }
 
-export interface EnkryptWalletOptions {
-  chains: Chain[];
-}
-
-export const enkryptWallet = ({
-  chains,
-  ...options
-}: EnkryptWalletOptions & InjectedConnectorOptions): WalletResult => {
+export const enkryptWallet = (): WalletResult => {
   const isEnkryptInjected =
     typeof window !== "undefined" &&
     typeof window.enkrypt !== "undefined" &&
@@ -31,6 +20,7 @@ export const enkryptWallet = ({
   return {
     id: "enkrypt",
     name: "Enkrypt Wallet",
+    rdns: "com.enkrypt",
     logo,
     installed: isEnkryptInjected ? true : undefined,
     downloadUrls: {
@@ -41,16 +31,17 @@ export const enkryptWallet = ({
       safari: "https://apps.apple.com/app/enkrypt-web3-wallet/id1640164309",
     },
     connector: {
-      browser: new InjectedConnector({
-        chains,
-        options: {
-          getProvider: () =>
-            isEnkryptInjected
-              ? window?.enkrypt?.providers?.ethereum
-              : undefined,
-          ...options,
-        },
-      }),
+      browser: isEnkryptInjected
+        ? () =>
+            injected({
+              target: "enkrypt",
+              // target: () => ({
+              //   id: "enkrypt",
+              //   name: "Enkrypt Wallet",
+              //   provider: window?.enkrypt?.providers?.ethereum,
+              // }),
+            })
+        : undefined,
     },
   };
 };

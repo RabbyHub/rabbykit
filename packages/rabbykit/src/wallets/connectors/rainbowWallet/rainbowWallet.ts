@@ -1,50 +1,30 @@
-import {
-  Chain,
-  InjectedConnector,
-  InjectedConnectorOptions,
-} from "@wagmi/core";
-import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import { WalletResult } from "../../type";
-import { getWalletProvider } from "../../../helpers/wallet";
 import {
   getMobileUri,
-  // getWalletConnectConnector,
-  getWalletConnectLegacyConnector,
-  getWalletConnectUri,
+  getWalletConnectConnector,
 } from "../../../helpers/getWalletConnectUri";
 import logo from "./logo.svg";
+import { injected, type WalletConnectParameters } from "@wagmi/connectors";
 
-export interface RainbowWalletOptions {
-  projectId: string;
-  chains: Chain[];
-  walletConnectOptions?: Omit<WalletConnectConnector["options"], "projectId">;
-}
+import { getWalletProvider } from "../../../helpers/wallet";
 
 export const rainbowWallet = ({
-  chains,
   projectId,
   ...options
-}: RainbowWalletOptions & InjectedConnectorOptions): WalletResult => {
+}: WalletConnectParameters): WalletResult => {
   const rainbowWalletProvider = getWalletProvider("isRainbow");
   const isRainbowInjected = !!rainbowWalletProvider;
 
-  // const walletConnector = getWalletConnectConnector({
-  //   chains,
-  //   options: {
-  //     projectId,
-  //     showQrModal: false,
-  //     ...options?.walletConnectOptions,
-  //   },
-  // });
-
-  const walletConnector = getWalletConnectLegacyConnector({
-    chains,
+  const walletConnector = getWalletConnectConnector({
     projectId,
+    showQrModal: false,
+    ...options,
   });
 
   return {
     id: "rainbow",
     name: "Rainbow",
+    rdns: "me.rainbow",
     logo,
     installed: isRainbowInjected,
     downloadUrls: {
@@ -59,25 +39,20 @@ export const rainbowWallet = ({
     },
     connector: {
       browser: isRainbowInjected
-        ? new InjectedConnector({
-            chains,
-            options: {
-              getProvider: () => rainbowWalletProvider,
-              ...options,
-            },
+        ? injected({
+            target: "rainbow",
           })
         : undefined,
       qrCode: {
-        getUri: () => getWalletConnectUri(walletConnector),
-        connector: walletConnector,
+        connector: () => walletConnector,
       },
       mobile: {
-        getUri: () =>
+        getUri: (connector) =>
           getMobileUri({
-            connector: walletConnector,
+            connector,
             iosUri: (uri) => `rainbow://wc?uri=${encodeURIComponent(uri)}`,
           }),
-        connector: walletConnector,
+        connector: () => walletConnector,
       },
     },
   };

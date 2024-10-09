@@ -1,68 +1,27 @@
-import type { Connector } from "@wagmi/core/connectors";
 import { isAndroid, isMobile } from "./browser";
-import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import { dequal } from "dequal";
-import { WalletConnectLegacyConnector } from "@wagmi/core/connectors/walletConnectLegacy";
-
-export let commonLegacyWalletConnect: WalletConnectLegacyConnector | undefined;
-export const getWalletConnectLegacyConnector = (params: {
-  projectId: string;
-  chains: WalletConnectConnector["chains"];
-  options?: Omit<WalletConnectConnector["options"], "projectId">;
-}) => {
-  if (!commonLegacyWalletConnect) {
-    return new WalletConnectLegacyConnector({
-      chains: params.chains,
-      options: {
-        //@ts-ignore
-        projectId: params.projectId,
-        bridge: "https://derelay.rabby.io",
-        qrcode: false,
-        ...params.options,
-      },
-    });
-  }
-  return commonLegacyWalletConnect;
-};
-
-export let commonWalletConnect: WalletConnectConnector | undefined;
-export const getCommonWalletConnect = (params: {
-  projectId: string;
-  chains: WalletConnectConnector["chains"];
-  options?: Omit<WalletConnectConnector["options"], "projectId">;
-}) => {
-  if (!commonWalletConnect) {
-    commonWalletConnect = new WalletConnectConnector({
-      chains: params.chains,
-      options: {
-        projectId: params.projectId,
-        showQrModal: false,
-        ...params.options,
-      },
-    });
-  }
-  return commonWalletConnect;
-};
+import { walletConnect } from "@wagmi/connectors";
+import type { WalletConnectParameters } from "@wagmi/connectors";
+import { CreateConnectorFn, type Connector } from "@wagmi/core";
 
 const allParams: any[] = [];
+
 export const sharedWalletConnectConnectors = new Map<
   Object,
-  WalletConnectConnector | WalletConnectLegacyConnector
+  CreateConnectorFn
 >();
 
-export const getWalletConnectConnector = (params: {
-  chains: WalletConnectConnector["chains"];
-  options: WalletConnectConnector["options"];
-}) => {
+export const getWalletConnectConnector = (params: WalletConnectParameters) => {
   const key = allParams.find((e) => dequal(params, e));
   if (key) {
     return sharedWalletConnectConnectors.get(key)!;
   }
   allParams.push(params);
-  const connector = new WalletConnectConnector(params);
 
-  sharedWalletConnectConnectors.set(params, connector);
-  return connector;
+  const wcConnector = walletConnect(params) as CreateConnectorFn;
+
+  sharedWalletConnectConnectors.set(params, wcConnector);
+  return wcConnector;
 };
 
 export async function getWalletConnectUri(
@@ -70,23 +29,14 @@ export async function getWalletConnectUri(
 ): Promise<string> {
   const provider = await connector.getProvider();
 
+  if (connector.type === "coinbaseWallet") {
+    // @ts-expect-error
+    return provider.qrUrl;
+  }
+
   return new Promise<string>((resolve, reject) => {
-    if (connector instanceof WalletConnectLegacyConnector) {
-      let id: NodeJS.Timer;
-      let retry = 0;
-      id = setInterval(() => {
-        if (retry >= 30) {
-          clearInterval(id);
-          return reject();
-        }
-        if (provider.connector.handshakeTopic) {
-          clearInterval(id);
-          return resolve(provider.connector.uri);
-        }
-        retry++;
-      }, 100);
-      return;
-    }
+    // Wagmi v2 doesn't have a return type for provider yet
+    // @ts-expect-error
     provider.once("display_uri", resolve);
     setTimeout(() => {
       return reject();

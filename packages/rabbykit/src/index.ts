@@ -1,36 +1,9 @@
-import {
-  watchAccount,
-  Config,
-  PublicClient,
-  WebSocketPublicClient,
-  Chain,
-} from "@wagmi/core";
-import { modalOpenSubscribe, syncAccount, syncMipd, useRKStore } from "./store";
-import {
-  rabbyWallet,
-  metaMaskWallet,
-  coinbaseWallet,
-  bitgetWallet,
-  coreWallet,
-  braveWallet,
-  otherInjectedWallet,
-  enkryptWallet,
-  frameWallet,
-  okxWallet,
-  coin98Wallet,
-  oneKeyWallet,
-  phantomWallet,
-  rainbowWallet,
-  tokenPocketWallet,
-  trustWallet,
-  xdefiWallet,
-  zerionWallet,
-  tahoWallet,
-  imTokenWallet,
-} from "./wallets/connectors";
+import { watchAccount, Config, reconnect, Transport } from "@wagmi/core";
+import { modalOpenSubscribe, syncAccount, useRKStore } from "./store";
+
 import { mount } from "./components/Kit";
 import "./helpers/i18n";
-import {
+import type {
   CustomButton,
   Disclaimer,
   Hook,
@@ -38,21 +11,18 @@ import {
   Theme,
   ThemeVariables,
 } from "./type";
-import {
-  getCommonWalletConnect,
-  getWalletConnectLegacyConnector,
-  sharedWalletConnectConnectors,
-} from "./helpers/getWalletConnectUri";
 import { SUPPORT_LANGUAGES } from "./helpers/i18n";
+import { Chain } from "@wagmi/core/chains";
+
+export { getDefaultConfig } from "./wallets/getDefaultConfig";
 
 export const createModal = <
-  TPublicClient extends PublicClient = PublicClient,
-  TWebSocketPublicClient extends WebSocketPublicClient = WebSocketPublicClient
+  chains extends readonly [Chain, ...Chain[]] = readonly [Chain, ...Chain[]],
+  transports extends Record<chains[number]["id"], Transport> = Record<
+    chains[number]["id"],
+    Transport
+  >
 >({
-  chains,
-  appName,
-  appLogo,
-  projectId,
   wagmi,
   disclaimer,
   customButtons,
@@ -65,11 +35,7 @@ export const createModal = <
   themeVariables,
   language = "en",
 }: {
-  appLogo?: string;
-  chains: Chain[];
-  appName: string;
-  projectId: string;
-  wagmi: Config<TPublicClient, TWebSocketPublicClient>;
+  wagmi: Config<chains, transports>;
   disclaimer?: Disclaimer;
   customButtons?: CustomButton[];
   showWalletConnect?: boolean;
@@ -77,58 +43,14 @@ export const createModal = <
   themeVariables?: ThemeVariables;
   language?: SUPPORT_LANGUAGES;
 } & Hook): RabbyKitModal => {
-  watchAccount(() => syncAccount());
-
-  const wallets = [
-    rabbyWallet({ chains }),
-    metaMaskWallet({ chains, projectId }),
-    coinbaseWallet({ chains, appName }),
-    bitgetWallet({ chains, projectId }),
-    coreWallet({ chains, projectId }),
-    braveWallet({ chains }),
-    enkryptWallet({ chains }),
-    frameWallet({ chains }),
-    okxWallet({ chains, projectId }),
-    coin98Wallet({ chains, projectId }),
-    oneKeyWallet({ chains }),
-    phantomWallet({ chains }),
-    rainbowWallet({ chains, projectId }),
-    tokenPocketWallet({ chains, projectId }),
-    trustWallet({ chains, projectId }),
-    xdefiWallet({ chains }),
-    zerionWallet({ chains, projectId }),
-    tahoWallet({ chains }),
-    imTokenWallet({ chains, projectId }),
-    otherInjectedWallet({ chains }),
-  ]
-    .filter((e) => {
-      if (e.id === "brave" && !e.installed) {
-        return false;
-      }
-      return true;
-    })
-    .sort((a, b) => a.name.localeCompare(b.name));
-
-  const allConnectors: any = [...sharedWalletConnectConnectors.values()];
-  wallets
-    .filter((e) => !!e.connector.browser?.ready && e.installed)
-    .forEach((e) => {
-      e.connector.browser && allConnectors.push(e.connector.browser);
-    });
-
-  wagmi.setConnectors([
-    ...(wagmi?.connectors || []),
-    getCommonWalletConnect({ chains, projectId }),
-    getWalletConnectLegacyConnector({ chains, projectId }),
-    ...allConnectors,
-  ]);
+  watchAccount(wagmi, {
+    onChange(account, prevAccount) {
+      syncAccount();
+    },
+  });
 
   useRKStore.setState({
-    appLogo,
-    appName,
     wagmi,
-    wallets,
-    chains,
     disclaimer,
     customButtons,
     showWalletConnect,
@@ -143,10 +65,8 @@ export const createModal = <
     language,
   });
 
-  syncMipd();
-
-  if (wagmi.args.autoConnect) {
-    wagmi.autoConnect();
+  if (true) {
+    reconnect(wagmi);
   }
 
   let init = false;

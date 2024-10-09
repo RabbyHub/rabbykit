@@ -1,4 +1,5 @@
-import { WindowProvider } from "@wagmi/core";
+// import { WindowProvider } from "@wagmi/connectors";
+import { EIP1193Provider } from "viem";
 import { WalletResult } from "../wallets/type";
 
 export function isMetaMask(ethereum?: (typeof window)["ethereum"]): boolean {
@@ -114,13 +115,13 @@ type InjectedProviderFlags = {
 };
 export const getWalletProvider = (
   flag: keyof InjectedProviderFlags
-): WindowProvider | undefined => {
+): EIP1193Provider | undefined => {
   if (typeof window === "undefined" || typeof window.ethereum === "undefined")
     return;
   const providers = window.ethereum.providers;
   return providers
     ? providers.find(
-        (provider: Record<string, WindowProvider>) => provider[flag]
+        (provider: Record<string, EIP1193Provider>) => provider[flag]
       )
     : window.ethereum[flag]
     ? window.ethereum

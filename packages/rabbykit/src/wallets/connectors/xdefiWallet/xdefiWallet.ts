@@ -1,10 +1,6 @@
-import {
-  Chain,
-  InjectedConnector,
-  InjectedConnectorOptions,
-} from "@wagmi/core";
 import { WalletResult } from "../../type";
 import logo from "./logo.svg";
+import { injected } from "@wagmi/connectors";
 
 declare global {
   interface Window {
@@ -12,36 +8,30 @@ declare global {
   }
 }
 
-export interface XDEFIWalletOptions {
-  chains: Chain[];
-}
-
-export const xdefiWallet = ({
-  chains,
-  ...options
-}: XDEFIWalletOptions & InjectedConnectorOptions): WalletResult => {
-  const isInstalled =
+export const xdefiWallet = (): WalletResult => {
+  const installed =
     typeof window !== "undefined" && typeof window?.xfi !== "undefined";
   return {
     id: "xdefi",
     name: "XDEFI Wallet",
+    rdns: "io.xdefi",
     logo,
-    installed: isInstalled,
+    installed,
     downloadUrls: {
       chrome:
         "https://chrome.google.com/webstore/detail/xdefi-wallet/hmeobnfnfcmdkdcmlblgagmfpfboieaf",
     },
     connector: {
-      browser: new InjectedConnector({
-        chains,
-        options: {
-          //@ts-ignore
-          getProvider: () => {
-            return isInstalled ? (window.xfi?.ethereum as any) : undefined;
-          },
-          ...options,
-        },
-      }),
+      browser: installed
+        ? () =>
+            injected({
+              target: () => ({
+                id: "xdefi",
+                name: "XDEFI Wallet",
+                provider: window.xfi?.ethereum as any,
+              }),
+            })
+        : undefined,
     },
   };
 };

@@ -1,24 +1,15 @@
-import { Chain, InjectedConnector } from "@wagmi/core";
-import type { InjectedConnectorOptions } from "@wagmi/core/connectors/injected";
-import { WalletConnectConnector } from "@wagmi/core/connectors/walletConnect";
 import { WalletResult } from "../../type";
 import {
   getMobileUri,
   getWalletConnectConnector,
-  getWalletConnectUri,
 } from "../../../helpers/getWalletConnectUri";
 import logo from "./logo.svg";
+import { injected, type WalletConnectParameters } from "@wagmi/connectors";
 
 declare global {
   interface Window {
     coin98Wallet: Window["ethereum"];
   }
-}
-
-export interface Coin98WalletOptions {
-  projectId: string;
-  chains: Chain[];
-  walletConnectOptions?: Omit<WalletConnectConnector["options"], "projectId">;
 }
 
 function getCoin98WalletInjectedProvider(): Window["ethereum"] {
@@ -62,23 +53,21 @@ function getCoin98WalletInjectedProvider(): Window["ethereum"] {
 }
 
 export const coin98Wallet = ({
-  chains,
   projectId,
   ...options
-}: Coin98WalletOptions & InjectedConnectorOptions): WalletResult => {
+}: WalletConnectParameters): WalletResult => {
   const isCoin98WalletInjected = Boolean(getCoin98WalletInjectedProvider());
 
   const walletConnector = getWalletConnectConnector({
-    chains,
-    options: {
-      projectId,
-      showQrModal: false,
-      ...options?.walletConnectOptions,
-    },
+    projectId,
+    showQrModal: false,
+    ...options,
   });
+
   return {
     id: "coin98",
     name: "Coin98 Wallet",
+    rdns: "coin98.com",
     logo,
     installed: isCoin98WalletInjected,
     downloadUrls: {
@@ -90,22 +79,20 @@ export const coin98Wallet = ({
     },
     connector: {
       browser: isCoin98WalletInjected
-        ? new InjectedConnector({
-            chains,
-            options: {
-              name: "Coin98 Wallet",
-              getProvider: getCoin98WalletInjectedProvider,
-              ...options,
-            },
-          })
+        ? () =>
+            injected({
+              target: () => ({
+                id: "coin98",
+                name: "Coin98 Wallet",
+                provider: getCoin98WalletInjectedProvider(),
+              }),
+            })
         : undefined,
       qrCode: {
-        getUri: () => getWalletConnectUri(walletConnector),
-        connector: walletConnector,
+        connector: () => walletConnector,
       },
       mobile: {
-        getUri: () => getMobileUri({ connector: walletConnector }),
-        connector: walletConnector,
+        connector: () => walletConnector,
       },
     },
   };

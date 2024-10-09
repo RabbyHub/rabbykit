@@ -1,35 +1,28 @@
-import { Chain } from "@wagmi/core";
-import { CoinbaseWalletConnector } from "@wagmi/core/connectors/coinbaseWallet";
 import logo from "./logo.svg";
 import { WalletResult } from "../../type";
 import { getWalletProvider } from "../../../helpers/wallet";
+import { CoinbaseWalletParameters } from "@wagmi/connectors";
 
-export interface CoinbaseWalletOptions {
-  appName: string;
-  chains: Chain[];
-}
+import { coinbaseWallet as coinbaseWalletConnectorFn } from "@wagmi/connectors";
 
-export const coinbaseWallet = ({
-  appName,
-  chains,
-  ...options
-}: CoinbaseWalletOptions): WalletResult<CoinbaseWalletConnector> => {
+export const coinbaseWallet = (
+  params: CoinbaseWalletParameters
+): WalletResult => {
   const isCoinbaseWalletInjected = !!getWalletProvider("isCoinbaseWallet");
 
-  const connector = new CoinbaseWalletConnector({
-    chains,
-    options: {
-      appName,
-      headlessMode: true,
-      ...options,
-    },
+  const coinbaseConnector = coinbaseWalletConnectorFn({
+    ...params,
+    headlessMode: true,
   });
 
-  const getUri = async () => (await connector.getProvider()).qrUrl as string;
+  const connector = () => coinbaseConnector;
+
+  // const getUri = async () => (await connector.getProvider()).qrUrl as string;
 
   return {
     id: "coinbase",
     name: "Coinbase Wallet",
+    rdns: "com.coinbase.wallet",
     logo,
     installed: isCoinbaseWalletInjected || undefined,
     downloadUrls: {
@@ -40,8 +33,8 @@ export const coinbaseWallet = ({
     },
     connector: {
       browser: connector,
-      mobile: { getUri, connector },
-      qrCode: { getUri, connector },
+      mobile: { connector },
+      qrCode: { connector },
     },
   };
 };

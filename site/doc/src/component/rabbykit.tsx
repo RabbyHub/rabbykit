@@ -1,21 +1,25 @@
 "use client";
-import { configureChains, createConfig } from "wagmi";
-import { goerli, mainnet } from "wagmi/chains";
+import { createConfig, WagmiProvider } from "wagmi";
+import { mainnet } from "wagmi/chains";
 import * as React from "react";
-import { WagmiConfig } from "wagmi";
-import { publicProvider } from "wagmi/providers/public";
-import { createModal } from "@rabby-wallet/rabbykit";
+import { createModal, getDefaultConfig } from "@rabby-wallet/rabbykit";
+import { createClient } from "viem";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [mainnet, ...(process.env.NODE_ENV === "development" ? [goerli] : [])],
-  [publicProvider()]
+export const config = createConfig(
+  getDefaultConfig({
+    projectId: "58a22d2bc1c793fc31c117ad9ceba8d9",
+    appName: "RabbyKit",
+    appLogo: "/logo-blue.svg",
+    chains: [mainnet],
+    client({ chain }) {
+      // @ts-expect-error
+      return createClient({ chain, transport: http() });
+    },
+  })
 );
 
-const config = createConfig({
-  autoConnect: true,
-  publicClient,
-  webSocketPublicClient,
-});
+const queryClient = new QueryClient();
 
 export const RabbykitContext = React.createContext<
   ReturnType<typeof createModal>
@@ -28,22 +32,20 @@ export function Providers({ children }: { children: React.ReactNode }) {
     if (!initRef.current) {
       initRef.current = true;
       const rabbyKit = createModal({
-        chains,
         wagmi: config,
-        projectId: "58a22d2bc1c793fc31c117ad9ceba8d9",
-        appName: "RabbyKit",
-        appLogo: "/logo-blue.svg",
       });
       setKit(rabbyKit);
     }
   }, []);
   return (
-    <WagmiConfig config={config}>
-      {kit && (
-        <RabbykitContext.Provider value={kit}>
-          {children}
-        </RabbykitContext.Provider>
-      )}
-    </WagmiConfig>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        {kit && (
+          <RabbykitContext.Provider value={kit}>
+            {children}
+          </RabbykitContext.Provider>
+        )}
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }

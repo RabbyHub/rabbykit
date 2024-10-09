@@ -1,26 +1,26 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import type { Log } from 'viem'
-import { useContractEvent } from 'wagmi'
+import { useState } from "react";
+import type { Log } from "viem";
+import { useWatchContractEvent } from "wagmi";
 
-import { usdcContractConfig, wagmiContractConfig } from './contracts'
-import { stringify } from '../utils/stringify'
+import { usdcContractConfig, wagmiContractConfig } from "./contracts";
+import { stringify } from "../utils/stringify";
 
 export function WatchContractEvents() {
-  const [usdcLogs, setUsdcLogs] = useState<Log[]>([])
-  useContractEvent({
+  const [usdcLogs, setUsdcLogs] = useState<Log[]>([]);
+  useWatchContractEvent({
     ...usdcContractConfig,
-    eventName: 'Transfer',
-    listener: (logs) => setUsdcLogs((x) => [...x, ...logs]),
-  })
+    eventName: "Transfer",
+    onLogs: (logs) => setUsdcLogs((x) => [...x, ...logs]),
+  });
 
-  const [wagmiLogs, setWagmiLogs] = useState<Log[]>([])
-  useContractEvent({
+  const [wagmiLogs, setWagmiLogs] = useState<Log[]>([]);
+  useWatchContractEvent({
     ...wagmiContractConfig,
-    eventName: 'Transfer',
-    listener: (logs) => setWagmiLogs((x) => [...x, ...logs]),
-  })
+    eventName: "Transfer",
+    onLogs: (logs) => setWagmiLogs((x) => [...x, ...logs]),
+  });
 
   return (
     <div>
@@ -29,7 +29,7 @@ export function WatchContractEvents() {
         {usdcLogs
           .reverse()
           .map((log) => stringify(log))
-          .join('\n\n\n\n')}
+          .join("\n\n\n\n")}
       </details>
 
       <details>
@@ -37,8 +37,8 @@ export function WatchContractEvents() {
         {wagmiLogs
           .reverse()
           .map((log) => stringify(log))
-          .join('\n\n\n\n')}
+          .join("\n\n\n\n")}
       </details>
     </div>
-  )
+  );
 }

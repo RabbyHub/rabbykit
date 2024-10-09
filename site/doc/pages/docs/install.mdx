@@ -3,56 +3,52 @@ import { Steps } from "nextra/components";
 <Steps>
 ### Installation
 
-Install RabbyKit and its peer dependencies ([@wagmi/core](https://1.x.wagmi.sh/core/getting-started) and [viem](https://v1.viem.sh/)).
+Install RabbyKit and its peer dependencies ([@wagmi/core](https://wagmi.sh/core/getting-started) and [viem](https://viem.sh/)).
 
 ```sh npm2yarn
-npm i @rabby-wallet/rabbykit @wagmi/core@1 viem@1
+npm i @rabby-wallet/rabbykit @wagmi/core viem@2.x
 ```
 
 ### API Keys
 
 1. RabbyKit utilises [https://walletconnect.com/]()'s SDK to help with connecting wallets. WalletConnect 2.0 requires a projectId which you can create quickly and easily for free over at [WalletConnect Cloud](https://cloud.walletconnect.com/).
-1. [wagmi](https://1.x.wagmi.sh/core/providers/public#return-value) recommends using other provider packages such as [Infura](https://www.infura.io) or [Alchemy](https://www.alchemy.com/) depending on the specific network requirements of your dApp. These providers offer reliable infrastructure and can be chosen based on your specific needs.
+1. [wagmi](https://wagmi.sh/react/api/transports/http#usage) recommends using other provider packages such as [Infura](https://www.infura.io) or [Alchemy](https://www.alchemy.com/) depending on the specific network requirements of your dApp. These providers offer reliable infrastructure and can be chosen based on your specific needs.
 
 ### Config
 
 create a config using wagmi's createConfig and create a RabbyKit config;
 
 ```ts filename="app.ts"
-import { configureChains, createConfig } from "@wagmi/core";
-import { mainnet, arbitrum, bsc, optimism, polygon } from "@wagmi/core/chains";
-import { publicProvider } from "@wagmi/core/providers/public";
-import { alchemyProvider } from "@wagmi/core/providers/alchemy";
-import { infuraProvider } from "@wagmi/core/providers/infura";
-import { createModal } from "@rabby-wallet/rabbykit";
+import { createModal, getDefaultConfig } from "@rabby-wallet/rabbykit";
+import { createConfig, http } from "@wagmi/core";
+import { arbitrum, bsc, mainnet, optimism, polygon } from "@wagmi/core/chains";
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [mainnet, arbitrum, bsc, optimism, polygon],
-  [
-    alchemyProvider({ apiKey: "yourAlchemyApiKey" }),
-    infuraProvider({ apiKey: "yourInfuraApiKey" }),
-    publicProvider(),
-  ]
+export const config = createConfig(
+  getDefaultConfig({
+    appName: "RabbyKit example",
+    projectId: "58a22d2bc1c793fc31c117ad9ceba8d9",
+    chains: [mainnet, arbitrum, bsc, optimism, polygon],
+    transports: {
+      [mainnet.id]: http(),
+      [arbitrum.id]: http(),
+      [bsc.id]: http(),
+      [optimism.id]: http(),
+      [polygon.id]: http(),
+    },
+  })
 );
 
-const config = createConfig({
-  autoConnect: true,
-  publicClient,
-  webSocketPublicClient,
-});
-
-export const rabbyKit = createModal({
-  chains,
+export const rabbykit = createModal({
   wagmi: config,
-  projectId: "yourProjectId",
-  appName: "RabbyKit",
 });
 
 rabbykit.open();
 
-console.log("current rabbykit modal open status:", rabbyKit.getOpenState());
+console.log("current rabbykit modal open status:", rabbykit.getOpenState());
 
 rabbykit.close();
 ```
+
+###
 
 </Steps>

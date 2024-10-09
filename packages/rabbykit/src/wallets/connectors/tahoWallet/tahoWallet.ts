@@ -1,14 +1,6 @@
-import {
-  Chain,
-  InjectedConnector,
-  InjectedConnectorOptions,
-} from "@wagmi/core";
 import { WalletResult } from "../../type";
 import logo from "./logo.svg";
-
-export interface TahoWalletOptions {
-  chains: Chain[];
-}
+import { injected } from "@wagmi/connectors";
 
 declare global {
   interface Window {
@@ -16,34 +8,31 @@ declare global {
   }
 }
 
-export const tahoWallet = ({
-  chains,
-  ...options
-}: TahoWalletOptions & InjectedConnectorOptions): WalletResult => ({
-  id: "taho",
-  name: "Taho",
-  logo,
-  downloadUrls: {
-    chrome:
-      "https://chrome.google.com/webstore/detail/taho/eajafomhmkipbjmfmhebemolkcicgfmd",
-  },
-  installed:
+export const tahoWallet = (): WalletResult => {
+  const installed =
     typeof window !== "undefined" &&
     typeof window.tally !== "undefined" &&
-    window["tally"]
-      ? true
-      : undefined,
-  connector: {
-    browser: new InjectedConnector({
-      chains,
-      options: {
-        getProvider: () => {
-          const getTaho = (tally?: any) => (tally?.isTally ? tally : undefined);
-          if (typeof window === "undefined") return;
-          return getTaho(window.tally);
-        },
-        ...options,
-      },
-    }),
-  },
-});
+    !!window["tally"];
+  return {
+    id: "taho",
+    name: "Taho",
+    logo,
+    downloadUrls: {
+      chrome:
+        "https://chrome.google.com/webstore/detail/taho/eajafomhmkipbjmfmhebemolkcicgfmd",
+    },
+    installed,
+    connector: {
+      browser: installed
+        ? () =>
+            injected({
+              target: () => ({
+                id: "taho",
+                name: "Taho",
+                provider: window["tally"],
+              }),
+            })
+        : undefined,
+    },
+  };
+};

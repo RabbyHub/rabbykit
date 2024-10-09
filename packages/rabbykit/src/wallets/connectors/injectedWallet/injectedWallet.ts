@@ -1,21 +1,10 @@
-import {
-  Chain,
-  InjectedConnector,
-  InjectedConnectorOptions,
-} from "@wagmi/core";
-
 import { WalletResult } from "../../type";
+import { getWalletConnectConnector } from "../../../helpers/getWalletConnectUri";
 import logo from "./logo.svg";
-
-interface otherInjectedWalletOptions {
-  chains?: Chain[];
-}
+import { injected, type WalletConnectParameters } from "@wagmi/connectors";
 
 export const otherInjectedWalletId = "rabbykit_other_injected_wallet";
-export const otherInjectedWallet = ({
-  chains,
-  ...options
-}: otherInjectedWalletOptions & InjectedConnectorOptions): WalletResult => {
+export const otherInjectedWallet = (): WalletResult => {
   const isInjected =
     typeof window !== "undefined" && typeof window.ethereum !== "undefined";
 
@@ -26,17 +15,14 @@ export const otherInjectedWallet = ({
     installed: isInjected,
     downloadUrls: {},
     connector: {
-      browser: new InjectedConnector({
-        chains,
-        options: {
-          shimDisconnect: true,
-          name: (detectedName) => {
-            return typeof detectedName === "string"
-              ? detectedName
-              : detectedName.join(",");
-          },
-        },
-      }),
+      browser: () =>
+        injected({
+          target: () => ({
+            id: otherInjectedWalletId,
+            name: "Other Wallet",
+            provider: window.ethereum,
+          }),
+        }),
     },
   };
 };

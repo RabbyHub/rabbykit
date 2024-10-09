@@ -1,41 +1,46 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { BaseError } from 'viem'
+import { useState } from "react";
+import { BaseError } from "viem";
 import {
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
-} from 'wagmi'
+  useWriteContract,
+  useSimulateContract,
+  useWaitForTransactionReceipt,
+} from "wagmi";
 
-import { wagmiContractConfig } from './contracts'
-import { useDebounce } from '../hooks/useDebounce'
-import { stringify } from '../utils/stringify'
+import { wagmiContractConfig } from "./contracts";
+import { useDebounce } from "../hooks/useDebounce";
+import { stringify } from "../utils/stringify";
 
 export function WriteContractPrepared() {
-  const [tokenId, setTokenId] = useState('')
-  const debouncedTokenId = useDebounce(tokenId)
+  const [tokenId, setTokenId] = useState("");
+  const debouncedTokenId = useDebounce(tokenId);
 
-  const { config } = usePrepareContractWrite({
-    ...wagmiContractConfig,
-    functionName: 'mint',
-    enabled: Boolean(debouncedTokenId),
-    args: [BigInt(debouncedTokenId)],
-  })
-  const { write, data, error, isLoading, isError } = useContractWrite(config)
+  const {
+    writeContract: write,
+    data,
+    error,
+    isPending: isLoading,
+    isError,
+  } = useWriteContract();
   const {
     data: receipt,
     isLoading: isPending,
     isSuccess,
-  } = useWaitForTransaction({ hash: data?.hash })
+  } = useWaitForTransactionReceipt({ hash: data });
 
   return (
     <>
       <h3>Mint a wagmi</h3>
       <form
         onSubmit={(e) => {
-          e.preventDefault()
-          write?.()
+          e.preventDefault();
+          write?.({
+            ...wagmiContractConfig,
+            functionName: "mint",
+            // enabled: Boolean(debouncedTokenId),
+            args: [BigInt(debouncedTokenId)],
+          });
         }}
       >
         <input
@@ -51,7 +56,7 @@ export function WriteContractPrepared() {
       {isPending && <div>Transaction pending...</div>}
       {isSuccess && (
         <>
-          <div>Transaction Hash: {data?.hash}</div>
+          <div>Transaction Hash: {data}</div>
           <div>
             Transaction Receipt: <pre>{stringify(receipt, null, 2)}</pre>
           </div>
@@ -59,5 +64,5 @@ export function WriteContractPrepared() {
       )}
       {isError && <div>{(error as BaseError)?.shortMessage}</div>}
     </>
-  )
+  );
 }

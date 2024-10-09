@@ -2,31 +2,21 @@
   import { _ as t } from "svelte-i18n";
 
   import useStore, { rabbykitConnect } from "../../store/context";
-  import { InjectedConnector } from "@wagmi/core";
+  import { injected } from "@wagmi/core";
+  // import { InjectedConnector } from "@wagmi/core";
 
   const browserList = $useStore.wallets || [];
 
-  const readyBrowserList = browserList.filter(
-    (w) => w.installed && !!w.connector.browser?.ready
-  );
+  const readyBrowserList = browserList.filter((w) => w.installed);
 
   let isConnecting = false;
 
   let canConnect = readyBrowserList.length > 0 || !!window.ethereum;
 
+  const injectedPlaceholder = () => injected();
+
   const mobileConnector =
-    readyBrowserList[0]?.connector.browser ||
-    new InjectedConnector({
-      chains: $useStore.chains,
-      options: {
-        shimDisconnect: true,
-        name: (detectedName) => {
-          return typeof detectedName === "string"
-            ? detectedName
-            : detectedName.join(",");
-        },
-      },
-    });
+    readyBrowserList[0]?.connector.browser || injectedPlaceholder;
 
   function copyDappUrl() {
     window.navigator.clipboard.writeText(window.location.href);
@@ -36,7 +26,7 @@
     if (isConnecting) return;
     isConnecting = true;
     if (mobileConnector) {
-      rabbykitConnect({ connector: mobileConnector })
+      rabbykitConnect({ connector: mobileConnector() })
         .then(() => {
           $useStore.closeModal();
         })
