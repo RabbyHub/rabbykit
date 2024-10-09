@@ -4,6 +4,7 @@
     "title": "Overview"
   },
   "introduction": "Introduction",
+  "migrate": "Migrate",
   "-- Getting Started": {
     "type": "separator",
     "title": "Getting Started"

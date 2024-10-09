@@ -1,0 +1,50 @@
+## Migrate
+
+### 0.1.0 Breaking changes
+
+    The [wagmi](https://wagmi.sh/core/getting-started) and [viem](https://viem.sh) peer dependencies have reached 2.x.x with breaking changes.
+
+#### 1. Upgrade RabbyKit, `@wagmi/core`, and `viem` to their latest versions
+
+```sh npm2yarn
+npm i @rabby-wallet/rabbykit @wagmi/core viem@2.x @wagmi/connectors
+```
+
+#### 2. Upgrade your RabbyKit and Wagmi configurations
+
+```js
+import { createModal, getDefaultConfig } from "@rabby-wallet/rabbykit";
+import { createConfig, http } from "@wagmi/core";
+import { arbitrum, bsc, mainnet, optimism, polygon } from "@wagmi/core/chains";
+
+export const config = createConfig(
+  getDefaultConfig({
+    appName: "RabbyKit example",
+    projectId: "58a22d2bc1c793fc31c117ad9ceba8d9",
+    chains: [mainnet, arbitrum, bsc, optimism, polygon],
+    transports: {
+      [mainnet.id]: http(),
+      [arbitrum.id]: http(),
+      [bsc.id]: http(),
+      [optimism.id]: http(),
+      [polygon.id]: http(),
+    },
+  })
+);
+
+export const rabbykit = createModal({
+  wagmi: config,
+});
+
+rabbykit.open();
+
+console.log("current rabbykit modal open status:", rabbykit.getOpenState());
+
+rabbykit.close();
+```
+
+#### 3. `wagmi` migrate
+
+- [`@wagmi/core` v2 Migration Guide](https://wagmi.sh/core/guides/migrate-from-v1-to-v2)
+- [`wagmi` Migration Guide](https://wagmi.sh/react/guides/migrate-from-v1-to-v2)
+- [`viem` Migration Guide](https://viem.sh/docs/migration-guide.html#_2-x-x-breaking-changes)
