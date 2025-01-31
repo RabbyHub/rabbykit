@@ -1,5 +1,11 @@
 # @rabby-wallet/rabbykit
 
+## 0.1.1
+
+### Patch Changes
+
+- 6de243e: Errors and app crash with Rainbow wallet extension
+
 ## 0.1.0
 
 ### Minor Changes
