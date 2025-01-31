@@ -39,9 +39,10 @@ export const rainbowWallet = ({
     },
     connector: {
       browser: isRainbowInjected
-        ? injected({
-            target: "rainbow",
-          })
+        ? () =>
+            injected({
+              target: "rainbow",
+            })
         : undefined,
       qrCode: {
         connector: () => walletConnector,
