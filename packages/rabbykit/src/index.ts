@@ -101,5 +101,8 @@ export const createModal = <
     getLanguage: () => useRKStore.getState().language,
     setLanguage: (language: SUPPORT_LANGUAGES) =>
       useRKStore.setState({ language }),
+
+    setFooterContent: (params: { node?: HTMLElement; className?: string }) =>
+      useRKStore.getState().setFooterContent(params),
   };
 };

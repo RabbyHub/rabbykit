@@ -73,6 +73,10 @@ interface Store<
 
   setDisclaimer: RabbyKitModal["setDisclaimer"];
   setCustomButtons: RabbyKitModal["setCustomButtons"];
+
+  footerContent?: HTMLElement;
+  footerClassName?: string;
+  setFooterContent: RabbyKitModal["setFooterContent"];
 }
 
 export const useRKStore = createStore<Store<any, any>>()(
@@ -113,6 +117,17 @@ export const useRKStore = createStore<Store<any, any>>()(
 
     setCustomButtons: (customButtons?: CustomButton[]) => {
       set({ customButtons });
+    },
+
+    setFooterContent: ({
+      node,
+      className,
+    }: {
+      node?: HTMLElement;
+      className?: string;
+    }) => {
+      console.log("footerContent", node);
+      set({ footerContent: node, footerClassName: className });
     },
   }))
 );
