@@ -1,16 +1,40 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { _ as t } from "svelte-i18n";
+  import useStore from "../../store/context";
   let className = "";
+  let footerClassName = "";
+  let contentContainer: HTMLElement;
+
+  onMount(() => {
+    contentContainer.innerHTML = "";
+    footerClassName = "";
+    if ($useStore.footerContent) {
+      footerClassName = $useStore.footerClassName || "";
+      contentContainer.appendChild($useStore.footerContent);
+    }
+  });
+
   export { className as class };
 </script>
 
+<div
+  class={`outer-slot ${footerClassName || "hidden"}`}
+  bind:this={contentContainer}
+></div>
 <div class={`tip ${className}`}>
-  <a href="https://rabbykit.rabby.io" target="_blank" rel="noreferrer"
-    >{$t("Powered by RabbyKit")}</a
+  <a
+    part="powered-by"
+    href="https://rabbykit.rabby.io"
+    target="_blank"
+    rel="noreferrer">{$t("Powered by RabbyKit")}</a
   >
 </div>
 
 <style lang="scss">
+  .hidden {
+    display: none;
+  }
   .tip {
     display: block;
 

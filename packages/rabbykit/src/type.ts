@@ -51,4 +51,8 @@ export type RabbyKitModal = {
 
   getLanguage: () => SUPPORT_LANGUAGES;
   setLanguage: (language: SUPPORT_LANGUAGES) => void;
+  setFooterContent: (params: {
+    node?: HTMLElement;
+    className?: string;
+  }) => void;
 };
