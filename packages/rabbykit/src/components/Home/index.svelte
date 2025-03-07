@@ -85,8 +85,6 @@
       left: 0;
       bottom: 24px;
       width: 100%;
-      display: flex;
-      justify-content: center;
     }
   }
 </style>
