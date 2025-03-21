@@ -1,5 +1,11 @@
 # @rabby-wallet/rabbykit
 
+## 0.1.2
+
+### Patch Changes
+
+- 141b989: support custom footer
+
 ## 0.1.1
 
 ### Patch Changes
