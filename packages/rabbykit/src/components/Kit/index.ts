@@ -15,7 +15,7 @@ export const mount = () => {
     mountNode = document.createElement("rabby-kit");
     mountNode.setAttribute("data-rk-mounted", "");
     mountNode.attachShadow({ mode: "open" });
-    document.body.insertAdjacentElement("afterend", mountNode!);
+    document.body.insertAdjacentElement("beforeend", mountNode!);
   }
 
   // handle refresh

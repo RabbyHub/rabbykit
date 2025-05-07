@@ -22,6 +22,7 @@ import {
   imTokenWallet,
   otherInjectedWallet,
   coinbaseWallet,
+  binanceWallet,
 } from "./connectors";
 import { Chain, Transport } from "viem";
 
@@ -63,6 +64,7 @@ export function getDefaultConfig<
 
   const wallets = [
     rabbyWallet(),
+    binanceWallet(),
     metaMaskWallet({ projectId, metadata }),
     coinbaseWallet({ appName, appLogoUrl: appLogo }),
     bitgetWallet({ projectId, metadata }),

@@ -49,6 +49,7 @@
     "wagmi": "2.x"
   },
   "dependencies": {
+    "@binance/w3w-wagmi-connector-v2": "^1.2.5",
     "clsx": "^2.0.0",
     "dequal": "^2.0.3",
     "mipd": "^0.0.5",
