@@ -1,5 +1,12 @@
 # @rabby-wallet/rabbykit
 
+## 0.1.2-next.0
+
+### Patch Changes
+
+- 5752726: add binance provider
+- 141b989: support custom footer
+
 ## 0.1.1
 
 ### Patch Changes
