@@ -1,5 +1,12 @@
 # @rabby-wallet/rabbykit
 
+## 0.1.2-beta.0
+
+### Patch Changes
+
+- fix injected wallet name
+- 141b989: support custom footer
+
 ## 0.1.1
 
 ### Patch Changes

@@ -36,7 +36,7 @@ export const otherInjectedWallet = (): WalletResult => {
             }
             return {
               id: otherInjectedWalletId,
-              name: detectedName,
+              name: detectedName || "Other Wallet",
               provider: window.ethereum,
             };
           },
