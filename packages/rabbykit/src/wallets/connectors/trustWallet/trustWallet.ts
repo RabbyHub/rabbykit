@@ -16,7 +16,7 @@ declare global {
 function getTrustWalletInjectedProvider(): Window["ethereum"] {
   const isTrustWallet = (ethereum: NonNullable<Window["ethereum"]>) => {
     // Identify if Trust Wallet injected provider is present.
-    const trustWallet = !!ethereum.isTrust;
+    const trustWallet = !!ethereum.isTrust && !ethereum.isSafePal;
 
     return trustWallet;
   };

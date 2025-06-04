@@ -1,56 +1,5 @@
 import { EIP1193Provider } from "viem";
-
-type InjectedProviderFlags = {
-  isApexWallet?: true;
-  isAvalanche?: true;
-  isBackpack?: true;
-  isBifrost?: true;
-  isBitKeep?: true;
-  isBitski?: true;
-  isBlockWallet?: true;
-  isBraveWallet?: true;
-  isCoin98?: true;
-  isCoinbaseWallet?: true;
-  isDawn?: true;
-  isDefiant?: true;
-  isDesig?: true;
-  isEnkrypt?: true;
-  isExodus?: true;
-  isFordefi?: true;
-  isFrame?: true;
-  isFrontier?: true;
-  isGamestop?: true;
-  isHaloWallet?: true;
-  isHaqqWallet?: true;
-  isHyperPay?: true;
-  isImToken?: true;
-  isKuCoinWallet?: true;
-  isMathWallet?: true;
-  isMetaMask?: true;
-  isNovaWallet?: true;
-  isOkxWallet?: true;
-  isOKExWallet?: true;
-  isOneInchAndroidWallet?: true;
-  isOneInchIOSWallet?: true;
-  isOpera?: true;
-  isPhantom?: true;
-  isPortal?: true;
-  isRabby?: true;
-  isRainbow?: true;
-  isSafePal?: true;
-  isStatus?: true;
-  isSubWallet?: true;
-  isTalisman?: true;
-  isTally?: true;
-  isTokenPocket?: true;
-  isTokenary?: true;
-  isTrust?: true;
-  isTrustWallet?: true;
-  isTTWallet?: true;
-  isXDEFI?: true;
-  isZeal?: true;
-  isZerion?: true;
-};
+import { InjectedProviderFlags } from "./wallet";
 
 type InjectedProviders = InjectedProviderFlags & {
   isMetaMask: true;
