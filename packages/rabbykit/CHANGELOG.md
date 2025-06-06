@@ -1,5 +1,11 @@
 # @rabby-wallet/rabbykit
 
+## 0.1.2-beta.2
+
+### Patch Changes
+
+- 1941eff: fix: isMetamask isOneKey
+
 ## 0.1.2-beta.1
 
 ### Patch Changes

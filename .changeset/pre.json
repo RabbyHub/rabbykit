@@ -8,6 +8,7 @@
     "doc": "1.0.6"
   },
   "changesets": [
+    "beige-items-obey",
     "funny-peaches-call",
     "twelve-houses-laugh",
     "wicked-bugs-invite"
