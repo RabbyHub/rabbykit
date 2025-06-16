@@ -1,0 +1,16 @@
+{
+  "mode": "pre",
+  "tag": "beta",
+  "initialVersions": {
+    "next-wagmi": "0.0.4",
+    "vite-vanilla-ts": "0.0.3",
+    "@rabby-wallet/rabbykit": "0.1.1",
+    "doc": "1.0.6"
+  },
+  "changesets": [
+    "beige-items-obey",
+    "funny-peaches-call",
+    "twelve-houses-laugh",
+    "wicked-bugs-invite"
+  ]
+}

@@ -12,15 +12,20 @@ export function isMetaMask(ethereum?: (typeof window)["ethereum"]): boolean {
     return false;
   if (ethereum.isApexWallet) return false;
   if (ethereum.isAvalanche) return false;
+  if (ethereum.isBackpack) return false;
+  if (ethereum.isBifrost) return false;
   if (ethereum.isBitKeep) return false;
+  if (ethereum.isBitski) return false;
   if (ethereum.isBlockWallet) return false;
   if (ethereum.isCoin98) return false;
   if (ethereum.isFordefi) return false;
   if (ethereum.isMathWallet) return false;
+  if (ethereum.isDesig) return false;
   if (ethereum.isOkxWallet || ethereum.isOKExWallet) return false;
   if (ethereum.isOneInchIOSWallet || ethereum.isOneInchAndroidWallet)
     return false;
   if (ethereum.isOpera) return false;
+  if (ethereum.isOneKey) return false;
   if (ethereum.isPortal) return false;
   if (ethereum.isRabby) return false;
   if (ethereum.isDefiant) return false;
@@ -48,6 +53,12 @@ export function isMetaMask(ethereum?: (typeof window)["ethereum"]): boolean {
   if (ethereum.isBitski) return false;
   if (ethereum.isBifrost) return false;
   if (ethereum.isBackpack) return false;
+  if (ethereum.isSafePal) return false;
+  if (ethereum.isHaqqWallet) return false;
+  if (ethereum.isHaloWallet) return false;
+  if (ethereum.isNovaWallet) return false;
+  if (ethereum.isTTWallet) return false;
+  if (ethereum.isSubWallet) return false;
 
   return true;
 }
@@ -63,7 +74,7 @@ export const isRabby = () => {
 };
 
 //https://github.com/wagmi-dev/wagmi/blob/38306606d2fd72a4c6918323bf86a1afda348638/packages/connectors/src/types.ts#L11
-type InjectedProviderFlags = {
+export type InjectedProviderFlags = {
   isApexWallet?: true;
   isAvalanche?: true;
   isBackpack?: true;
@@ -100,6 +111,7 @@ type InjectedProviderFlags = {
   isPortal?: true;
   isRabby?: true;
   isRainbow?: true;
+  isSafePal?: true;
   isStatus?: true;
   isSubWallet?: true;
   isTalisman?: true;

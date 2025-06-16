@@ -1,7 +1,7 @@
 import { WalletResult } from "../../type";
-import { getWalletConnectConnector } from "../../../helpers/getWalletConnectUri";
 import logo from "./logo.svg";
-import { injected, type WalletConnectParameters } from "@wagmi/connectors";
+import { injected } from "@wagmi/connectors";
+import { getInjectedName } from "../../../helpers/getInjecgedName";
 
 export const otherInjectedWalletId = "rabbykit_other_injected_wallet";
 export const otherInjectedWallet = (): WalletResult => {
@@ -17,11 +17,29 @@ export const otherInjectedWallet = (): WalletResult => {
     connector: {
       browser: () =>
         injected({
-          target: () => ({
-            id: otherInjectedWalletId,
-            name: "Other Wallet",
-            provider: window.ethereum,
-          }),
+          target: () => {
+            let detectedName = getInjectedName(window.ethereum);
+            detectedName =
+              typeof detectedName === "string"
+                ? detectedName
+                : detectedName.join(",");
+            if (detectedName === "Injected") {
+              detectedName = Object.keys(window.ethereum)
+                .filter(
+                  (key) =>
+                    key.startsWith("is") &&
+                    window.ethereum[key] &&
+                    typeof window.ethereum[key] === "boolean"
+                )
+                .map((key) => key.replace("is", ""))
+                .join(",");
+            }
+            return {
+              id: otherInjectedWalletId,
+              name: detectedName || "Other Wallet",
+              provider: window.ethereum,
+            };
+          },
         }),
     },
   };

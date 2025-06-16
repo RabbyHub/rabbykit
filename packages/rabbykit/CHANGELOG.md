@@ -1,5 +1,24 @@
 # @rabby-wallet/rabbykit
 
+## 0.1.2-beta.2
+
+### Patch Changes
+
+- 1941eff: fix: isMetamask isOneKey
+
+## 0.1.2-beta.1
+
+### Patch Changes
+
+- f971653: resolve conflict between SafePal and Trust Wallet
+
+## 0.1.2-beta.0
+
+### Patch Changes
+
+- fix injected wallet name
+- 141b989: support custom footer
+
 ## 0.1.1
 
 ### Patch Changes
