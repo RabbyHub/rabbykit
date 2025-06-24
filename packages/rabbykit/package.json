@@ -46,14 +46,13 @@
   "peerDependencies": {
     "@wagmi/core": "2.x",
     "viem": "2.x",
-    "wagmi": "2.x"
+    "wagmi": "2.x",
+    "react": ">=16.8"
   },
   "dependencies": {
     "clsx": "^2.0.0",
     "dequal": "^2.0.3",
-    "mipd": "^0.0.5",
     "qrcode": "^1.5.3",
-    "react": ">=16.8",
     "svelte": "^4.2.6",
     "svelte-i18n": "^4.0.0",
     "zustand": "^4.4.1"
