@@ -25,17 +25,6 @@ import {
 } from "./connectors";
 import { Chain, Transport } from "viem";
 
-// type DefaultConfigProps<
-//   const chains extends readonly [Chain, ...Chain[]],
-//   transports extends Record<chains[number]["id"], Transport>
-// > = {
-//   projectId: string;
-//   appName?: string;
-//   appUrl?: string;
-//   appDesc?: string;
-//   appLogo?: string;
-// } & CreateConfigParameters<chains, transports>;
-
 export function getDefaultConfig<
   const chains extends readonly [Chain, ...Chain[]],
   transports extends Record<chains[number]["id"], Transport>
@@ -96,7 +85,7 @@ export function getDefaultConfig<
   ];
 
   wallets
-    .filter((e) => e.installed || e.id === "coinbase")
+    .filter((e) => e.id === "coinbase")
     .forEach((e) => {
       if (e.connector.browser && typeof e.connector.browser === "function") {
         allConnectors.push(e.connector.browser() as CreateConnectorFn);

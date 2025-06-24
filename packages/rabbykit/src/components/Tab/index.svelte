@@ -73,7 +73,6 @@
       page: "wc-select",
     });
   };
-
 </script>
 
 <div class="container">
