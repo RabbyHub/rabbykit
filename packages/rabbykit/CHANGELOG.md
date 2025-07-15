@@ -1,5 +1,12 @@
 # @rabby-wallet/rabbykit
 
+## 0.1.4
+
+### Patch Changes
+
+- 02d2a3f: fix wrong connector
+- 02d2a3f: remove unused deps
+
 ## 0.1.4-next.1
 
 ### Patch Changes
