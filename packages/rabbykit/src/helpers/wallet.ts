@@ -10,6 +10,7 @@ export function isMetaMask(ethereum?: (typeof window)["ethereum"]): boolean {
   // Could also try RPC `web3_clientVersion` if following is unreliable
   if (ethereum.isBraveWallet && !ethereum._events && !ethereum._state)
     return false;
+  if (ethereum.isAmbire) return false;
   if (ethereum.isApexWallet) return false;
   if (ethereum.isAvalanche) return false;
   if (ethereum.isBackpack) return false;
