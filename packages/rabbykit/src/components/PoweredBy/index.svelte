@@ -2,8 +2,14 @@
   import { onMount } from "svelte";
   import { _ as t } from "svelte-i18n";
   import useStore from "../../store/context";
-  let className = "";
-  let footerClassName = "";
+
+  interface Props {
+    class?: string;
+  }
+
+  let { class: className = "" }: Props = $props();
+
+  let footerClassName = $state("");
   let contentContainer: HTMLElement;
 
   onMount(() => {
@@ -14,8 +20,6 @@
       contentContainer.appendChild($useStore.footerContent);
     }
   });
-
-  export { className as class };
 </script>
 
 <div

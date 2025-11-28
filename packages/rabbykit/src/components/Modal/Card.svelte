@@ -1,20 +1,26 @@
 <script lang="ts">
+  import type { Snippet } from "svelte";
   import Icon from "../CommonIcon/Icon.svelte";
 
-  export let show: boolean;
-  export let back: () => void;
-  export let showBack = false;
-  export let animation = true;
+  interface Props {
+    show: boolean;
+    back: () => void;
+    showBack?: boolean;
+    animation?: boolean;
+    children?: Snippet;
+  }
+
+  let { show, back, showBack = false, animation = true, children }: Props = $props();
 </script>
 
 <div class="sub-page" class:show class:animation>
   {#if showBack}
     <div class="back">
-      <Icon name="back" on:click={back} />
+      <Icon name="back" onclick={back} />
     </div>
   {/if}
   {#if show}
-    <slot />
+    {@render children?.()}
   {/if}
 </div>
 

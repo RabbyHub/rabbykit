@@ -2,12 +2,16 @@
   import { _ as t } from "svelte-i18n";
 
   import svelteStore, { rabbykitConnect } from "../../store/context";
-  import { WalletResult } from "../../wallets/type";
+  import type { WalletResult } from "../../wallets/type";
   import { connect, disconnect, getAccount } from "@wagmi/core";
   import Image from "../Image/index.svelte";
   import { onMount } from "svelte";
 
-  export let wallet: WalletResult;
+  interface Props {
+    wallet: WalletResult;
+  }
+
+  let { wallet }: Props = $props();
 
   let name = wallet.name;
   let logo = wallet.logo;
@@ -17,7 +21,7 @@
       rabbykitConnect({ connector: wallet.connector.browser() });
   };
 
-  let status: "loading" | "success" | "failed" = "loading";
+  let status = $state<"loading" | "success" | "failed">("loading");
 
   async function handleConnect() {
     if (!$svelteStore.wagmi) {
@@ -38,7 +42,7 @@
     handleConnect();
   });
 
-  $: {
+  $effect(() => {
     if (["connecting", "reconnecting"].includes($svelteStore.status)) {
       status = "loading";
     }
@@ -55,7 +59,7 @@
         $svelteStore.closeModal();
       }, 500);
     }
-  }
+  });
 </script>
 
 <div class="container">
@@ -224,7 +228,7 @@
     <div class="desc">
       {$t("You canceled the request")}
     </div>
-    <div class="retry" on:click={retry}>Retry</div>
+    <button class="retry" onclick={retry}>Retry</button>
   {/if}
 </div>
 

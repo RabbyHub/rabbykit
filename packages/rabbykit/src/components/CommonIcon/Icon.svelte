@@ -10,12 +10,8 @@
   import refresh from "./refresh.svg";
 
   import clsx from "clsx";
-  export let name: keyof typeof icons;
-  export let width = "20px";
-  export let height = "20px";
-  export let hover: boolean = true;
 
-  let icons = {
+  const icons = {
     close,
     back,
     copy,
@@ -26,14 +22,26 @@
     firefox,
     safari,
   } as const;
-  let displayIcon = icons[name];
+
+  interface Props {
+    name: keyof typeof icons;
+    width?: string;
+    height?: string;
+    hover?: boolean;
+    class?: string;
+    onclick?: (e: MouseEvent) => void;
+  }
+
+  let { name, width = "20px", height = "20px", hover = true, class: className, onclick }: Props = $props();
+
+  let displayIcon = $derived(icons[name]);
 </script>
 
 <button
   style={`--icon-width:${width};--icon-height:${height}`}
-  class={clsx("icon", $$props.class)}
+  class={clsx("icon", className)}
   class:hover
-  on:click
+  {onclick}
 >
   {@html displayIcon}
 </button>

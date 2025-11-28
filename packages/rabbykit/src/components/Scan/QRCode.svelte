@@ -2,13 +2,17 @@
   import QRCodeUtil from "qrcode";
   import Image from "../Image/index.svelte";
 
-  export let loading: boolean;
-  export let logo: string;
-  export let uri: string;
-  export let size: number = 280;
-  export let ecl: QRCodeUtil.QRCodeErrorCorrectionLevel = "M";
-  export let success: boolean = false;
-  export let failed: boolean = false;
+  interface Props {
+    loading: boolean;
+    logo: string;
+    uri: string;
+    size?: number;
+    ecl?: QRCodeUtil.QRCodeErrorCorrectionLevel;
+    success?: boolean;
+    failed?: boolean;
+  }
+
+  let { loading, logo, uri, size = 280, ecl = "M", success = false, failed = false }: Props = $props();
 
   const generateMatrix = (
     value: string,
@@ -32,16 +36,14 @@
   const padding = "20";
   const svgSize = size - parseInt(padding, 10) * 2;
 
-  let dots: string[] = [];
-
   const qrList = [
     { x: 0, y: 0 },
     { x: 1, y: 0 },
     { x: 0, y: 1 },
   ];
 
-  $: {
-    dots = [];
+  let dots = $derived.by(() => {
+    const result: string[] = [];
     const matrix = generateMatrix(uri, ecl);
     const cellSize = svgSize / matrix.length;
     qrList.forEach(({ x, y }) => {
@@ -49,7 +51,7 @@
       const y1 = (matrix.length - 7) * cellSize * y;
       for (let i = 0; i < 3; i++) {
         const key = `${i}-${x}-${y}`;
-        dots.push(`
+        result.push(`
             <rect
             fill=${i % 2 !== 0 ? "white" : "black"}
             height=${cellSize * (7 - i * 2)}
@@ -60,8 +62,6 @@
             x=${x1 + cellSize * i}
             y=${y1 + cellSize * i}
           />`);
-
-        dots = dots;
       }
     });
 
@@ -88,21 +88,21 @@
               )
             ) {
               const key = `circle-${i}-${j}`;
-              dots.push(`
+              result.push(`
                 <circle
                   cx=${i * cellSize + cellSize / 2}
                   cy=${j * cellSize + cellSize / 2}
                   fill="black"
                   key=${key}
-                  r=${cellSize / 3} // calculate size of single dots
+                  r=${cellSize / 3}
                 />`);
-              dots = dots;
             }
           }
         }
       });
     });
-  }
+    return result;
+  });
 </script>
 
 <div class="qr-code" class:loading style="--qr-code-size:{size}px">
@@ -180,14 +180,6 @@
 
   <div style="opacity: {success || failed ? '0.3' : '1'};">
     <svg height={svgSize} style="all: revert;" width={svgSize}>
-      <!-- <defs>
-        <clipPath id="clip-wrapper">
-          <rect height={logoWrapperSize} width={logoWrapperSize} />
-        </clipPath>
-        <clipPath id="clip-logo">
-          <rect height={logoSize} width={logoSize} />
-        </clipPath>
-      </defs> -->
       <rect fill="transparent" height={svgSize} width={svgSize} />
       {#each dots as dot}
         {@html dot}
@@ -195,18 +187,8 @@
     </svg>
   </div>
   {#if loading}
-    <div class:loading />
-    <div class="loading-line" />
-
-    <!-- <div
-      class:loading
-      out:fly={{
-        duration: 800,
-        y: "100%",
-        easing: quadOut,
-        opacity: 1,
-      }}
-    /> -->
+    <div class:loading></div>
+    <div class="loading-line"></div>
   {/if}
 </div>
 

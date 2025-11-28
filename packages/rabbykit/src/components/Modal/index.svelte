@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { Snippet } from "svelte";
   import { onDestroy, onMount } from "svelte";
   import { useRKStore } from "../../store";
   import useStore from "../../store/context";
@@ -7,7 +8,13 @@
   import { isMobile } from "../../helpers/browser";
   import { lockScroll } from "../../helpers";
 
-  let isManualOperation = false;
+  interface Props {
+    children?: Snippet;
+  }
+
+  let { children }: Props = $props();
+
+  let isManualOperation = $state(false);
 
   function close() {
     useRKStore.getState().closeModal();
@@ -52,18 +59,18 @@
     });
   }
 
-  $: isMobileEnv = !!$useStore.isMobile;
+  let isMobileEnv = $derived(!!$useStore.isMobile);
 </script>
 
-<div class="modal" transition:fade={{ duration: 100 }} on:outroend={outroend}>
-  <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <!-- svelte-ignore a11y-no-static-element-interactions -->
-  <div class="modal-overlay" class:mobile={isMobileEnv} on:click={close} />
+<div class="modal" transition:fade={{ duration: 100 }} onoutroend={outroend}>
+  <!-- svelte-ignore a11y_click_events_have_key_events -->
+  <!-- svelte-ignore a11y_no_static_element_interactions -->
+  <div class="modal-overlay" class:mobile={isMobileEnv} onclick={close}></div>
   <div class="modal-content" class:mobile={isMobileEnv}>
     <div class="icon" class:close>
-      <Icon name="close" on:click={close} />
+      <Icon name="close" onclick={close} />
     </div>
-    <slot />
+    {@render children?.()}
   </div>
 </div>
 

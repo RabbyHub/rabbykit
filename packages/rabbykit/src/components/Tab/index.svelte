@@ -7,10 +7,9 @@
   import Button from "../WalletButton/button.svelte";
   import scan from "./scan.svg";
   import { otherInjectedWalletId } from "../../wallets/connectors/injectedWallet/injectedWallet";
-  import { Connector } from "wagmi";
-  import { WalletResult } from "../../wallets/type";
+  import type { WalletResult } from "../../wallets/type";
 
-  let activeId = "";
+  let activeId = $state("");
 
   const browserList = $useStore.wallets || [];
 
@@ -105,7 +104,7 @@
           type="browser"
           name={$t("Mobile Wallet")}
           logo={scan}
-          on:click={() => {
+          onclick={() => {
             activeId = $t("Mobile Wallet");
             handleScan();
           }}
@@ -120,7 +119,7 @@
             name={b.name}
             logo={b.logo}
             active={activeId === b.logo}
-            on:click={() => {
+            onclick={() => {
               activeId = b.logo;
               b.onClick?.();
             }}

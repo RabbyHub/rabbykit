@@ -1,19 +1,25 @@
 <script lang="ts">
+  import type { Snippet } from "svelte";
   import svelteStore from "../../store/context";
 
-  export let title: string;
-  export let titleClass = "";
-  export let className = "";
+  interface Props {
+    title: string;
+    titleClass?: string;
+    className?: string;
+    children?: Snippet;
+  }
+
+  let { title, titleClass = "", className = "", children }: Props = $props();
 
   let box: HTMLDivElement;
-  let scrollTop: number;
+  let scrollTop = $state(0);
 </script>
 
 <div
   class={`scroll ${className}`}
   class:mobile={$svelteStore.isMobile}
   bind:this={box}
-  on:scroll={() => {
+  onscroll={() => {
     scrollTop = box.scrollTop;
   }}
 >
@@ -26,7 +32,7 @@
       {title}
     </div>
   {/if}
-  <slot />
+  {@render children?.()}
 </div>
 
 <style lang="scss">

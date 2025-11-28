@@ -1,11 +1,20 @@
 <script lang="ts">
+  import type { Snippet } from "svelte";
   import store from "./../store/context";
 
-  $: themeVariables = $store?.themeVariables
-    ? Object.entries($store?.themeVariables)
-        .map(([k, v]) => `${k}:${v};`)
-        .join("")
-    : "";
+  interface Props {
+    children?: Snippet;
+  }
+
+  let { children }: Props = $props();
+
+  let themeVariables = $derived(
+    $store?.themeVariables
+      ? Object.entries($store?.themeVariables)
+          .map(([k, v]) => `${k}:${v};`)
+          .join("")
+      : ""
+  );
 </script>
 
 <div
@@ -14,7 +23,7 @@
   class:system={$store.theme === "system"}
   style={themeVariables}
 >
-  <slot />
+  {@render children?.()}
 </div>
 
 <style lang="scss">

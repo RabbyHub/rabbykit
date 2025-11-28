@@ -1,4 +1,4 @@
-import { type CreateConfigParameters, CreateConnectorFn } from "@wagmi/core";
+import type { CreateConfigParameters, CreateConnectorFn } from "@wagmi/core";
 import { sharedWalletConnectConnectors } from "../helpers/getWalletConnectUri";
 import { useRKStore } from "../store";
 import {
@@ -23,7 +23,7 @@ import {
   otherInjectedWallet,
   coinbaseWallet,
 } from "./connectors";
-import { Chain, Transport } from "viem";
+import type { Chain, Transport } from "viem";
 
 export function getDefaultConfig<
   const chains extends readonly [Chain, ...Chain[]],

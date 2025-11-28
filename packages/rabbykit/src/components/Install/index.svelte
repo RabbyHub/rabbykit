@@ -1,23 +1,27 @@
 <script lang="ts">
   import Image from "../Image/index.svelte";
   import { _ as t } from "svelte-i18n";
-  import { WalletResult } from "../../wallets/type";
+  import type { WalletResult } from "../../wallets/type";
   import Icon from "../CommonIcon/Icon.svelte";
   import { BrowserType, getBrowser } from "../../helpers/browser";
 
-  export let wallet: WalletResult;
-  let logo: string = wallet.logo;
-  let uri: string =
-    wallet.downloadUrls?.chrome || wallet.downloadUrls?.edge || "";
-  let name: string = wallet.name;
-  let browser = getBrowser();
+  interface Props {
+    wallet: WalletResult;
+  }
 
-  $: {
+  let { wallet }: Props = $props();
+
+  let logo: string = wallet.logo;
+  let uri = $state(wallet.downloadUrls?.chrome || wallet.downloadUrls?.edge || "");
+  let name: string = wallet.name;
+  let browser = $state(getBrowser());
+
+  $effect(() => {
     if (browser === BrowserType.Safari && !wallet.downloadUrls?.[browser]) {
       browser = BrowserType.Chrome;
     }
     uri = wallet?.downloadUrls?.[browser] || uri;
-  }
+  });
 </script>
 
 <div class="container">

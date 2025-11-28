@@ -1,12 +1,18 @@
 <script lang="ts">
+  import type { HTMLAttributes } from "svelte/elements";
   import Icon from "../CommonIcon/Icon.svelte";
 
-  export let disable = false;
-  export let copyTip: string = "Copy Url";
-  export let CopiedTip: string = "Copied";
-  export let copyText: string;
+  interface Props extends HTMLAttributes<HTMLDivElement> {
+    disable?: boolean;
+    copyTip?: string;
+    CopiedTip?: string;
+    copyText: string;
+  }
 
-  let copied = false;
+  let { disable = false, copyTip = "Copy Url", CopiedTip = "Copied", copyText, ...rest }: Props = $props();
+
+  let copied = $state(false);
+
   async function copy() {
     if (disable) return;
 
@@ -28,8 +34,9 @@
   class:disable
   role="button"
   tabindex="0"
-  on:click={copy}
-  {...$$restProps}
+  onclick={copy}
+  onkeydown={(e) => e.key === 'Enter' && copy()}
+  {...rest}
 >
   {#if copied}
     <Icon name="copied" hover={false} />

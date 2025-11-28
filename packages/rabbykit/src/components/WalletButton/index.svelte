@@ -1,21 +1,26 @@
 <script lang="ts">
   import svelteStore from "../../store/context";
-  import { WalletResult } from "../../wallets/type";
+  import type { WalletResult } from "../../wallets/type";
   import { rabbykitConnect, useRKStore } from "../../store/context";
   import Button from "./button.svelte";
-  import { Type } from "../../type";
+  import type { Type } from "../../type";
   import { getMobileUri } from "../../helpers/getWalletConnectUri";
 
-  export let wallet: WalletResult;
-  export let type: Type;
-  export let size: "lg" | "normal" | "sm" = "lg";
-  export let active = false;
+  interface Props {
+    wallet: WalletResult;
+    type: Type;
+    size?: "lg" | "normal" | "sm";
+    active?: boolean;
+    click?: () => void;
+  }
+
+  let { wallet, type, size = "lg", active = false, click }: Props = $props();
 
   let { browser } = wallet.connector;
   let isReady = true;
 
   const handleConnect = async () => {
-    $$props.click?.();
+    click?.();
     if (browser && isReady && type === "browser") {
       useRKStore.setState({
         page: "connect",
@@ -101,4 +106,4 @@
     type === "mobile" ? wallet.mobileName || wallet.name : wallet.name || "";
 </script>
 
-<Button {type} {name} {logo} {size} {active} on:click={handleConnect} />
+<Button {type} {name} {logo} {size} {active} onclick={handleConnect} />

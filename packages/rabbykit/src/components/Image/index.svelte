@@ -1,12 +1,20 @@
-<script lang="ts">
+<script lang="ts" module>
   export const loading: "lazy" | "eager" = "lazy";
-  export let src: string;
+</script>
+
+<script lang="ts">
+  interface Props {
+    src: string;
+    alt?: string;
+  }
+
+  let { src, alt }: Props = $props();
 </script>
 
 {#if src?.includes("<svg")}
   {@html src}
 {:else}
-  <img {src} alt={$$props.alt} loading="lazy" />
+  <img {src} {alt} loading="lazy" />
 {/if}
 
 <style>

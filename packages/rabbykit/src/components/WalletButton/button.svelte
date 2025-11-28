@@ -1,19 +1,33 @@
 <script lang="ts">
-  import { Type } from "../../type";
+  import type { HTMLButtonAttributes } from "svelte/elements";
+  import type { Type } from "../../type";
   import Image from "../Image/index.svelte";
   import clsx from "clsx";
 
-  export let type: Type;
-  export let size: "lg" | "normal" | "sm" = "lg";
-  export let name: string;
-  export let logo: string;
-  export let showRightArrow: boolean = false;
-  export let active = false;
+  interface Props extends HTMLButtonAttributes {
+    type: Type;
+    size?: "lg" | "normal" | "sm";
+    name: string;
+    logo: string;
+    showRightArrow?: boolean;
+    active?: boolean;
+    class?: string;
+  }
+
+  let {
+    type,
+    size = "lg",
+    name,
+    logo,
+    showRightArrow = false,
+    active = false,
+    class: className,
+    ...rest
+  }: Props = $props();
 </script>
 
 <button
-  on:click
-  class={clsx("button", $$props.class)}
+  class={clsx("button", className)}
   class:sm={size === "sm"}
   class:lg={size === "lg"}
   class:ready={type === "browser"}
@@ -21,7 +35,7 @@
   class:mobile={type === "mobile"}
   class:unused={type === "unused"}
   class:active
-  {...$$restProps}
+  {...rest}
 >
   <div class="logo">
     <Image src={logo} alt={name} />

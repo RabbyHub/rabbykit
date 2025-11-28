@@ -4,17 +4,21 @@
   import { onMount } from "svelte";
   import Icon from "../CommonIcon/Icon.svelte";
   import Copy from "../Copy/index.svelte";
-  import { WalletResult } from "../../wallets/type";
+  import type { WalletResult } from "../../wallets/type";
   import svelteStore, { rabbykitConnect } from "../../store/context";
   import { disconnect, getAccount } from "@wagmi/core";
   import { getWalletConnectUri } from "../../helpers/getWalletConnectUri";
 
-  export let wallet: WalletResult;
-  export let size: number = 280;
+  interface Props {
+    wallet: WalletResult;
+    size?: number;
+  }
 
-  let uri = "loading";
-  let loading = true;
-  let shouldWaitDisconnect = false;
+  let { wallet, size = 280 }: Props = $props();
+
+  let uri = $state("loading");
+  let loading = $state(true);
+  let shouldWaitDisconnect = $state(false);
 
   async function handleConnect() {
     if (getAccount($svelteStore.wagmi!)?.isConnected) {
@@ -69,9 +73,9 @@
   const logo = wallet.logo;
   const name: string = wallet.name;
 
-  let refreshLoading = false;
-  let success = false;
-  let failed = false;
+  let refreshLoading = $state(false);
+  let success = $state(false);
+  let failed = $state(false);
 
   onMount(() => {
     handleConnect();
@@ -88,7 +92,7 @@
     }
   }
 
-  $: {
+  $effect(() => {
     if (!shouldWaitDisconnect) {
       if (["connecting", "reconnecting"].includes($svelteStore.status)) {
         success = false;
@@ -110,7 +114,7 @@
         }, 500);
       }
     }
-  }
+  });
 </script>
 
 <div class="container">
@@ -124,7 +128,7 @@
     </div>
     {#if failed}
       <div class="tip failed">{$t("Request canceled")}</div>
-      <button class="desc" on:click={() => refresh()}>
+      <button class="desc" onclick={() => refresh()}>
         <div class:loading={refreshLoading}>
           <Icon name={"refresh"} hover={false} />
         </div>

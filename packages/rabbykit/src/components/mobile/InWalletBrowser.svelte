@@ -9,7 +9,7 @@
 
   const readyBrowserList = browserList.filter((w) => w.installed);
 
-  let isConnecting = false;
+  let isConnecting = $state(false);
 
   let canConnect = readyBrowserList.length > 0 || !!window.ethereum;
 
@@ -55,7 +55,7 @@
 >
   <div class="title">{title}</div>
   {#if canConnect}
-    <button on:click={handleConnect} style="margin-bottom: 16px;"
+    <button onclick={handleConnect} style="margin-bottom: 16px;"
       >{$t("Connect x", { values: { name } })}</button
     >
     {#if showDisclaimer}
@@ -69,7 +69,7 @@
     <div class="desc" style="margin-bottom: 16px;">
       {$t("unsupported mobile env")}
     </div>
-    <button on:click={copyDappUrl}>{$t("Copy Dapp URL")}</button>
+    <button onclick={copyDappUrl}>{$t("Copy Dapp URL")}</button>
   {/if}
 </div>
 

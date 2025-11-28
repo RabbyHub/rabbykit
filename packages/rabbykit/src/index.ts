@@ -1,4 +1,5 @@
-import { watchAccount, Config, reconnect, Transport } from "@wagmi/core";
+import { watchAccount, reconnect } from "@wagmi/core";
+import type { Config, Transport } from "@wagmi/core";
 import { modalOpenSubscribe, syncAccount, useRKStore } from "./store";
 
 import { mount } from "./components/Kit";
@@ -12,7 +13,7 @@ import type {
   ThemeVariables,
 } from "./type";
 import { SUPPORT_LANGUAGES } from "./helpers/i18n";
-import { Chain } from "@wagmi/core/chains";
+import type { Chain } from "@wagmi/core/chains";
 
 export { getDefaultConfig } from "./wallets/getDefaultConfig";
 

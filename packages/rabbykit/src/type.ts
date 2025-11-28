@@ -1,6 +1,4 @@
-import { SUPPORT_LANGUAGES } from "./helpers";
-import { Chain } from "viem/chains";
-import { Transport } from "viem";
+import type { SUPPORT_LANGUAGES } from "./helpers";
 
 export type Theme = "light" | "dark" | "system";
 
