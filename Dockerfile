@@ -14,7 +14,8 @@ COPY ./site/doc/package.json ./site/doc/package.json
 
 FROM base AS builder
 ENV NODE_OPTIONS --max_old_space_size=4096
-RUN npm install -g pnpm && --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN npm install -g pnpm
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm build:doc
 
