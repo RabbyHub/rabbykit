@@ -67,6 +67,8 @@ export const ConnectScenario = () => {
         </div>
 
         <Carousel
+          // React 19 no longer applies function component defaultProps.
+          {...Carousel.defaultProps}
           className="rounded-[8px] overflow-hidden bg-card-2"
           renderCenterLeftControls={() => null}
           renderCenterRightControls={() => null}

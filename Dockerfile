@@ -1,7 +1,7 @@
-FROM node:18-buster AS base
+FROM node:22-bookworm-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+RUN corepack enable && corepack prepare pnpm@9.10.0 --activate
 
 WORKDIR /app
 
@@ -14,7 +14,6 @@ COPY ./site/doc/package.json ./site/doc/package.json
 
 FROM base AS builder
 ENV NODE_OPTIONS --max_old_space_size=4096
-RUN npm cache clean --force && npm install -g pnpm --force 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm build:doc

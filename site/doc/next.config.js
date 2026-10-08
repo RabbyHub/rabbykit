@@ -4,6 +4,8 @@ const withNextra = require("nextra")({
 });
 module.exports = withNextra({
   output: "standalone",
+  // Keep Nextra's Pages Router context in the same server bundle.
+  bundlePagesRouterDependencies: true,
 
   async redirects() {
     return [

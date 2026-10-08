@@ -5,7 +5,7 @@
   "main": "index.js",
   "packageManager": "pnpm@9.10.0",
   "engines": {
-    "node": ">=20.16.0",
+    "node": "^20.19.0 || ^22.13.0 || >=24.0.0",
     "pnpm": ">=8.7.0",
     "yarn": ">=999.0.0",
     "npm": ">=999.0.0"
@@ -17,6 +17,7 @@
     "build:examples": "pnpm run build:kit && pnpm --filter=\"./examples/next-wagmi\" build",
     "dev:kit": "pnpm --filter=rabbykit dev",
     "build:kit": "pnpm --filter=rabbykit build",
+    "test:security": "node scripts/check-next-nonce.cjs",
     "spellcheck": "cspell lint . --no-must-find-files"
   },
   "keywords": [],
