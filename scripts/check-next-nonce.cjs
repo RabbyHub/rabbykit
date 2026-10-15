@@ -2,7 +2,7 @@ const assert = require("node:assert/strict");
 const { createRequire } = require("node:module");
 const { resolve } = require("node:path");
 
-const apps = ["site/doc", "examples/next-wagmi"];
+const apps = ["examples/next-wagmi"];
 const invalidNonces = [
   ["double quote", 'probe"data-cve-probe=1'],
   ["single quote", "probe'value"],

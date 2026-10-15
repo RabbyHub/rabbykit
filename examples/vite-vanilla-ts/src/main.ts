@@ -18,7 +18,7 @@ btnEl?.addEventListener("click", connect);
 
 // listening for account changes
 watchAccount(config, {
-  onChange(account, prevAccount) {
+  onChange(account) {
     if (userEl && btnEl) {
       userEl.innerText = account.address ?? "";
       if (account.isConnected) {

@@ -14,8 +14,9 @@
   },
   "dependencies": {
     "@rabby-wallet/rabbykit": "workspace:*",
-    "@wagmi/connectors": "^4.1.14",
-    "@wagmi/core": "^2.13.4",
-    "viem": "^2.20.0"
-  }
+    "@wagmi/connectors": "5.1.10",
+    "@wagmi/core": "2.13.5",
+    "viem": "2.21.6"
+  },
+  "packageManager": "pnpm@9.10.0"
 }

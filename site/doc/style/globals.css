@@ -1,10 +1,18 @@
-@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-    html {
-      font-family:-apple-system, BlinkMacSystemFont, "Helvetica Neue", Roboto,
-      "PingFang SC", "Microsoft Yahei", sans-serif;
-    }
-  }
+.rabby-home {
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Roboto,
+    "PingFang SC", "Microsoft Yahei", sans-serif;
+  line-height: 1.5;
+  color: rgb(62, 73, 94);
+  background: white;
+}
+.rabby-home *, .rabby-home *::before, .rabby-home *::after {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+}
+.rabby-home button { font: inherit; cursor: pointer; }
+.rabby-home a { text-decoration: none; }
+.rabby-home img { display: block; max-width: 100%; height: auto; }

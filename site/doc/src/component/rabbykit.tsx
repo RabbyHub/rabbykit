@@ -3,7 +3,7 @@ import { createConfig, WagmiProvider } from "wagmi";
 import { mainnet } from "wagmi/chains";
 import * as React from "react";
 import { createModal, getDefaultConfig } from "@rabby-wallet/rabbykit";
-import { createClient } from "viem";
+import { createClient, http } from "viem";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export const config = createConfig(
@@ -13,7 +13,6 @@ export const config = createConfig(
     appLogo: "/logo-blue.svg",
     chains: [mainnet],
     client({ chain }) {
-      // @ts-expect-error
       return createClient({ chain, transport: http() });
     },
   })
@@ -25,26 +24,35 @@ export const RabbykitContext = React.createContext<
   ReturnType<typeof createModal>
 >({} as any);
 
-export function Providers({ children }: { children: React.ReactNode }) {
-  const [kit, setKit] = React.useState<ReturnType<typeof createModal>>();
-  const initRef = React.useRef<Boolean>(false);
-  React.useEffect(() => {
-    if (!initRef.current) {
-      initRef.current = true;
-      const rabbyKit = createModal({
-        wagmi: config,
+let kit: ReturnType<typeof createModal> | undefined;
+function getKit() {
+  return (kit ??= createModal({ wagmi: config }));
+}
+
+// createModal starts reconnect itself. Wait before consuming the first click.
+export async function prepareWallet() {
+  const instance = getKit();
+  if (config.state.status === "connecting" || config.state.status === "reconnecting") {
+    await new Promise<void>((resolve) => {
+      const unsubscribe = config.subscribe((state) => state.status, (status) => {
+        if (status !== "connecting" && status !== "reconnecting") {
+          unsubscribe();
+          resolve();
+        }
       });
-      setKit(rabbyKit);
-    }
-  }, []);
+    });
+  }
+  return instance;
+}
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  const [instance] = React.useState(getKit);
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        {kit && (
-          <RabbykitContext.Provider value={kit}>
-            {children}
-          </RabbykitContext.Provider>
-        )}
+        <RabbykitContext.Provider value={instance}>
+          {children}
+        </RabbykitContext.Provider>
       </QueryClientProvider>
     </WagmiProvider>
   );
