@@ -1,8 +1,11 @@
 "use client";
-import { useMemo, useRef, useState } from "react";
+import { type CSSProperties, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
-import bg from "./bg-3.png";
-import { ChromePicker } from "react-color";
+import bg from "./bg-3.webp";
+import bgFallback from "./bg-3.fallback.png";
+import imageStyles from "../imageFallback.module.css";
+import { ColorPicker } from "../colorPicker";
+import { useNearViewport } from "../useNearViewport";
 import { useClickAway } from "react-use";
 import { docPath } from "../../../constant";
 import { colord } from "colord";
@@ -57,6 +60,7 @@ const allConfig = [
 ];
 
 export const ConfigDemo = () => {
+  const [sectionRef, nearViewport] = useNearViewport<HTMLDivElement>();
   const [theme, setTheme] = useState("light");
   const [css, setCss] = useState<Record<string, string>>({});
   const cssVar = useMemo(
@@ -76,16 +80,19 @@ export const ConfigDemo = () => {
 
   return (
     <div
+      ref={sectionRef}
       className={clsx(
+        imageStyles.background,
         "w-full overflow-hidden",
         "py-[60px]",
         "lg:pt-[100px] lg:pb-[110px]"
       )}
       style={{
-        backgroundImage: `url(${bg.src})`,
+        "--rk-background-webp": nearViewport ? `url(${bg})` : undefined,
+        "--rk-background-fallback": nearViewport ? `url(${bgFallback})` : undefined,
         backgroundRepeat: "no-repeat",
         backgroundSize: "100% 100%",
-      }}
+      } as CSSProperties}
     >
       <div
         className={clsx(
@@ -150,7 +157,7 @@ export const ConfigDemo = () => {
               Learn more
             </a>
           </div>
-          <Preview theme={theme} cssVar={cssVar} isCustom={isCustom} />d
+          <Preview theme={theme} cssVar={cssVar} isCustom={isCustom} />
         </div>
       </div>
     </div>
@@ -176,7 +183,7 @@ const Item = ({
   const [active, setActive] = useState(defaultIndex);
   const [open, setOpen] = useState(false);
   const [color, setColor] = useState<string>();
-  const ref = useRef<HTMLButtonElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   useClickAway(ref, () => {
     setOpen(false);
   });
@@ -195,51 +202,52 @@ const Item = ({
         {data.map((e, idx) => {
           const isLast = idx === data.length - 1;
           return (
-            <button
-              key={e.value}
-              ref={isLast ? ref : undefined}
-              className={clsx(
-                "relative ",
-                "bg-transparent p-[4px] border rounded-[8px]",
-                active === idx
-                  ? "border-white"
-                  : "border-transparent hover:border-white hover:border-opacity-10"
-              )}
-              onClick={() => {
-                if (isBool) {
-                  setActive((n) => Number(!n));
-                } else {
-                  setActive(idx);
-                }
-                if (isColor && isLast) {
-                  setOpen(true);
-                } else {
-                  onUpdate(isBool ? (active ? "0" : "1") : e.value);
-                }
-              }}
-            >
-              <div
-                style={
-                  isColor
-                    ? {
-                        background: isLast ? color || e.value : e.value,
-                      }
-                    : { background: "rgba(255, 255, 255, 0.10)" }
-                }
+            <div key={e.value} ref={isLast ? ref : undefined} className="relative">
+              <button
+                aria-label={isColor ? (isLast ? "Custom color" : `Color ${e.value}`) : undefined}
                 className={clsx(
-                  "rounded-[6px] relative",
-                  isColor ? "w-[32px] h-[32px]" : "px-[24px] py-[10px] ",
-                  "text-[14px] font-[510] text-title2"
+                  "relative ",
+                  "bg-transparent p-[4px] border rounded-[8px]",
+                  active === idx
+                    ? "border-white"
+                    : "border-transparent hover:border-white hover:border-opacity-10"
                 )}
+                onClick={() => {
+                  if (isBool) {
+                    setActive((n) => Number(!n));
+                  } else {
+                    setActive(idx);
+                  }
+                  if (isColor && isLast) {
+                    setOpen(true);
+                  } else {
+                    onUpdate(isBool ? (active ? "0" : "1") : e.value);
+                  }
+                }}
               >
-                {e.name}
-              </div>
+                <div
+                  style={
+                    isColor
+                      ? {
+                          background: isLast ? color || e.value : e.value,
+                        }
+                      : { background: "rgba(255, 255, 255, 0.10)" }
+                  }
+                  className={clsx(
+                    "rounded-[6px] relative",
+                    isColor ? "w-[32px] h-[32px]" : "px-[24px] py-[10px] ",
+                    "text-[14px] font-[510] text-title2"
+                  )}
+                >
+                  {e.name}
+                </div>
+              </button>
               {open && idx === data.length - 1 && (
-                <ChromePicker
+                <ColorPicker
                   color={color}
                   onChange={(e) => {
                     const rgba = `rgba(${e.rgb.r},${e.rgb.g},${e.rgb.b},${
-                      e.rgb?.a || 1
+                      e.rgb.a ?? 1
                     })`;
                     setColor(rgba);
                     onUpdate(rgba);
@@ -247,7 +255,7 @@ const Item = ({
                   className="absolute top-[36px] left-1/2 z-50 -translate-x-1/2"
                 />
               )}
-            </button>
+            </div>
           );
         })}
       </div>
@@ -290,8 +298,8 @@ function WalletItem({
         {isCustom ? `Customized Button` : `Wallet ${idx}`}
       </div>
 
-      <style jsx>{`
-        .item {
+      <style>{`
+        .rabby-home .rk-config-preview .item {
           width: 100%;
           height: 64px;
           border-radius: var(--rk-radius, 8.194px);
@@ -301,22 +309,22 @@ function WalletItem({
           align-items: center;
           padding: 10px 20px;
           color: var(--rk-primary-button-color, var(--r-neutral-title-1));
-          font-size: 16px
+          font-size: 16px;
           font-style: normal;
           font-weight: 590;
           line-height: normal;
         }
-        .item:first-of-type{
+        .rabby-home .rk-config-preview .item:first-of-type{
           border: 1px solid var(--rk-hover-border-color, #7084FF);
           background: var(--rk-hover-bg,var(--r-blue-light-1));
 
         }
-        .wallet-icon {
+        .rabby-home .rk-config-preview .wallet-icon {
           width: 28px;
           height: 28px;
         }
 
-        .item.sub {
+        .rabby-home .rk-config-preview .item.sub {
           height: 56px;
           background: transparent;
           color: var(--r-neutral-body);
@@ -341,7 +349,7 @@ const Preview = ({
   isCustom?: boolean;
 }) => {
   return (
-    <div className="max-w-[100vw] lg:ml-[80px]">
+    <div className="rk-config-preview max-w-[100vw] lg:ml-[80px]">
       <div
         className={clsx(
           "modal flex flex-col items-center",
@@ -390,9 +398,9 @@ const Preview = ({
           </div>
         </div>
 
-        <style jsx>
+        <style>
           {`
-            .modal {
+            .rabby-home .rk-config-preview .modal {
               --fallback-modal-border-radius: 12px;
               --r-neutral-body: #3e495e;
               --r-neutral-bg-2: #f2f4f7;
@@ -403,7 +411,7 @@ const Preview = ({
               --r-blue-light-1: rgba(238, 241, 255, 1);
               ${cssVar}
             }
-            .modal.dark {
+            .rabby-home .rk-config-preview .modal.dark {
               --r-neutral-body: #d3d8e0;
               --r-neutral-bg-2: #3d4251;
               --r-neutral-title-1: #f7fafc;
@@ -412,10 +420,7 @@ const Preview = ({
               --r-neutral-line: rgba(255, 255, 255, 0.1);
               --r-blue-light-1: rgba(112, 132, 255, 0.1);
             }
-            .modal {
-              // padding: 20px;
-              // width: 460px;
-              // height: 540px;
+            .rabby-home .rk-config-preview .modal {
               overflow: hidden;
               border-radius: var(
                 --rk-radius,
@@ -426,15 +431,7 @@ const Preview = ({
               position: relative;
             }
 
-            .modal:before {
-              position: absolute;
-              content: "";
-              width: 100%;
-              height: 100%;
-              left: 0;
-              top: 0;
-            }
-            .title {
+            .rabby-home .rk-config-preview .title {
               color: var(--r-neutral-title-1);
               text-align: left;
               font-size: 18px;
@@ -443,7 +440,7 @@ const Preview = ({
               line-height: normal;
             }
 
-            .second {
+            .rabby-home .rk-config-preview .second {
               width: 100%;
               margin-top: 20px;
               margin-bottom: 10px;

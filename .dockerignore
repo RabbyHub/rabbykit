@@ -7,3 +7,9 @@ build
 **/node_modules
 **/.next
 **/yarn.lock
+
+**/.rspress
+.git
+
+# Generated WebP fallback images
+**/*.fallback.png

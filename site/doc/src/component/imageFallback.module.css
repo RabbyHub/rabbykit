@@ -1,0 +1,12 @@
+.background {
+  background-image: var(--rk-background-fallback);
+}
+
+@supports (background-image: image-set(url("image.webp") type("image/webp"))) {
+  .background {
+    background-image: image-set(
+      var(--rk-background-webp) type("image/webp"),
+      var(--rk-background-fallback) type("image/png")
+    );
+  }
+}

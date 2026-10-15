@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  important: ".rabby-home",
+  corePlugins: { preflight: false },
   content: [
     "./app/**/*.{js,jsx,ts,tsx,md,mdx}",
     "./pages/**/*.{js,jsx,ts,tsx,md,mdx}",

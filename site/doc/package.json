@@ -4,23 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "next",
-    "build": "next build",
-    "start": "next start"
+    "dev": "pnpm images:fallback && rspress dev",
+    "build": "pnpm images:fallback && rspress build && node ../../scripts/check-static-docs.cjs && node ../../scripts/precompress-static.cjs dist",
+    "start": "rspress preview",
+    "images:fallback": "node ../../scripts/generate-webp-fallbacks.cjs",
+    "test:images": "node ../../scripts/generate-webp-fallbacks.test.cjs"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@codesandbox/sandpack-react": "^2.10.0",
     "@rabby-wallet/rabbykit": "workspace:*",
     "@tanstack/react-query": "^5.52.0",
     "clsx": "^2.0.0",
     "colord": "^2.9.3",
-    "dedent": "^1.5.1",
-    "next": "15.5.27",
-    "nextra": "^2.13.2",
-    "nextra-theme-docs": "^2.13.2",
     "nuka-carousel": "^6.0.3",
     "react": "^18.2.0",
     "react-color": "^2.19.3",
@@ -34,7 +31,11 @@
     "@types/react-color": "^3.0.10",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
-    "sharp": "^0.32.6",
-    "tailwindcss": "^3.3.5"
+    "tailwindcss": "^3.3.5",
+    "@rspress/core": "2.0.23",
+    "sharp": "0.35.5"
+  },
+  "engines": {
+    "node": "22.x"
   }
 }

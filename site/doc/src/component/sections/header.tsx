@@ -1,9 +1,7 @@
-import Image from "next/image";
 import * as React from "react";
-import { ConnectButton } from "../connectButton";
+import { WalletLauncher } from "../walletLauncher";
 import { ViewDocButton } from "../viewDocButton";
 import clsx from "clsx";
-import { Providers } from "../rabbykit";
 
 const ClipText = () => {
   return (
@@ -35,16 +33,14 @@ export function Header() {
           "md:h-[64px] md:py-3 md:mt-[20px]"
         )}
       >
-        <Image
+        <img
           src="/kit-logo.svg"
           width="110"
           height="28"
           className="md:w-[132px] md:h-[33px]"
           alt="Rabbykit logo"
         />
-        <Providers>
-          <ConnectButton />
-        </Providers>
+        <WalletLauncher />
       </div>
 
       <div
@@ -61,14 +57,18 @@ export function Header() {
 
       <ViewDocButton className="z-10" />
 
-      <Image
-        src={"/hero.png"}
-        alt={""}
-        width={1068}
-        height={960}
-        className={clsx("lg:mt-[-56px]")}
-        priority
-      />
+      <picture className="block max-w-full lg:mt-[-56px]">
+        <source srcSet="/hero.webp" type="image/webp" />
+        <img
+          src="/hero.fallback.png"
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
+          alt=""
+          width={1068}
+          height={661}
+        />
+      </picture>
     </section>
   );
 }

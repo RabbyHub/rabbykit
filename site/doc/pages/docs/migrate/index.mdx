@@ -1,3 +1,10 @@
+---
+title: Migrate
+titleSuffix: RabbyKit
+---
+
+import { PackageManagerTabs } from "@rspress/core/theme";
+
 ## Migrate
 
 ### 0.1.0 Breaking changes
@@ -6,9 +13,7 @@
 
 #### 1. Upgrade RabbyKit, `@wagmi/core`, and `viem` to their latest versions
 
-```sh npm2yarn
-npm i @rabby-wallet/rabbykit @wagmi/core viem@2.x @wagmi/connectors
-```
+<PackageManagerTabs command={{ npm: "npm i @rabby-wallet/rabbykit @wagmi/core viem@2.x @wagmi/connectors", yarn: "yarn add @rabby-wallet/rabbykit @wagmi/core viem@2.x @wagmi/connectors", pnpm: "pnpm add @rabby-wallet/rabbykit @wagmi/core viem@2.x @wagmi/connectors", bun: "bun add @rabby-wallet/rabbykit @wagmi/core viem@2.x @wagmi/connectors" }} />
 
 #### 2. Upgrade your RabbyKit and Wagmi configurations
 
