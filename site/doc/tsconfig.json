@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2020",
     "lib": [
       "dom",
       "dom.iterable",
@@ -9,29 +9,33 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
-    "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "incremental": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "strictNullChecks": true
+    "jsx": "react-jsx",
+    "strictNullChecks": true,
+    "baseUrl": ".",
+    "paths": {
+      "@site/*": [
+        "./*"
+      ]
+    },
+    "types": [
+      "node",
+      "@docusaurus/module-type-aliases"
+    ]
   },
   "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "docusaurus.config.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "build",
+    ".docusaurus"
   ]
 }

@@ -1,5 +1,5 @@
 import { createModal, getDefaultConfig } from "@rabby-wallet/rabbykit";
-import { createConfig } from "wagmi";
+import { createConfig } from "@wagmi/core";
 import { createClient, http } from "viem";
 import { arbitrum, bsc, mainnet, optimism, polygon } from "viem/chains";
 

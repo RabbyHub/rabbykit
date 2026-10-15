@@ -1,8 +1,13 @@
+---
+title: "Custom Login Method"
+slug: /custom-login
+---
+
 ## Custom Login Method
 
 RabbyKit provides options for customizing login methods, allowing you to set icons, text, and define the behavior upon clicking. This enables you to incorporate special login methods such as email login, which may be required by some DApps.
 
-```ts filename="app.ts"
+```ts title="app.ts"
 export const rabbyKit = createModal({
   ...
   customButtons: [
@@ -32,7 +37,7 @@ rabbyKit.setCustomButtons([
 
 ## whether to use WalletConnect
 
-```ts filename="app.ts"
+```ts title="app.ts"
 ...
 export const rabbyKit = createModal({
     ...

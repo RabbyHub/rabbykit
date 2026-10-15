@@ -1,3 +1,12 @@
+---
+title: "Migrate"
+slug: /migrate
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+
 ## Migrate
 
 ### 0.1.0 Breaking changes
@@ -6,9 +15,36 @@
 
 #### 1. Upgrade RabbyKit, `@wagmi/core`, and `viem` to their latest versions
 
-```sh npm2yarn
+<Tabs groupId="package-manager">
+<TabItem value="npm" label="npm" default>
+
+```sh
 npm i @rabby-wallet/rabbykit @wagmi/core viem@2.x @wagmi/connectors
 ```
+
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+
+```sh
+pnpm add @rabby-wallet/rabbykit @wagmi/core viem@2.x @wagmi/connectors
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn">
+
+```sh
+yarn add @rabby-wallet/rabbykit @wagmi/core viem@2.x @wagmi/connectors
+```
+
+</TabItem>
+<TabItem value="bun" label="Bun">
+
+```sh
+bun add @rabby-wallet/rabbykit @wagmi/core viem@2.x @wagmi/connectors
+```
+
+</TabItem>
+</Tabs>
 
 #### 2. Upgrade your RabbyKit and Wagmi configurations
 

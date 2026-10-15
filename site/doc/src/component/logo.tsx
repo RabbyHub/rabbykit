@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 
 export const LogoName = ({
   name,
@@ -12,7 +11,7 @@ export const LogoName = ({
 }) => {
   return (
     <div className="flex items-center gap-[10px]">
-      <Image src="/logo.svg" alt="logo" width={width} height={height} />
+      <img src="/logo.svg" alt="logo" width={width} height={height} />
       {name && (
         <span className="text-center text-white text-base font-bold ">
           {name}

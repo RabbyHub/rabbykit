@@ -1,24 +1,60 @@
-import { Steps } from "nextra/components";
+---
+title: "Installation"
+slug: /install
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+
+import Steps from "@site/src/component/Steps";
 
 <Steps>
 ### Installation
 
 Install RabbyKit and its peer dependencies ([@wagmi/core](https://wagmi.sh/core/getting-started) and [viem](https://viem.sh/)).
 
-```sh npm2yarn
+<Tabs groupId="package-manager">
+<TabItem value="npm" label="npm" default>
+
+```sh
 npm i @rabby-wallet/rabbykit @wagmi/core viem@2.x
 ```
 
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+
+```sh
+pnpm add @rabby-wallet/rabbykit @wagmi/core viem@2.x
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn">
+
+```sh
+yarn add @rabby-wallet/rabbykit @wagmi/core viem@2.x
+```
+
+</TabItem>
+<TabItem value="bun" label="Bun">
+
+```sh
+bun add @rabby-wallet/rabbykit @wagmi/core viem@2.x
+```
+
+</TabItem>
+</Tabs>
+
 ### API Keys
 
-1. RabbyKit utilises [https://walletconnect.com/]()'s SDK to help with connecting wallets. WalletConnect 2.0 requires a projectId which you can create quickly and easily for free over at [WalletConnect Cloud](https://cloud.walletconnect.com/).
+1. RabbyKit utilises [WalletConnect](https://walletconnect.com/)'s SDK to help with connecting wallets. WalletConnect 2.0 requires a projectId which you can create quickly and easily for free over at [WalletConnect Cloud](https://cloud.walletconnect.com/).
 1. [wagmi](https://wagmi.sh/react/api/transports/http#usage) recommends using other provider packages such as [Infura](https://www.infura.io) or [Alchemy](https://www.alchemy.com/) depending on the specific network requirements of your dApp. These providers offer reliable infrastructure and can be chosen based on your specific needs.
 
 ### Config
 
 create a config using wagmi's createConfig and create a RabbyKit config;
 
-```ts filename="app.ts"
+```ts title="app.ts"
 import { createModal, getDefaultConfig } from "@rabby-wallet/rabbykit";
 import { createConfig, http } from "@wagmi/core";
 import { arbitrum, bsc, mainnet, optimism, polygon } from "@wagmi/core/chains";
@@ -49,6 +85,5 @@ console.log("current rabbykit modal open status:", rabbykit.getOpenState());
 rabbykit.close();
 ```
 
-###
 
 </Steps>

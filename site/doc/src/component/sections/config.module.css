@@ -1,0 +1,98 @@
+.item {
+          width: 100%;
+          height: 64px;
+          border-radius: var(--rk-radius, 8.194px);
+          background: var(--rk-primary-button-bg, var(--r-neutral-card-1));
+          box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
+          display: flex;
+          align-items: center;
+          padding: 10px 20px;
+          color: var(--rk-primary-button-color, var(--r-neutral-title-1));
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 590;
+          line-height: normal;
+        }
+        .item:first-of-type{
+          border: 1px solid var(--rk-hover-border-color, #7084FF);
+          background: var(--rk-hover-bg,var(--r-blue-light-1));
+
+        }
+        .wallet-icon {
+          width: 28px;
+          height: 28px;
+        }
+
+        .item.sub {
+          height: 56px;
+          background: transparent;
+          color: var(--r-neutral-body);
+          font-size: 15px;
+          font-style: normal;
+          font-weight: 510;
+          line-height: normal;
+          border: 0.5px solid var(--r-neutral-line);
+        }
+
+
+            .modal {
+              --fallback-modal-border-radius: 12px;
+              --r-neutral-body: #3e495e;
+              --r-neutral-bg-2: #f2f4f7;
+              --r-neutral-title-1: #192945;
+              --r-neutral-foot: #6a7587;
+              --r-neutral-card-1: #fff;
+              --r-neutral-line: #d3d8e0;
+              --r-blue-light-1: rgba(238, 241, 255, 1);
+
+            }
+            .modal.dark {
+              --r-neutral-body: #d3d8e0;
+              --r-neutral-bg-2: #3d4251;
+              --r-neutral-title-1: #f7fafc;
+              --r-neutral-foot: #babec5;
+              --r-neutral-card-1: rgba(255, 255, 255, 0.06);
+              --r-neutral-line: rgba(255, 255, 255, 0.1);
+              --r-blue-light-1: rgba(112, 132, 255, 0.1);
+            }
+            .modal {
+
+
+
+              overflow: hidden;
+              border-radius: var(
+                --rk-radius,
+                var(--fallback-modal-border-radius)
+              );
+              border: 2.048px solid rgba(255, 255, 255, 0.1);
+              background: var(--rk-modal-bg, var(--r-neutral-bg-2));
+              position: relative;
+            }
+
+            .modal:before {
+              position: absolute;
+              content: "";
+              width: 100%;
+              height: 100%;
+              left: 0;
+              top: 0;
+            }
+            .title {
+              color: var(--r-neutral-title-1);
+              text-align: left;
+              font-size: 18px;
+              font-style: normal;
+              font-weight: 510;
+              line-height: normal;
+            }
+
+            .second {
+              width: 100%;
+              margin-top: 20px;
+              margin-bottom: 10px;
+              color: var(--r-neutral-foot);
+              font-size: 13.209px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: normal;
+            }

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "npx --yes pnpm@9.10.0 install --frozen-lockfile",
+  "buildCommand": "npx --yes pnpm@9.10.0 --dir ../.. build:doc",
+  "outputDirectory": "build",
+  "redirects": [
+    {
+      "source": "/docs",
+      "destination": "/docs/introduction/",
+      "permanent": true
+    },
+    {
+      "source": "/docs/",
+      "destination": "/docs/introduction/",
+      "permanent": true
+    }
+  ]
+}

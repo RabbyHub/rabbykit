@@ -8,6 +8,8 @@ module.exports = {
     // Or if using `src` directory:
     "./src/**/*.{js,jsx,ts,tsx,md,mdx}",
   ],
+  corePlugins: { preflight: false },
+  important: ".rabby-home",
   theme: {
     extend: {
       boxShadow: {

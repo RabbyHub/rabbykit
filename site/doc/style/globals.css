@@ -1,10 +1,18 @@
-@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-    html {
-      font-family:-apple-system, BlinkMacSystemFont, "Helvetica Neue", Roboto,
-      "PingFang SC", "Microsoft Yahei", sans-serif;
-    }
-  }
+:root { --ifm-color-primary: #7084ff; }
+.rabby-home {
+  color: #3e495e;
+  background: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Roboto, "PingFang SC", "Microsoft Yahei", sans-serif;
+  line-height: 1.5;
+}
+.rabby-home *, .rabby-home *::before, .rabby-home *::after { box-sizing: border-box; border: 0 solid #e5e7eb; }
+.rabby-home img, .rabby-home svg { display: block; max-width: 100%; height: auto; }
+.rabby-home a { color: inherit; text-decoration: inherit; }
+.rabby-home button { font: inherit; line-height: inherit; cursor: pointer; background: transparent; }
+.rabby-home button:disabled { cursor: default; }
+.doc-steps { counter-reset: step; margin-left: 1rem; padding-left: 1.5rem; border-left: 1px solid var(--ifm-color-emphasis-300); }
+.doc-steps > h3 { position: relative; margin-top: 2rem; }
+.doc-steps > h3::before { counter-increment: step; content: counter(step); position: absolute; left: -2.55rem; top: 0; width: 2rem; height: 2rem; border-radius: 50%; background: var(--ifm-background-surface-color); border: 1px solid var(--ifm-color-emphasis-300); text-align: center; font-size: 1rem; line-height: 1.9rem; }

@@ -9,7 +9,7 @@ export function ReadContractsInfinite() {
   const { data, isLoading, isSuccess, fetchNextPage } =
     useInfiniteReadContracts({
       cacheKey: "lootTokenURIs",
-      contracts(pageParam) {
+      contracts(pageParam: number) {
         return [...new Array(10)].map(
           (_, i) =>
             ({
@@ -22,6 +22,7 @@ export function ReadContractsInfinite() {
       },
       query: {
         initialPageParam: 0,
+        select: (data) => data.pages.flat(),
         getNextPageParam(_lastPage, _allPages, lastPageParam) {
           return lastPageParam + 1;
         },
@@ -35,14 +36,8 @@ export function ReadContractsInfinite() {
       {isLoading && <div>loading...</div>}
       {isSuccess && (
         <>
-          {/* @ts-expect-error */}
-          {data.pages.map((data, i) => (
-            <div key={i}>
-              {/* @ts-expect-error */}
-              {data.flatMap((x) => (
-                <pre key={stringify(data)}>{stringify(data)}</pre>
-              ))}
-            </div>
+          {data.map((result, resultIndex) => (
+            <pre key={resultIndex}>{stringify(result)}</pre>
           ))}
           <button onClick={() => fetchNextPage()}>Fetch more</button>
         </>

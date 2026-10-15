@@ -1,19 +1,40 @@
 "use client";
-import Carousel from "nuka-carousel";
-import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { useNearViewport } from "../useNearViewport";
 import clsx from "clsx";
-import bg from "./bg-2.png";
-import MobileBg from "./mobile-bg.png";
+import bg from "./bg-2.webp";
+import bgFallback from "./bg-2.fallback.png";
+import MobileBg from "./mobile-bg.webp";
+import mobileBgFallback from "./mobile-bg.fallback.png";
+import imageFallback from "../imageFallback.module.css";
 
 import { ViewDocButton } from "../viewDocButton";
 
 const list = ["PC Browser", " Mobile Wallet", "Mobile Browser"];
 export const ConnectScenario = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const sliderRef = useRef<(targetIndex: number) => void>();
+  const scenario = useNearViewport<HTMLElement>();
+  const desktopBackground = useNearViewport<HTMLDivElement>();
+  const mobileBackground = useNearViewport<HTMLDivElement>();
+  const [Carousel, setCarousel] = useState<typeof import("nuka-carousel")["default"]>();
+  useEffect(() => {
+    if (!scenario.visible) return;
+    let active = true;
+    import("nuka-carousel").then(({ default: component }) => {
+      if (active) setCarousel(() => component);
+    }).catch(() => {
+      // The static slides and tabs remain usable if the carousel chunk fails.
+    });
+    return () => { active = false; };
+  }, [scenario.visible]);
+  const slides = ["browser", "mobile", "mobile-browser"].map((name, index) => (
+    <picture key={name} hidden={!Carousel && index !== currentSlide} className={!Carousel && index !== currentSlide ? "hidden" : "block"}>
+      <source srcSet={`/scenario/${name}.webp`} type="image/webp" />
+      <img src={`/scenario/${name}.fallback.png`} alt={list[index].trim()} width={986} height={680} loading="lazy" decoding="async" />
+    </picture>
+  ));
   return (
-    <section className="w-full pt-[100px] ">
+    <section ref={scenario.ref} className="w-full pt-[100px] ">
       <div
         className={clsx(
           "max-w-[986px] w-full mx-auto flex flex-col items-center",
@@ -48,8 +69,10 @@ export const ConnectScenario = () => {
           )}
         >
           {list.map((e, index) => (
-            <div
+            <button
               key={e}
+              type="button"
+              aria-pressed={index === currentSlide}
               className={clsx(
                 "rounded justify-center items-center flex text-center font-[510]",
                 "p-0  flex-1 h-[32px] text-[13px]",
@@ -58,56 +81,36 @@ export const ConnectScenario = () => {
                 index !== currentSlide ? "text-body" : "text-blue-default"
               )}
               onClick={() => {
-                sliderRef.current?.(index);
+                setCurrentSlide(index);
               }}
             >
               {e}
-            </div>
+            </button>
           ))}
         </div>
 
-        <Carousel
-          // React 19 no longer applies function component defaultProps.
-          {...Carousel.defaultProps}
-          className="rounded-[8px] overflow-hidden bg-card-2"
-          renderCenterLeftControls={() => null}
-          renderCenterRightControls={() => null}
-          renderBottomCenterControls={({ currentSlide, goToSlide }) => {
-            setCurrentSlide(currentSlide);
-            sliderRef.current = goToSlide;
-            return null;
-          }}
-        >
-          <Image
-            src={"/scenario/browser.png"}
-            alt={""}
-            width={986}
-            height={680}
-            priority
-          />
-          <Image
-            src={"/scenario/mobile.png"}
-            alt={""}
-            width={986}
-            height={680}
-            priority
-          />
-          <Image
-            src={"/scenario/mobile-browser.png"}
-            alt={""}
-            width={986}
-            height={680}
-            priority
-          />
-        </Carousel>
+        {Carousel ? (
+          <Carousel
+            {...Carousel.defaultProps}
+            className="rounded-[8px] overflow-hidden bg-card-2"
+            slideIndex={currentSlide}
+            beforeSlide={(_, index) => setCurrentSlide(index)}
+            renderCenterLeftControls={() => null}
+            renderCenterRightControls={() => null}
+            renderBottomCenterControls={() => null}
+          >{slides}</Carousel>
+        ) : <div className="rounded-[8px] overflow-hidden bg-card-2">{slides}</div>}
 
         <div
+          ref={desktopBackground.ref}
           style={{
-            backgroundImage: `url(${bg.src})`,
+            "--rk-background-webp": desktopBackground.visible ? `url(${bg})` : undefined,
+            "--rk-background-fallback": desktopBackground.visible ? `url(${bgFallback})` : undefined,
             backgroundRepeat: "no-repeat",
             backgroundSize: "100% 100%",
-          }}
+          } as React.CSSProperties}
           className={clsx(
+            imageFallback.background,
             "w-full  flex-col items-center justify-center  bg-black hidden rounded-[8px]",
             "gap-[40px] rounded-[12px] mt-[170px] mb-[178px] h-[260px] lg:flex"
           )}
@@ -120,12 +123,15 @@ export const ConnectScenario = () => {
         </div>
 
         <div
+          ref={mobileBackground.ref}
           style={{
-            backgroundImage: `url(${MobileBg.src})`,
+            "--rk-background-webp": mobileBackground.visible ? `url(${MobileBg})` : undefined,
+            "--rk-background-fallback": mobileBackground.visible ? `url(${mobileBgFallback})` : undefined,
             backgroundRepeat: "no-repeat",
             backgroundSize: "100% 100%",
-          }}
+          } as React.CSSProperties}
           className={clsx(
+            imageFallback.background,
             "w-full min-h-[140px] flex flex-col items-center justify-center bg-black gap-[18px] rounded-[4px] my-[96px]",
             "lg:hidden"
           )}

@@ -1,11 +1,31 @@
 "use client";
-import { useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
-import bg from "./bg-3.png";
-import { ChromePicker } from "react-color";
+import { useNearViewport } from "../useNearViewport";
+import bg from "./bg-3.webp";
+import bgFallback from "./bg-3.fallback.png";
+import imageFallback from "../imageFallback.module.css";
+import styles from "./config.module.css";
 import { useClickAway } from "react-use";
 import { docPath } from "../../../constant";
 import { colord } from "colord";
+import type { ChromePickerProps } from "react-color";
+
+const PickerUnavailable = () => (
+  <span role="alert" className="absolute top-[36px] left-1/2 z-50 w-[220px] -translate-x-1/2 rounded-md bg-gray-900 p-3 text-sm text-white">
+    Could not load colors. <a href="" className="inline-block whitespace-nowrap underline text-white" onClick={(event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      window.location.reload();
+    }}>Reload to retry</a>
+  </span>
+);
+
+const ChromePicker = lazy<React.ComponentType<ChromePickerProps>>(() =>
+  import("react-color").then(({ ChromePicker }) => ({ default: ChromePicker }))
+    // React.lazy caches failures; keep the error local and retry with a full reload.
+    .catch(() => ({ default: PickerUnavailable }))
+);
 
 const defaultCustomColor =
   "conic-gradient(from 180deg at 50% 50%, #F77E7E 0deg, #E2EF48 73.12608897686005deg, #7AB765 127.50206708908081deg, #6DB0B0 168.7528109550476deg, #4877EF 223.12880516052246deg, #EC48EF 296.25511407852173deg, #EF4848 360deg)";
@@ -57,35 +77,33 @@ const allConfig = [
 ];
 
 export const ConfigDemo = () => {
+  const background = useNearViewport<HTMLDivElement>();
   const [theme, setTheme] = useState("light");
   const [css, setCss] = useState<Record<string, string>>({});
-  const cssVar = useMemo(
-    () =>
-      Object.keys(css)
-        .map((e) => {
-          let v = `${e}:${css[e]};`;
-          if (e === "--rk-hover-border-color") {
-            v += `--rk-hover-bg:${colord(css[e]).alpha(0.15).toRgbString()};`;
-          }
-          return v;
-        })
-        .join(""),
-    [css]
-  );
+  const cssVar = useMemo(() => {
+    const variables = Object.fromEntries(Object.entries(css).filter(([key]) => key.startsWith("--")));
+    if (css["--rk-hover-border-color"]) {
+      variables["--rk-hover-bg"] = colord(css["--rk-hover-border-color"]).alpha(0.15).toRgbString();
+    }
+    return variables as React.CSSProperties;
+  }, [css]);
   const isCustom = css["isCustom"] !== "1";
 
   return (
     <div
+      ref={background.ref}
       className={clsx(
+        imageFallback.background,
         "w-full overflow-hidden",
         "py-[60px]",
         "lg:pt-[100px] lg:pb-[110px]"
       )}
       style={{
-        backgroundImage: `url(${bg.src})`,
+        "--rk-background-webp": background.visible ? `url(${bg})` : undefined,
+        "--rk-background-fallback": background.visible ? `url(${bgFallback})` : undefined,
         backgroundRepeat: "no-repeat",
         backgroundSize: "100% 100%",
-      }}
+      } as React.CSSProperties}
     >
       <div
         className={clsx(
@@ -150,7 +168,7 @@ export const ConfigDemo = () => {
               Learn more
             </a>
           </div>
-          <Preview theme={theme} cssVar={cssVar} isCustom={isCustom} />d
+          <Preview theme={theme} cssVar={cssVar} isCustom={isCustom} />
         </div>
       </div>
     </div>
@@ -235,17 +253,19 @@ const Item = ({
                 {e.name}
               </div>
               {open && idx === data.length - 1 && (
+                <Suspense fallback={<span className="absolute top-[36px] left-1/2 z-50 -translate-x-1/2 text-white">Loading colors…</span>}>
                 <ChromePicker
                   color={color}
                   onChange={(e) => {
                     const rgba = `rgba(${e.rgb.r},${e.rgb.g},${e.rgb.b},${
-                      e.rgb?.a || 1
+                      e.rgb?.a ?? 1
                     })`;
                     setColor(rgba);
                     onUpdate(rgba);
                   }}
                   className="absolute top-[36px] left-1/2 z-50 -translate-x-1/2"
                 />
+                </Suspense>
               )}
             </button>
           );
@@ -277,10 +297,10 @@ function WalletItem({
   isCustom?: boolean;
 }) {
   return (
-    <div className={clsx("item", isSecond && "sub")}>
+    <div className={clsx(styles.item, isSecond && styles.sub)}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="wallet-icon"
+        className={styles["wallet-icon"]}
         viewBox="0 0 35 34"
         fill="none"
       >
@@ -290,43 +310,7 @@ function WalletItem({
         {isCustom ? `Customized Button` : `Wallet ${idx}`}
       </div>
 
-      <style jsx>{`
-        .item {
-          width: 100%;
-          height: 64px;
-          border-radius: var(--rk-radius, 8.194px);
-          background: var(--rk-primary-button-bg, var(--r-neutral-card-1));
-          box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
-          display: flex;
-          align-items: center;
-          padding: 10px 20px;
-          color: var(--rk-primary-button-color, var(--r-neutral-title-1));
-          font-size: 16px
-          font-style: normal;
-          font-weight: 590;
-          line-height: normal;
-        }
-        .item:first-of-type{
-          border: 1px solid var(--rk-hover-border-color, #7084FF);
-          background: var(--rk-hover-bg,var(--r-blue-light-1));
 
-        }
-        .wallet-icon {
-          width: 28px;
-          height: 28px;
-        }
-
-        .item.sub {
-          height: 56px;
-          background: transparent;
-          color: var(--r-neutral-body);
-          font-size: 15px;
-          font-style: normal;
-          font-weight: 510;
-          line-height: normal;
-          border: 0.5px solid var(--r-neutral-line);
-        }
-      `}</style>
     </div>
   );
 }
@@ -337,23 +321,24 @@ const Preview = ({
   isCustom,
 }: {
   theme?: string;
-  cssVar?: string;
+  cssVar?: React.CSSProperties;
   isCustom?: boolean;
 }) => {
   return (
     <div className="max-w-[100vw] lg:ml-[80px]">
       <div
         className={clsx(
-          "modal flex flex-col items-center",
+          styles.modal, "flex flex-col items-center",
           "w-[780px] h-[540px]",
           "scale-[0.7]",
           "lg:scale-100",
-          theme
+          theme === "dark" && styles.dark
         )}
+        style={cssVar}
       >
         <div className="flex w-full h-full">
           <div className="w-[300px] px-[20px] border-r border-r-[var(--r-neutral-line)] p-[20px]">
-            <div className="title mb-[20px]">Select your wallet to login</div>
+            <div className={clsx(styles.title, "mb-[20px]")}>Select your wallet to login</div>
             <div className="flex flex-col gap-[10px] w-full">
               {demoList.slice(0, isCustom ? undefined : -1).map((fill, idx) => (
                 <WalletItem
@@ -365,7 +350,7 @@ const Preview = ({
               ))}
             </div>
 
-            <div className="second">
+            <div className={styles.second}>
               The following wallets are not available
             </div>
             <div className="flex justify-between w-full flex-wrap gap-[10px]">
@@ -390,71 +375,7 @@ const Preview = ({
           </div>
         </div>
 
-        <style jsx>
-          {`
-            .modal {
-              --fallback-modal-border-radius: 12px;
-              --r-neutral-body: #3e495e;
-              --r-neutral-bg-2: #f2f4f7;
-              --r-neutral-title-1: #192945;
-              --r-neutral-foot: #6a7587;
-              --r-neutral-card-1: #fff;
-              --r-neutral-line: #d3d8e0;
-              --r-blue-light-1: rgba(238, 241, 255, 1);
-              ${cssVar}
-            }
-            .modal.dark {
-              --r-neutral-body: #d3d8e0;
-              --r-neutral-bg-2: #3d4251;
-              --r-neutral-title-1: #f7fafc;
-              --r-neutral-foot: #babec5;
-              --r-neutral-card-1: rgba(255, 255, 255, 0.06);
-              --r-neutral-line: rgba(255, 255, 255, 0.1);
-              --r-blue-light-1: rgba(112, 132, 255, 0.1);
-            }
-            .modal {
-              // padding: 20px;
-              // width: 460px;
-              // height: 540px;
-              overflow: hidden;
-              border-radius: var(
-                --rk-radius,
-                var(--fallback-modal-border-radius)
-              );
-              border: 2.048px solid rgba(255, 255, 255, 0.1);
-              background: var(--rk-modal-bg, var(--r-neutral-bg-2));
-              position: relative;
-            }
 
-            .modal:before {
-              position: absolute;
-              content: "";
-              width: 100%;
-              height: 100%;
-              left: 0;
-              top: 0;
-            }
-            .title {
-              color: var(--r-neutral-title-1);
-              text-align: left;
-              font-size: 18px;
-              font-style: normal;
-              font-weight: 510;
-              line-height: normal;
-            }
-
-            .second {
-              width: 100%;
-              margin-top: 20px;
-              margin-bottom: 10px;
-              color: var(--r-neutral-foot);
-              font-size: 13.209px;
-              font-style: normal;
-              font-weight: 400;
-              line-height: normal;
-            }
-          `}
-        </style>
       </div>
     </div>
   );
