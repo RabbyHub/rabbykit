@@ -1,5 +1,5 @@
 const assert = require("node:assert/strict");
-const { readFileSync, readdirSync, existsSync } = require("node:fs");
+const { readFileSync, readdirSync } = require("node:fs");
 const { resolve, join } = require("node:path");
 
 const root = resolve(__dirname, "../site/doc/dist");
@@ -33,5 +33,5 @@ function walk(dir) {
 walk(root);
 assert.ok(files.some(file => /search_index\.en\..*\.json$/.test(file)), "Missing local search index");
 assert.ok(!files.some(file => file.endsWith(".map")), "Source maps must not be published");
-assert.ok(!existsSync(join(root, "api/ping")), "Removed endpoint must not remain in static output");
-console.log("Static docs: seven routes, existing anchors, prerendered homepage, local search, no source maps — PASS");
+assert.deepEqual(JSON.parse(readFileSync(join(root, "api/ping.json"), "utf8")), { message: "pong" }, "Static health check must preserve the existing response");
+console.log("Static docs: seven routes, existing anchors, prerendered homepage, local search, health check, no source maps — PASS");
