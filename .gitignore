@@ -202,3 +202,9 @@ dist
 
 # Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
 
+
+# Astro generated content and types
+.astro/
+
+# Generated WebP fallback images
+site/doc/**/*.fallback.png

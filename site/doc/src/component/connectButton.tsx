@@ -3,7 +3,6 @@
 import { useContext } from "react";
 import { RabbykitContext } from "./rabbykit";
 import { useAccount, useDisconnect } from "wagmi";
-import Image from "next/image";
 import clsx from "clsx";
 export const ConnectButton = () => {
   const kit = useContext(RabbykitContext);
@@ -32,7 +31,7 @@ export const ConnectButton = () => {
           : "Connect Wallet"}
       </span>
       {isConnected && (
-        <Image src={"/exit.svg"} width="20" height="20" alt={"disconnect"} />
+        <img src={"/exit.svg"} width="20" height="20" alt={"disconnect"} />
       )}
     </button>
   );

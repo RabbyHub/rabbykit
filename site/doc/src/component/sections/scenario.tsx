@@ -1,10 +1,12 @@
 "use client";
-import Carousel from "nuka-carousel";
-import Image from "next/image";
+import Carousel from "nuka-carousel/dist/index.mjs";
 import { useRef, useState } from "react";
 import clsx from "clsx";
-import bg from "./bg-2.png";
-import MobileBg from "./mobile-bg.png";
+import { DeferredBackground } from "../deferredBackground";
+import bg from "./bg-2.webp";
+import bgFallback from "./bg-2.fallback.png";
+import MobileBg from "./mobile-bg.webp";
+import mobileBgFallback from "./mobile-bg.fallback.png";
 
 import { ViewDocButton } from "../viewDocButton";
 
@@ -66,52 +68,65 @@ export const ConnectScenario = () => {
           ))}
         </div>
 
-        <Carousel
-          // React 19 no longer applies function component defaultProps.
-          {...Carousel.defaultProps}
-          className="rounded-[8px] overflow-hidden bg-card-2"
-          renderCenterLeftControls={() => null}
-          renderCenterRightControls={() => null}
-          renderBottomCenterControls={({ currentSlide, goToSlide }) => {
-            setCurrentSlide(currentSlide);
-            sliderRef.current = goToSlide;
-            return null;
-          }}
-        >
-          <Image
-            src={"/scenario/browser.png"}
-            alt={""}
-            width={986}
-            height={680}
-            priority
-          />
-          <Image
-            src={"/scenario/mobile.png"}
-            alt={""}
-            width={986}
-            height={680}
-            priority
-          />
-          <Image
-            src={"/scenario/mobile-browser.png"}
-            alt={""}
-            width={986}
-            height={680}
-            priority
-          />
-        </Carousel>
+        <div className="w-full">
+          <Carousel
+            // React 19 no longer applies function component defaultProps.
+            {...Carousel.defaultProps}
+            className="rounded-[8px] overflow-hidden bg-card-2"
+            renderCenterLeftControls={() => null}
+            renderCenterRightControls={() => null}
+            renderBottomCenterControls={({ currentSlide, goToSlide }) => {
+              setCurrentSlide(currentSlide);
+              sliderRef.current = goToSlide;
+              return null;
+            }}
+          >
+            <picture className="block w-full">
+              <source srcSet="/scenario/browser.webp" type="image/webp" />
+              <img
+                src="/scenario/browser.fallback.png"
+                loading="lazy"
+                decoding="async"
+                alt={""}
+                width={986}
+                height={680}
+                className="block h-auto w-full"
+              />
+            </picture>
+            <picture className="block w-full">
+              <source srcSet="/scenario/mobile.webp" type="image/webp" />
+              <img
+                src="/scenario/mobile.fallback.png"
+                loading="lazy"
+                decoding="async"
+                alt={""}
+                width={986}
+                height={680}
+                className="block h-auto w-full"
+              />
+            </picture>
+            <picture className="block w-full">
+              <source srcSet="/scenario/mobile-browser.webp" type="image/webp" />
+              <img
+                src="/scenario/mobile-browser.fallback.png"
+                loading="lazy"
+                decoding="async"
+                alt={""}
+                width={986}
+                height={680}
+                className="block h-auto w-full"
+              />
+            </picture>
+          </Carousel>
+        </div>
 
         <div
-          style={{
-            backgroundImage: `url(${bg.src})`,
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "100% 100%",
-          }}
           className={clsx(
-            "w-full  flex-col items-center justify-center  bg-black hidden rounded-[8px]",
+            "relative isolate w-full  flex-col items-center justify-center  bg-black hidden rounded-[8px]",
             "gap-[40px] rounded-[12px] mt-[170px] mb-[178px] h-[260px] lg:flex"
           )}
         >
+          <DeferredBackground src={bg.src} fallbackSrc={bgFallback.src} />
           <div className="text-[32px] font-[700] text-title2">
             View the Docs and Get Rabby Kit for your Dapp
           </div>
@@ -120,16 +135,12 @@ export const ConnectScenario = () => {
         </div>
 
         <div
-          style={{
-            backgroundImage: `url(${MobileBg.src})`,
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "100% 100%",
-          }}
           className={clsx(
-            "w-full min-h-[140px] flex flex-col items-center justify-center bg-black gap-[18px] rounded-[4px] my-[96px]",
+            "relative isolate w-full min-h-[140px] flex flex-col items-center justify-center bg-black gap-[18px] rounded-[4px] my-[96px]",
             "lg:hidden"
           )}
         >
+          <DeferredBackground src={MobileBg.src} fallbackSrc={mobileBgFallback.src} />
           <div className="mx-[10px] text-[16px] text-center font-[700] text-title2 ">
             View the Docs and Get Rabby Kit <br />
             for your Dapp

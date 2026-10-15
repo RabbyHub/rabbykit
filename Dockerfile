@@ -1,47 +1,19 @@
-FROM node:22-bookworm-slim AS base
+FROM node:22-bookworm-slim AS builder
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+ENV NODE_OPTIONS="--max_old_space_size=4096"
+RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ \
+    && rm -rf /var/lib/apt/lists/*
 RUN corepack enable && corepack prepare pnpm@9.10.0 --activate
-
 WORKDIR /app
-
-
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig*.json ./
-COPY ./packages/rabbykit/package.json ./packages/rabbykit/package.json
-COPY ./site/doc/package.json ./site/doc/package.json
-
-
-
-FROM base AS builder
-ENV NODE_OPTIONS --max_old_space_size=4096
+COPY packages/rabbykit/package.json ./packages/rabbykit/package.json
+COPY site/doc/package.json ./site/doc/package.json
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm build:doc
 
-
-
-FROM base AS runner
-WORKDIR /app
-
-ENV NODE_ENV production
-
-
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-COPY --from=builder /app/site/doc/public ./site/doc/public
-
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
-
-COPY --from=builder --chown=nextjs:nodejs /app/site/doc/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/site/doc/.next/static ./site/doc/.next/static
-
-USER nextjs
-
+FROM ghcr.io/nginx/nginx-unprivileged:stable-alpine AS runner
+COPY site/doc/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/site/doc/dist /usr/share/nginx/html
 EXPOSE 3000
-
-ENV PORT 3000
-ENV HOSTNAME "0.0.0.0"
-
-CMD ["node", "./site/doc/server.js"]

@@ -1,8 +1,11 @@
 "use client";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, type CSSProperties, type ComponentType } from "react";
+import styles from "./config.module.css";
 import clsx from "clsx";
-import bg from "./bg-3.png";
-import { ChromePicker } from "react-color";
+import { DeferredBackground } from "../deferredBackground";
+import bg from "./bg-3.webp";
+import bgFallback from "./bg-3.fallback.png";
+import type { ChromePickerProps } from "react-color";
 import { useClickAway } from "react-use";
 import { docPath } from "../../../constant";
 import { colord } from "colord";
@@ -59,34 +62,23 @@ const allConfig = [
 export const ConfigDemo = () => {
   const [theme, setTheme] = useState("light");
   const [css, setCss] = useState<Record<string, string>>({});
-  const cssVar = useMemo(
-    () =>
-      Object.keys(css)
-        .map((e) => {
-          let v = `${e}:${css[e]};`;
-          if (e === "--rk-hover-border-color") {
-            v += `--rk-hover-bg:${colord(css[e]).alpha(0.15).toRgbString()};`;
-          }
-          return v;
-        })
-        .join(""),
-    [css]
-  );
+  const cssVars = useMemo(() => ({
+    ...Object.fromEntries(Object.entries(css).filter(([key]) => key.startsWith("--"))),
+    ...(css["--rk-hover-border-color"] ? {
+      "--rk-hover-bg": colord(css["--rk-hover-border-color"]).alpha(0.15).toRgbString(),
+    } : {}),
+  }) as CSSProperties, [css]);
   const isCustom = css["isCustom"] !== "1";
 
   return (
     <div
       className={clsx(
-        "w-full overflow-hidden",
+        "w-full overflow-hidden relative isolate",
         "py-[60px]",
         "lg:pt-[100px] lg:pb-[110px]"
       )}
-      style={{
-        backgroundImage: `url(${bg.src})`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "100% 100%",
-      }}
     >
+      <DeferredBackground src={bg.src} fallbackSrc={bgFallback.src} />
       <div
         className={clsx(
           "text-center text-title2 font-[510]",
@@ -150,7 +142,7 @@ export const ConfigDemo = () => {
               Learn more
             </a>
           </div>
-          <Preview theme={theme} cssVar={cssVar} isCustom={isCustom} />d
+          <Preview theme={theme} cssVars={cssVars} isCustom={isCustom} />
         </div>
       </div>
     </div>
@@ -176,6 +168,26 @@ const Item = ({
   const [active, setActive] = useState(defaultIndex);
   const [open, setOpen] = useState(false);
   const [color, setColor] = useState<string>();
+  const [Picker, setPicker] = useState<ComponentType<ChromePickerProps>>();
+  const [pickerError, setPickerError] = useState(false);
+  const pickerRequest = useRef<Promise<void>>();
+  const openPicker = () => {
+    if (pickerError) {
+      window.location.reload();
+      return;
+    }
+    setOpen(true);
+    if (!pickerRequest.current) {
+      setPickerError(false);
+      pickerRequest.current = import('react-color')
+        .then(({ ChromePicker }) => { setPicker(() => ChromePicker); })
+        .catch((error) => {
+          console.error('Failed to load the color picker', error);
+          pickerRequest.current = undefined;
+          setPickerError(true);
+        });
+    }
+  };
   const ref = useRef<HTMLButtonElement>(null);
   useClickAway(ref, () => {
     setOpen(false);
@@ -212,7 +224,7 @@ const Item = ({
                   setActive(idx);
                 }
                 if (isColor && isLast) {
-                  setOpen(true);
+                  openPicker();
                 } else {
                   onUpdate(isBool ? (active ? "0" : "1") : e.value);
                 }
@@ -234,8 +246,13 @@ const Item = ({
               >
                 {e.name}
               </div>
-              {open && idx === data.length - 1 && (
-                <ChromePicker
+              {open && idx === data.length - 1 && !Picker && (
+                <span role="status" className="absolute top-[36px] left-1/2 z-50 -translate-x-1/2 bg-white p-3 text-title1 whitespace-nowrap">
+                  {pickerError ? 'Reload to retry' : 'Loading…'}
+                </span>
+              )}
+              {open && idx === data.length - 1 && Picker && (
+                <Picker
                   color={color}
                   onChange={(e) => {
                     const rgba = `rgba(${e.rgb.r},${e.rgb.g},${e.rgb.b},${
@@ -277,10 +294,10 @@ function WalletItem({
   isCustom?: boolean;
 }) {
   return (
-    <div className={clsx("item", isSecond && "sub")}>
+    <div className={clsx(styles.item, isSecond && styles.sub)}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="wallet-icon"
+        className={styles["wallet-icon"]}
         viewBox="0 0 35 34"
         fill="none"
       >
@@ -290,70 +307,36 @@ function WalletItem({
         {isCustom ? `Customized Button` : `Wallet ${idx}`}
       </div>
 
-      <style jsx>{`
-        .item {
-          width: 100%;
-          height: 64px;
-          border-radius: var(--rk-radius, 8.194px);
-          background: var(--rk-primary-button-bg, var(--r-neutral-card-1));
-          box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
-          display: flex;
-          align-items: center;
-          padding: 10px 20px;
-          color: var(--rk-primary-button-color, var(--r-neutral-title-1));
-          font-size: 16px
-          font-style: normal;
-          font-weight: 590;
-          line-height: normal;
-        }
-        .item:first-of-type{
-          border: 1px solid var(--rk-hover-border-color, #7084FF);
-          background: var(--rk-hover-bg,var(--r-blue-light-1));
 
-        }
-        .wallet-icon {
-          width: 28px;
-          height: 28px;
-        }
-
-        .item.sub {
-          height: 56px;
-          background: transparent;
-          color: var(--r-neutral-body);
-          font-size: 15px;
-          font-style: normal;
-          font-weight: 510;
-          line-height: normal;
-          border: 0.5px solid var(--r-neutral-line);
-        }
-      `}</style>
     </div>
   );
 }
 
 const Preview = ({
   theme,
-  cssVar,
+  cssVars,
   isCustom,
 }: {
   theme?: string;
-  cssVar?: string;
+  cssVars?: CSSProperties;
   isCustom?: boolean;
 }) => {
   return (
     <div className="max-w-[100vw] lg:ml-[80px]">
       <div
+        style={cssVars}
         className={clsx(
-          "modal flex flex-col items-center",
+          styles.modal,
+          "flex flex-col items-center",
           "w-[780px] h-[540px]",
           "scale-[0.7]",
           "lg:scale-100",
-          theme
+          theme === "dark" && styles.dark
         )}
       >
         <div className="flex w-full h-full">
           <div className="w-[300px] px-[20px] border-r border-r-[var(--r-neutral-line)] p-[20px]">
-            <div className="title mb-[20px]">Select your wallet to login</div>
+            <div className={clsx(styles.title, "mb-[20px]")}>Select your wallet to login</div>
             <div className="flex flex-col gap-[10px] w-full">
               {demoList.slice(0, isCustom ? undefined : -1).map((fill, idx) => (
                 <WalletItem
@@ -365,7 +348,7 @@ const Preview = ({
               ))}
             </div>
 
-            <div className="second">
+            <div className={styles.second}>
               The following wallets are not available
             </div>
             <div className="flex justify-between w-full flex-wrap gap-[10px]">
@@ -390,71 +373,7 @@ const Preview = ({
           </div>
         </div>
 
-        <style jsx>
-          {`
-            .modal {
-              --fallback-modal-border-radius: 12px;
-              --r-neutral-body: #3e495e;
-              --r-neutral-bg-2: #f2f4f7;
-              --r-neutral-title-1: #192945;
-              --r-neutral-foot: #6a7587;
-              --r-neutral-card-1: #fff;
-              --r-neutral-line: #d3d8e0;
-              --r-blue-light-1: rgba(238, 241, 255, 1);
-              ${cssVar}
-            }
-            .modal.dark {
-              --r-neutral-body: #d3d8e0;
-              --r-neutral-bg-2: #3d4251;
-              --r-neutral-title-1: #f7fafc;
-              --r-neutral-foot: #babec5;
-              --r-neutral-card-1: rgba(255, 255, 255, 0.06);
-              --r-neutral-line: rgba(255, 255, 255, 0.1);
-              --r-blue-light-1: rgba(112, 132, 255, 0.1);
-            }
-            .modal {
-              // padding: 20px;
-              // width: 460px;
-              // height: 540px;
-              overflow: hidden;
-              border-radius: var(
-                --rk-radius,
-                var(--fallback-modal-border-radius)
-              );
-              border: 2.048px solid rgba(255, 255, 255, 0.1);
-              background: var(--rk-modal-bg, var(--r-neutral-bg-2));
-              position: relative;
-            }
 
-            .modal:before {
-              position: absolute;
-              content: "";
-              width: 100%;
-              height: 100%;
-              left: 0;
-              top: 0;
-            }
-            .title {
-              color: var(--r-neutral-title-1);
-              text-align: left;
-              font-size: 18px;
-              font-style: normal;
-              font-weight: 510;
-              line-height: normal;
-            }
-
-            .second {
-              width: 100%;
-              margin-top: 20px;
-              margin-bottom: 10px;
-              color: var(--r-neutral-foot);
-              font-size: 13.209px;
-              font-style: normal;
-              font-weight: 400;
-              line-height: normal;
-            }
-          `}
-        </style>
       </div>
     </div>
   );

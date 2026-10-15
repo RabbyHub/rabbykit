@@ -3,7 +3,7 @@ import { createConfig, WagmiProvider } from "wagmi";
 import { mainnet } from "wagmi/chains";
 import * as React from "react";
 import { createModal, getDefaultConfig } from "@rabby-wallet/rabbykit";
-import { createClient } from "viem";
+import { createClient, http } from "viem";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export const config = createConfig(
@@ -13,7 +13,6 @@ export const config = createConfig(
     appLogo: "/logo-blue.svg",
     chains: [mainnet],
     client({ chain }) {
-      // @ts-expect-error
       return createClient({ chain, transport: http() });
     },
   })
@@ -25,18 +24,43 @@ export const RabbykitContext = React.createContext<
   ReturnType<typeof createModal>
 >({} as any);
 
-export function Providers({ children }: { children: React.ReactNode }) {
+let demoKit: ReturnType<typeof createModal> | undefined;
+
+export function Providers({ children, onReady, onError, attempt }: {
+  children: React.ReactNode;
+  onReady: (kit: ReturnType<typeof createModal>, connected: boolean) => void;
+  onError: (error: unknown) => void;
+  attempt: number;
+}) {
   const [kit, setKit] = React.useState<ReturnType<typeof createModal>>();
-  const initRef = React.useRef<Boolean>(false);
   React.useEffect(() => {
-    if (!initRef.current) {
-      initRef.current = true;
-      const rabbyKit = createModal({
-        wagmi: config,
-      });
-      setKit(rabbyKit);
+    let active = true;
+    let notified = false;
+    let unsubscribe: (() => void) | undefined;
+    try {
+      demoKit ??= createModal({ wagmi: config });
+      const currentKit = demoKit;
+      setKit(currentKit);
+      const notifyReady = () => {
+        const status = config.state.status;
+        if (!active || notified || status === 'connecting' || status === 'reconnecting') return;
+        notified = true;
+        try {
+          onReady(currentKit, status === 'connected');
+        } catch (error) {
+          onError(error);
+        }
+      };
+      unsubscribe = config.subscribe((state) => state.status, notifyReady);
+      notifyReady();
+    } catch (error) {
+      onError(error);
     }
-  }, []);
+    return () => {
+      active = false;
+      unsubscribe?.();
+    };
+  }, [attempt, onReady, onError]);
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>

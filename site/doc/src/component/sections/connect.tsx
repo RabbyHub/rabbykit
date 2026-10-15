@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import Image from "next/image";
 
 const protocols = [
   {
@@ -207,13 +206,16 @@ export const ConnectIntro = () => {
           "lg:px-0"
         )}
       >
-        <Image
-          src={"/connect.png"}
-          alt={"connect"}
-          width={960}
-          height={440}
-          className="px-[20px] lg:px-0"
-        />
+        <picture className="block w-full">
+          <source srcSet="/connect.webp" type="image/webp" />
+          <img loading="lazy" decoding="async"
+            src="/connect.fallback.png"
+            alt={"connect"}
+            width={960}
+            height={440}
+            className="block w-full px-[20px] lg:px-0"
+          />
+        </picture>
         <div
           className={clsx(
             "text-center text-title1",
@@ -237,7 +239,7 @@ export const ConnectIntro = () => {
                 "lg:gap-[12px] lg:h-32 lg:pt-6 lg:pb-7 "
               )}
             >
-              <Image
+              <img loading="lazy" decoding="async"
                 src={src}
                 alt={name}
                 width={32}
@@ -305,7 +307,7 @@ function SupportedWallets({
               "lg:w-[160px] lg:h-[120px] lg:gap-[12px]"
             )}
           >
-            <Image
+            <img loading="lazy" decoding="async"
               src={src}
               alt={name}
               width={32}

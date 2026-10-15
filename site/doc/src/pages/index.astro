@@ -1,0 +1,45 @@
+---
+import { Header } from '../component/sections/header';
+import { ConnectIntro } from '../component/sections/connect';
+import { ConfigDemo } from '../component/sections/config';
+import { ConnectScenario } from '../component/sections/scenario';
+import { Footer } from '../component/sections/footer';
+import WalletEntry from '../component/walletEntry';
+import '../../style/globals.css';
+const title = 'RabbyKit - A Real Web3 Way to connect all wallets for all Dapp developers';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={title} />
+    <link rel="canonical" href="https://rabbykit.rabby.io/" />
+    <link rel="icon" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="mask-icon" href="/favicon.png" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={title} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://rabbykit.rabby.io/" />
+    <meta property="og:image" content="https://rabbykit.rabby.io/logo-twitter.png" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@Rabby_io" />
+    <meta name="twitter:creator" content="@Rabby_io" />
+    <meta name="twitter:image" content="https://rabbykit.rabby.io/logo-twitter.png" />
+    <meta name="twitter:description" content={title} />
+    <meta name="apple-mobile-web-app-title" content="RabbyKit" />
+  </head>
+  <body>
+    <main>
+      <Header>
+        <WalletEntry client:load />
+      </Header>
+      <ConnectIntro />
+      <ConfigDemo client:visible={{ rootMargin: "200px" }} />
+      <ConnectScenario client:visible={{ rootMargin: "200px" }} />
+      <Footer />
+    </main>
+  </body>
+</html>
