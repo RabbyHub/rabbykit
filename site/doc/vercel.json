@@ -15,5 +15,31 @@
       "destination": "/docs/introduction/",
       "permanent": true
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/ping",
+      "destination": "/api/ping.json"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/ping",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/api/ping.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    }
   ]
 }
