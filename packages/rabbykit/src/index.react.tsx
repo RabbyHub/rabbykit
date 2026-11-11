@@ -53,12 +53,11 @@ export const useRabbykitModalStatus = () => {
     );
   }
   const [open, setOpen] = useState(useRKStore.getState().open);
-  useEffect(
-    () =>
-      value.subscribeModalState((e) => {
-        setOpen(e);
-      }),
-    [value.subscribeModalState]
-  );
+  useEffect(() => {
+    const unsubscribe = value.subscribeModalState(setOpen);
+    // Catch changes between rendering the snapshot and subscribing.
+    setOpen(useRKStore.getState().open);
+    return unsubscribe;
+  }, [value.subscribeModalState]);
   return open;
 };
